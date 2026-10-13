@@ -39,3 +39,20 @@ h1 { color: var(--accent); font-style: italic; font-weight: 400; letter-spacing:
   .header .brand-rest { font-size: 1.05rem; }
   .header .brand-initial { font-size: 2.3rem; }
 }
+
+/* Owl hieroglyph (Egyptian G17) as a decorative marker. It is not read by screen readers. */
+.sl-markdown-content h2::before,
+.owl-list li::before {
+  content: '';
+  display: inline-block;
+  width: 0.95em;
+  height: 0.95em;
+  margin-right: 0.4em;
+  vertical-align: -0.1em;
+  background-color: var(--accent);
+  -webkit-mask: url(/owl.svg) no-repeat center / contain;
+  mask: url(/owl.svg) no-repeat center / contain;
+}
+.owl-list ul { list-style: none; padding-inline-start: 0; }
+.owl-list li { display: flex; align-items: baseline; }
+.owl-list li::before { flex: none; width: 1.05em; height: 1.05em; margin-right: 0.55em; vertical-align: baseline; }

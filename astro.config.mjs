@@ -31,6 +31,7 @@ export default defineConfig({
             { label: 'Options', slug: 'docs/options' },
             { label: 'Known issues', slug: 'docs/known-issues' },
             { label: 'Benchmarks', slug: 'docs/benchmarks' },
+            { label: 'Under the hood', slug: 'docs/under-the-hood' },
             { label: 'NPU prefill', slug: 'docs/npu' },
           ],
         },
