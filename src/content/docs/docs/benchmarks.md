@@ -70,11 +70,11 @@ The sums differ by one point. That is within noise. The final-answer count in th
 <table>
 <thead><tr><th scope="col">Workload</th><th scope="col">Measured tok/s</th><th scope="col">Conditions and date</th></tr></thead>
 <tbody>
-<tr><th scope="row">Prefill pp2048, plain</th><td><strong>1,325</strong></td><td>Upstream’s prompt recipe, greedy. Median of five runs. 2026-10-10.</td></tr>
-<tr><th scope="row">Prefill pp2048, MTP</th><td><strong>1,325</strong></td><td>Same prompt recipe, MTP drafting. Median. 2026-10-10.</td></tr>
+<tr><th scope="row">Prefill pp2048, without MTP</th><td><strong>1,364</strong></td><td>Upstream’s prompt recipe, greedy. Median of 3. Release build v0.1.0. 2026-10-12.</td></tr>
+<tr><th scope="row">Prefill pp2048, MTP</th><td><strong>1,218</strong></td><td>Same prompt recipe, MTP drafting. Median of 3. Release build v0.1.0. 2026-10-12. The MTP server also prefills the draft head.</td></tr>
 <tr><th scope="row">Decode tg128, without MTP</th><td><strong>32.19</strong></td><td>Upstream’s benchmark program, greedy. Median of 3. Release build v0.1.0. 2026-10-12.</td></tr>
 <tr><th scope="row">Decode tg128, MTP</th><td><strong>37.15</strong></td><td>Same program, MTP drafting. Median of 3. Release build v0.1.0. 2026-10-12.</td></tr>
-<tr><th scope="row">Natural-text prefill, 2K / 8K / 32K</th><td><strong>1,288 / 1,201 / 1,268</strong></td><td>Research-notes text. Median of three runs. 2026-10-10.</td></tr>
+<tr><th scope="row">Natural-text prefill, 2K / 8K / 32K</th><td><strong>1,240 / 1,292 / 1,287</strong></td><td>Research-notes text. Median of 2 to 3 rounds. Release build v0.1.0. 2026-10-12.</td></tr>
 <tr><th scope="row">Six short greedy prompts</th><td><strong>54.2</strong></td><td>Mean across six probes with the production launcher. 2026-10-10.</td></tr>
 <tr><th scope="row">Copy-heavy code edit</th><td><strong>Up to 97.4</strong></td><td>96.5 on the first request; 97.4 on the second request with the same prompt cached. Rename-and-rewrite task, prompt lookup + MTP, release build v0.1.0. Lookup acceptance: 99%. 2026-10-12. The same run is in the comparison table below.</td></tr>
 <tr><th scope="row">Prose decode</th><td><strong>59–60</strong></td><td>Greedy, thinking on, 3,000 tokens. 2026-10-10.</td></tr>
@@ -104,18 +104,16 @@ Free host memory affects speed. These numbers were measured with more than 11.8 
 These are estimates. They are not measurements at 140 W.
 
 <table>
-<thead><tr><th scope="col">Workload</th><th scope="col">Estimated tok/s at 140 W</th><th scope="col">Method and date</th></tr></thead>
+<thead><tr><th scope="col">Workload</th><th scope="col">Measured at 70 W</th><th scope="col">Estimated tok/s at 140 W</th><th scope="col">Method and date</th></tr></thead>
 <tbody>
-<tr><th scope="row">Prefill pp2048, plain</th><td><strong>1,617–1,762</strong></td><td>Two-point laptop power fit. 2026-10-10.</td></tr>
-<tr><th scope="row">Decode tg128, MTP</th><td><strong>35.9–36.9</strong></td><td>Two-point laptop power fit. 2026-10-10.</td></tr>
-<tr><th scope="row">Real agent decode</th><td><strong>53.7–55.2</strong></td><td>Two-point laptop power fit. 2026-10-10.</td></tr>
-<tr><th scope="row">Single-user real agent decode</th><td><strong>52–58</strong></td><td>Separate power-scaling research range. 2026-10-10.</td></tr>
+<tr><th scope="row">Prefill pp2048, without MTP</th><td>1,364</td><td><strong>1,665–1,814</strong></td><td>70 W measurement times the gain of the power fit (1.22 to 1.33). Release build v0.1.0. 2026-10-12.</td></tr>
+<tr><th scope="row">Decode tg128, MTP</th><td>37.15</td><td><strong>38.7–39.7</strong></td><td>70 W measurement times the gain of the power fit (1.04 to 1.07). Release build v0.1.0. 2026-10-12.</td></tr>
 </tbody>
 </table>
 
-<p class="benchmark-small-print">The first three rows are estimated at 140 W from a two-point power fit on this laptop; not measured. The fit uses about 70 W and 95 W. Memory bandwidth does not scale with power. The high end uses the larger fitted gain. The last row is a separate estimate from power-scaling research; not measured.</p>
+<p class="benchmark-small-print">The gains come from a two-point power fit on this laptop at about 70 W and 95 W. Memory bandwidth does not scale with power. The high end uses the larger fitted gain. These rows are estimated at 140 W; not measured.</p>
 
-At 140 W, Halowin Bubo is estimated at **1,617–1,762 tok/s prefill (pp2048)**, level with upstream’s published rate. Upstream gufo publishes **1,700 tok/s on full-power Strix Halo hardware**. This comparison uses gufo v0.10.0 plus main at commit 97b8645f, the base of Halowin Bubo.
+At 140 W, Halowin Bubo is estimated at **1,665–1,814 tok/s prefill (pp2048)**, level with upstream’s published rate. Upstream gufo publishes **1,700 tok/s on full-power Strix Halo hardware**.
 
 ## Where the speed comes from
 

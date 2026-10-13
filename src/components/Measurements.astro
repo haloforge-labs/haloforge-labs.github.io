@@ -4,11 +4,11 @@ const { compact = false } = Astro.props;
 const metrics = [
   { value: '51–55', label: 'tok/s decode on real coding-agent sessions', note: 'Flat from 28K to 189K of context.' },
   { value: '29/35', label: 'hard reasoning problems solved', note: 'gufo scores 27/35. Decode is about 24% faster.' },
-  { value: '1,325', label: 'tok/s prefill', note: 'The NPU adds 5–7% more at 8K.' },
+  { value: '1,364', label: 'tok/s prefill', note: 'The NPU adds 5–7% more at 8K.' },
   { value: '3.5 s', label: 'to resume a 109K-token chat after a restart', note: 'With the disk cache. 88.8 s without.' },
   { value: '102.2', label: 'tok/s total with 8 users', note: 'Plain decode, 4K of context each.' },
   { value: '96.5', label: 'tok/s on code edits', note: 'Copy-heavy rename edits, first request.' },
-  { value: '1,268', label: 'tok/s natural-text prefill', note: '32K of context, median of three runs.' },
+  { value: '1,287', label: 'tok/s natural-text prefill', note: '32K of context.' },
 ];
 ---
 <div class:list={['measurements', { compact }]}>
