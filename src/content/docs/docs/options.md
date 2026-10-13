@@ -10,7 +10,7 @@ head:
     attrs: { name: "twitter:title", content: "Server options and defaults | Halowin Bubo" }
 ---
 
-Use the `default` profile for normal use on a Strix Halo laptop.
+Use the `default` profile for normal use on a 70 W Strix Halo laptop.
 The defaults below apply to Qwen3.8 Flash Next.
 Bubo is tuned for Qwen3.8 Flash Next. The other models run with upstream gufo settings.
 

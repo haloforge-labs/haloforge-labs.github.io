@@ -12,7 +12,7 @@ head:
 
 One chip. One package. Every layer tuned for it.
 
-Bubo starts from gufo and a Windows port. The rest is our work: a 4-bit twin of the model, a draft head, an MTP drafting stack, fixes for long reasoning, NPU prefill, a disk cache and an exact mode. Most of it runs by default. All numbers come from one Strix Halo laptop in Performance mode ([power setup](/docs/system-setup/#power-mode)).
+Bubo starts from gufo and a Windows port. The rest is our work: a 4-bit twin of the model, a draft head, an MTP drafting stack, fixes for long reasoning, NPU prefill, a disk cache and an exact mode. Most of it runs by default. All numbers come from one 70 W Strix Halo laptop in Performance mode ([power setup](/docs/system-setup/#power-mode)).
 
 ## Janus: a second face for decode
 

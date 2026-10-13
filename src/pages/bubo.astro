@@ -26,7 +26,7 @@ import Measurements from '../components/Measurements.astro';
         <h2 id="speed">Measured speed</h2>
         <p>Every number here comes from our own tests on one laptop. The <a href="/docs/benchmarks/#test-conditions">test conditions</a> list the hardware, the model and the dates.</p>
         <Measurements />
-        <p class="benchmark-comparison">With several users at once, Bubo with MTP reaches 37.4 tok/s for one user and 79.2 for four. At eight users, plain decode reaches 102.2 tok/s in total. Each user has 4K of context. The one-user rate is ahead of upstream gufo’s published one-user MTP rate, and the four-user rate is level with it. Bubo runs on a laptop while upstream’s numbers come from full-power hardware. <a href="/docs/benchmarks/#many-users">See the table</a>.</p>
+        <p class="benchmark-comparison">With several users at once, Bubo with MTP reaches 37.4 tok/s for one user and 79.2 for four, at about 70 W. At eight users, plain decode reaches 102.2 tok/s in total. Each user has 4K of context. The one-user rate is ahead of upstream gufo’s published one-user MTP rate, and the four-user rate is level with it. Bubo runs on a laptop while upstream’s numbers come from full-power hardware. <a href="/docs/benchmarks/#many-users">See the table</a>.</p>
         <p class="benchmark-comparison">On 35 GPQA, AIME, HMMT and IMO requests, Bubo solved 29 and gufo with pixmaate’s Windows port solved 27, and Bubo decoded about 24% faster. The sets are small, so read this as no loss of accuracy. <a href="/docs/benchmarks/">See the table</a>.</p>
         <a href="/docs/benchmarks/">Read the benchmark details <span aria-hidden="true">→</span></a>
       </section>

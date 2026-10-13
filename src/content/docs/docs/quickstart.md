@@ -203,7 +203,7 @@ See [profiles](/docs/profiles/) for the exact scope.
 
 The disk prompt cache is off by default. When you turn it on, Bubo keeps the computed prompt state of long conversations on the disk. After a server restart, or after the RAM cache drops a conversation, the conversation continues without processing the whole prompt again.
 
-Measured on a Strix Halo laptop with a 30K-token session:
+Measured on a 70 W Strix Halo laptop with a 30K-token session:
 
 | Measured | Value |
 | --- | --- |

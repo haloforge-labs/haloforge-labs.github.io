@@ -14,7 +14,7 @@ Bubo can send part of the prompt processing (prefill) to the Ryzen AI NPU while 
 
 ## What to expect
 
-Measured on a Strix Halo laptop (128 GB, Windows 11):
+Measured on a 70 W Strix Halo laptop (128 GB, Windows 11):
 
 | Prompt | Prefill speed change |
 | --- | --- |

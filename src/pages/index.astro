@@ -30,14 +30,14 @@ const rows = [
 ];
 const fmt = (n: number, dec: boolean) => dec ? n.toFixed(1) : n.toLocaleString('en-US');
 ---
-<SiteLayout title="Local LLM server for AMD Strix Halo on Windows | Halowin Bubo" description="Run Qwen3.8 Flash Next locally on AMD Strix Halo (Ryzen AI Max+ 395) under Windows. Open-source LLM server: 51–55 tok/s on real agent sessions.">
+<SiteLayout title="Local LLM server for AMD Strix Halo on Windows | Halowin Bubo" description="Run Qwen3.8 Flash Next locally on AMD Strix Halo (Ryzen AI Max+ 395) under Windows. Open-source LLM server: 51–55 tok/s on real agent sessions at 70 W.">
   <section class="hero" aria-labelledby="home-title">
     <div class="hero-main">
       <span class="eyebrow">v0.1.0 · MIT · Windows 11</span>
       <p class="display">The most intelligence a laptop can fit</p>
       <p class="proof"><strong>125B parameters</strong> (6B active) at <a href="/docs/system-setup/#power-mode">about 70 W</a></p>
       <h1 id="home-title">A local LLM server for AMD Strix Halo, native on Windows</h1>
-      <p class="intro">Halowin Bubo runs Qwen3.8 Flash Next on AMD Strix Halo with HIP, and it is faster than a tuned llama.cpp fork on the same laptop. It adds lookup drafting, NPU prefill, a disk cache for fast restarts and a dense twin of the model.</p>
+      <p class="intro">Halowin Bubo runs Qwen3.8 Flash Next on AMD Strix Halo with HIP, at 51–55 tok/s on real agent sessions at about 70 W laptop power. It adds lookup drafting, NPU prefill, a disk cache for fast restarts and a dense twin of the model.</p>
       <div class="cta-row"><a class="button" href={DOWNLOAD}>Download v0.1.0 for Windows</a><a class="cta-link" href="/docs/system-setup/">System setup <span aria-hidden="true">→</span></a></div>
       <p class="feature-line"><a href="/docs/api/">OpenAI-compatible API</a> · tool calling · 262K context · works with <a href="/docs/quickstart/#use-it-with-a-coding-agent">Aider and OpenCode</a></p>
       <p class="needs">Needs 128 GB of memory, Windows 11, about 121 GB of free disk and an AMD Strix Halo machine. MIT license. This is the first release: see the <a href="/docs/known-issues/">known issues</a>.</p>
@@ -45,7 +45,7 @@ const fmt = (n: number, dec: boolean) => dec ? n.toFixed(1) : n.toLocaleString('
     </div>
     <figure class="chart-figure hero-chart">
       <p class="chart-stat"><span class="chart-num">51–55</span> <span class="chart-unit">tok/s</span></p>
-      <p class="chart-claim">on real agent sessions, flat from 28K to 189K of context</p>
+      <p class="chart-claim">on real agent sessions at about 70 W, flat from 28K to 189K of context</p>
       <svg class="chart" viewBox="0 0 440 252" role="img" aria-labelledby="chart-title chart-desc">
         <title id="chart-title">Decode speed by context depth</title>
         <desc id="chart-desc">{desc}</desc>
@@ -55,7 +55,7 @@ const fmt = (n: number, dec: boolean) => dec ? n.toFixed(1) : n.toLocaleString('
         <polyline class="trace" points={line} fill="none" />
         {points.map(([d, v]) => <g><circle class="dot" cx={px(d)} cy={py(v)} r="4.2" /><text class="val" x={px(d)} y={py(v) - 11} text-anchor="middle">{v.toFixed(1)}</text></g>)}
       </svg>
-      <figcaption>Decode speed in tok/s. 113 turns across three real agent sessions, measured 8 October 2026. Each point sits at the middle of its depth range. <a href="/docs/benchmarks/">Benchmarks <span aria-hidden="true">→</span></a></figcaption>
+      <figcaption>Decode speed in tok/s. 113 turns across three real agent sessions at about 70 W, measured 8 October 2026. Each point sits at the middle of its depth range. <a href="/docs/benchmarks/">Benchmarks <span aria-hidden="true">→</span></a></figcaption>
     </figure>
   </section>
 
@@ -72,7 +72,7 @@ const fmt = (n: number, dec: boolean) => dec ? n.toFixed(1) : n.toLocaleString('
         </tbody>
       </table>
     </div>
-    <p class="measure-note">Same laptop, measured 2026-10-12, one pass per engine. Rulith ran its own smaller IQ4_XS quant, which favors it. <a href="/docs/benchmarks/#same-laptop-comparison-rulith-tuned-llamacpp-fork-gufo-and-halowin-bubo">Method and every row <span aria-hidden="true">→</span></a></p>
+    <p class="measure-note">Same laptop at about 70 W, measured 2026-10-12, one pass per engine. Rulith ran its own smaller IQ4_XS quant, which favors it. <a href="/docs/benchmarks/#same-laptop-comparison-rulith-tuned-llamacpp-fork-gufo-and-halowin-bubo">Method and every row <span aria-hidden="true">→</span></a></p>
   </section>
 
   <section aria-label="Halowin Bubo benchmarks">

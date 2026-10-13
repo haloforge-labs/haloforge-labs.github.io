@@ -12,7 +12,7 @@ head:
 
 **Supported hardware:** Bubo is built and tested for AMD Strix Halo with 128 GB of memory on Windows, mainly laptops. It can work on other machines, but we make no promise.
 
-Use this setup for a Strix Halo laptop with Radeon 8060S graphics.
+Use this setup for a Strix Halo laptop with Radeon 8060S graphics at approximately 70 W.
 Bubo runs natively on Windows 11 x64 with AMD HIP.
 
 ## Prepare the laptop
