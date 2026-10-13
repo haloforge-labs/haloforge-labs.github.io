@@ -3,7 +3,7 @@ title: Halowin Bubo docs
 description: System settings and guides for Halowin Bubo on Windows.
 ---
 
-Halowin Bubo is a fork of [gufo](https://github.com/gufo-org/gufo), the open-source LLM server under the MIT license. It runs on native Windows with AMD HIP. It is tuned for AMD Strix Halo laptops at about 70 W and for Windows users in general.
+Halowin Bubo is a fork of [gufo](https://github.com/gufo-org/gufo), the open-source LLM server under the MIT license. It runs on native Windows with AMD HIP. It is tuned for AMD Strix Halo laptops at about 70 W.
 
 ## Start here
 

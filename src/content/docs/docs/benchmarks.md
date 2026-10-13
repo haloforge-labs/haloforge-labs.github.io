@@ -5,7 +5,7 @@ description: Halowin Bubo measured benchmark results and separate estimates at 1
 
 Halowin Bubo on the ASUS ProArt PX13 with Radeon 8060S, about 70 W. Model: Qwen3.8 Flash Next UD-Q4_K_XL with a Q8_0 MTP draft head. Windows 11. Performance power mode. Every measured number comes from our own logs.
 
-Tests: 8–10 October 2026. tok/s means tokens per second.
+Tests: 8–12 October 2026. tok/s means tokens per second.
 
 
 ## Reasoning check: Halowin Bubo and stock gufo

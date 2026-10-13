@@ -14,6 +14,13 @@ const path = Astro.url.pathname;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title} | HaloForge Labs</title>
     <meta name="description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="HaloForge Labs" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={new URL(path, Astro.site)} />
+    <meta property="og:image" content={new URL('/apple-touch-icon.png', Astro.site)} />
+    <meta name="twitter:card" content="summary" />
     <link rel="canonical" href={new URL(path, Astro.site)} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="16x16 32x32" />
@@ -40,7 +47,7 @@ const path = Astro.url.pathname;
     <main class="shell" id="main"><slot /></main>
     <footer class="site-footer shell">
       <span>HaloForge Labs</span>
-      <a class="footer-credit" href="https://github.com/haloforge-labs"><Owl size={20} /><span>GitHub</span></a>
+      <a class="footer-credit" href="https://github.com/haloforge-labs"><Owl size={20} decorative /><span>GitHub</span></a>
     </footer>
     <script>
       const button = document.querySelector<HTMLButtonElement>('.theme-toggle');

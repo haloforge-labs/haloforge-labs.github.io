@@ -2,7 +2,7 @@
 import SiteLayout from '../layouts/SiteLayout.astro';
 import Measurements from '../components/Measurements.astro';
 ---
-<SiteLayout title="Home" description="HaloForge Labs. Halowin Bubo, a native Windows LLM server built on gufo and tuned for AMD Strix Halo laptops at about 70 W.">
+<SiteLayout title="Halowin Bubo: a local LLM server for Windows on AMD Strix Halo" description="Halowin Bubo is an open-source, native Windows LLM server built on gufo for AMD Strix Halo laptops at about 70 W. Download v0.1.0, read the benchmarks and the setup guides.">
   <section class="home-intro" aria-labelledby="home-title">
     <span class="eyebrow">Local models · Windows</span>
     <h1 id="home-title">HaloForge Labs</h1>
@@ -15,11 +15,13 @@ import Measurements from '../components/Measurements.astro';
       <div class="card-summary">An owl. A Windows server.</div>
     </div>
     <div class="card-content">
-      <div class="card-links"><a href="/bubo/">Explore Halowin Bubo <span aria-hidden="true">→</span></a><a href="/docs/system-setup/">System setup <span aria-hidden="true">→</span></a></div>
+      <div class="card-links"><a href="https://github.com/haloforge-labs/bubo/releases/tag/v0.1.0">Download v0.1.0 for Windows <span aria-hidden="true">→</span></a><a href="/bubo/">Explore Halowin Bubo <span aria-hidden="true">→</span></a><a href="/docs/system-setup/">System setup <span aria-hidden="true">→</span></a><a href="https://github.com/haloforge-labs/bubo">GitHub <span aria-hidden="true">→</span></a></div>
+      <p class="card-note">Open source, MIT licence. First release (v0.1.0): see the <a href="/docs/known-issues/">known issues</a>.</p>
     </div>
   </article>
   <section aria-label="Halowin Bubo benchmarks">
     <Measurements compact />
+    <p class="measure-note">Measured on an ASUS ProArt PX13 with 128 GB, Windows 11, Performance mode, about 70 W, with Qwen3.8 Flash Next UD-Q4_K_XL.</p>
     <a href="/docs/benchmarks/">Read the benchmark details <span aria-hidden="true">→</span></a>
   </section>
 </SiteLayout>

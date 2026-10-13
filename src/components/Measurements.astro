@@ -2,12 +2,12 @@
 interface Props { compact?: boolean; }
 const { compact = false } = Astro.props;
 const metrics = [
-  { value: '1,325', label: 'tok/s prefill', note: 'pp2048, about 70 W. Estimated at 140 W: 1,617–1,762 tok/s; not measured.' },
+  { value: '1,325', label: 'tok/s prefill', note: 'Prompt processing, 2K-token prompt.' },
   { value: '51–55', label: 'tok/s up to 189K context', note: 'Real agent sessions, chained from 28K to 189K tokens. Speed stays flat as the context grows.' },
   { value: '93.8', prefix: 'up to', label: 'tok/s on code edits', note: 'Rename-and-rewrite edits that copy most of the file. Prompt lookup + MTP, greedy, thinking on. First request: 85.9 tok/s. 93.8 tok/s uses a cached prompt.' },
-  { value: '102.2', label: 'tok/s total with 8 users', note: 'Eight users at once, 4K context each, plain decode, about 70 W. With MTP: about 100–107 tok/s in total.' },
+  { value: '102.2', label: 'tok/s total with 8 users', note: 'Eight users at once, 4K context each. Combined speed for all users.' },
   { value: '51.6', label: 'tok/s on real agent sessions', note: 'Real coding-agent sessions, 28K–70K context. Temperature 1.0, thinking on. Not synthetic prompts.' },
-  { value: '34.5', label: 'tok/s tg128 with MTP', note: 'Upstream’s benchmark program, greedy, about 70 W. Estimated at 140 W: 35.9–36.9 tok/s; not measured.' },
+  { value: '34.5', label: 'tok/s tg128 with MTP', note: 'Upstream’s benchmark program, greedy decode with MTP.' },
   { value: '1,268', label: 'tok/s natural-text prefill', note: '32K context, research-notes text. Median of three runs, about 70 W.' },
 ];
 ---

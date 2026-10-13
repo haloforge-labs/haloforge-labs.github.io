@@ -50,3 +50,5 @@ p { margin: 0 0 22px; }
   .margin-note { border-top: 1px solid var(--line); padding-top: 22px; }
   .site-footer { flex-wrap: wrap; }
 }
+
+.card-note, .measure-note { margin: 12px 0 0; font-size: 0.92rem; color: var(--muted, #5a5a50); }
