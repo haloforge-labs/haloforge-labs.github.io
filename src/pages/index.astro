@@ -6,6 +6,7 @@ import Measurements from '../components/Measurements.astro';
   <section class="home-intro" aria-labelledby="home-title">
     <span class="eyebrow">Open source · Native Windows · AMD Strix Halo</span>
     <h1 id="home-title">A local LLM server for AMD Strix Halo, native on Windows</h1>
+    <p class="subhead">The most intelligence a laptop can fit</p>
     <p class="intro">General-purpose tools such as LM Studio, Ollama and llama.cpp aim at every GPU. gufo, the engine under Halowin Bubo, aims at one chip, AMD Strix Halo: it keeps only the best models that fit, protects quality while it optimizes, and treats many users, cancellation and chat caching as core work. Bubo, from HaloForge Labs, brings that approach to native Windows with AMD HIP. It is open source and decodes at 55 tok/s at only 70 W.</p>
     <div class="cta-row"><a class="button" href="https://github.com/haloforge-labs/bubo/releases/tag/v0.1.0">Download v0.1.0 for Windows</a><a class="cta-link" href="/docs/system-setup/">System setup <span aria-hidden="true">→</span></a></div>
     <p class="card-note">MIT license. First release (v0.1.0): see the <a href="/docs/known-issues/">known issues</a>.</p>
@@ -50,6 +51,7 @@ $model = "$env:LOCALAPPDATA\Bubo\models\huihui-qwen38-flash-next-ud-q4-k-xl-v1\Q
   });
 </script>
 <style>
+  .subhead { font-size: clamp(1.35rem, 2.4vw, 1.8rem); line-height: 1.3; margin: -8px 0 22px; color: var(--ink); max-width: 690px; }
   .home-visual { margin-top: 56px; }
   .chart-figure { margin: 0; max-width: 640px; }
   .chart { width: 100%; height: auto; display: block; }
