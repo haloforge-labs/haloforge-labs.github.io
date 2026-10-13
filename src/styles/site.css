@@ -7,11 +7,13 @@
 .site-header nav a { font-size: 1rem; color: var(--ink); text-decoration: none; padding-block: 8px; }
 .site-header nav a:hover, .site-header nav a[aria-current='page'] { color: var(--accent); }
 .site-header nav a[aria-current='page'] { box-shadow: 0 1px var(--accent); }
-.theme-toggle { border: 1px solid var(--line); border-radius: 50%; width: 36px; height: 36px; background: transparent; color: var(--ink); cursor: pointer; font-size: 1.2rem; }
+.theme-toggle { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 6px; height: 36px; padding: 0 12px; background: transparent; color: var(--ink); cursor: pointer; font: .95rem var(--serif); }
+.theme-toggle:hover { border-color: var(--accent); }
+.theme-toggle svg { flex: none; }
 main { flex: 1; padding-block: 66px 78px; }
 .eyebrow { display: block; font: .72rem/1.5 var(--mono); text-transform: uppercase; letter-spacing: .16em; color: var(--muted); }
 h1, h2, h3 { font-weight: 400; line-height: 1.13; }
-h1 { color: var(--accent); font-style: italic; font-size: clamp(2.7rem, 5vw, 4.6rem); margin: 20px 0 28px; letter-spacing: -.025em; }
+h1 { color: var(--accent); font-style: normal; font-size: clamp(2.7rem, 5vw, 4.6rem); margin: 20px 0 28px; letter-spacing: -.025em; }
 h2 { font-size: 2.15rem; margin: 0 0 22px; }
 h3 { font-size: 1.45rem; }
 p, li { font-size: 1.16rem; line-height: 1.7; }
@@ -27,8 +29,7 @@ p { margin: 0 0 22px; }
 .status { display: inline-block; font-size: 1rem; color: var(--muted); border: 1px solid var(--line); padding: 6px 12px; }
 .site-footer { border-top: 1px solid var(--line); padding-block: 22px 30px; display: flex; justify-content: space-between; gap: 20px; font-size: .9rem; color: var(--muted); }
 .site-footer a { text-decoration: none; }
-.footer-credit { display: inline-flex; align-items: center; gap: .45rem; }
-.footer-credit svg { flex-shrink: 0; }
+.site-footer nav { display: flex; flex-wrap: wrap; gap: 6px 22px; }
 @media (max-width: 760px) {
   .shell { width: calc(100% - 40px); }
   .site-header { flex-wrap: wrap; gap: 18px; padding-block: 24px 16px; }
@@ -51,6 +52,8 @@ p { margin: 0 0 22px; }
 .site-header nav a.nav-download { padding: 8px 16px; font-size: .95rem; }
 .cta-link { text-decoration: none; border-bottom: 1px solid var(--accent); padding-bottom: 4px; }
 @media (max-width: 560px) {
+  .theme-toggle { padding: 0 9px; }
+  .theme-toggle span { display: none; }
   .site-header nav { gap: 14px; }
   .site-header nav a { white-space: nowrap; font-size: .95rem; }
   .site-header nav a.nav-download { padding: 7px 12px; font-size: .9rem; }

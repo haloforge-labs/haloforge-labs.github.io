@@ -20,11 +20,11 @@
   color-scheme: dark;
   --paper: #1a1a1a;
   --ink: #e6e6e6;
-  --accent: #ff6b6b;
+  --accent: #f35555;
   --muted: #b0b0b0;
   --line: #333;
   --wash: #252525;
-  --tint: rgba(255, 107, 107, .05);
+  --tint: rgba(243, 85, 85, .07);
 }
 * { box-sizing: border-box; }
 html { background: var(--paper); color: var(--ink); font-family: var(--serif); }
@@ -35,5 +35,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
 ::selection { background: var(--accent); color: var(--paper); }
 .brand { display: inline-flex; align-items: center; gap: 12px; color: var(--ink); text-decoration: none; white-space: nowrap; }
 .brand-mark { color: var(--accent); flex: none; }
+.brand-mark path { stroke: currentColor; stroke-width: .5; stroke-linejoin: round; }
+:root[data-theme='dark'] .brand-mark path { stroke-width: .9; }
 .brand-word { font-size: 1.4rem; line-height: 1; letter-spacing: -.005em; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; } }

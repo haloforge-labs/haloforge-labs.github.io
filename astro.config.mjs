@@ -17,13 +17,13 @@ export default defineConfig({
         { tag: 'meta', attrs: { property: 'og:image', content: 'https://haloforgelabs.com/og-card.png' } },
         { tag: 'meta', attrs: { property: 'og:image:width', content: '1200' } },
         { tag: 'meta', attrs: { property: 'og:image:height', content: '630' } },
-        { tag: 'meta', attrs: { property: 'og:image:alt', content: 'Halowin Bubo from HaloForge Labs: a local LLM server for AMD Strix Halo, native on Windows. 51–55 tok/s decode, 29/35 on reasoning checks, 1,325 tok/s prefill.' } },
+        { tag: 'meta', attrs: { property: 'og:image:alt', content: 'Halowin Bubo from HaloForge Labs: a local LLM server for AMD Strix Halo, native on Windows. 51–55 tok/s decode, 29/35 on reasoning checks, 1,364 tok/s prefill.' } },
         { tag: 'meta', attrs: { name: 'twitter:card', content: 'summary_large_image' } },
         { tag: 'meta', attrs: { name: 'twitter:image', content: 'https://haloforgelabs.com/og-card.png' } },
-        { tag: 'meta', attrs: { name: 'twitter:image:alt', content: 'Halowin Bubo from HaloForge Labs: a local LLM server for AMD Strix Halo, native on Windows. 51–55 tok/s decode, 29/35 on reasoning checks, 1,325 tok/s prefill.' } },
+        { tag: 'meta', attrs: { name: 'twitter:image:alt', content: 'Halowin Bubo from HaloForge Labs: a local LLM server for AMD Strix Halo, native on Windows. 51–55 tok/s decode, 29/35 on reasoning checks, 1,364 tok/s prefill.' } },
       ],
       customCss: ['./src/styles/theme.css', './src/styles/docs.css'],
-      components: { SiteTitle: './src/components/DocsSiteTitle.astro' },
+      components: { SiteTitle: './src/components/DocsSiteTitle.astro', Header: './src/components/DocsHeader.astro' },
       sidebar: [
         { label: 'Halowin Bubo', link: '/bubo/' },
         {
