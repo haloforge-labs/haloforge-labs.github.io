@@ -1,0 +1,41 @@
+:root, :root[data-theme='light'], :root[data-theme='dark'] {
+  --sl-font: var(--serif);
+  --sl-font-system: var(--serif);
+  --sl-color-bg: var(--paper);
+  --sl-color-bg-nav: var(--paper);
+  --sl-color-bg-sidebar: var(--paper);
+  --sl-color-text: var(--ink);
+  --sl-color-text-accent: var(--accent);
+  --sl-color-text-sidebar: var(--ink);
+  --sl-color-hairline: var(--line);
+  --sl-color-hairline-light: var(--line);
+  --sl-color-hairline-shade: var(--line);
+  --sl-color-accent: var(--accent);
+  --sl-color-accent-low: var(--wash);
+  --sl-color-accent-high: var(--accent);
+  --sl-color-bg-inline-code: var(--wash);
+  --sl-color-text-inline-code: var(--ink);
+  --sl-color-white: var(--ink);
+  --sl-color-black: var(--paper);
+  --sl-content-width: 48rem;
+  --sl-sidebar-width: 17rem;
+}
+body { font-family: var(--serif); }
+h1 { color: var(--accent); font-style: italic; font-weight: 400; letter-spacing: -.02em; }
+.sl-markdown-content h2, .sl-markdown-content h3 { font-style: italic; font-weight: 400; }
+.sl-markdown-content p, .sl-markdown-content li { font-size: 1.1rem; line-height: 1.7; }
+.sl-markdown-content a { text-decoration-thickness: 1px; }
+.sl-markdown-content table { font-size: 1rem; }
+.sl-markdown-content table th, .sl-markdown-content table td { white-space: normal; overflow-wrap: normal; vertical-align: top; }
+.sl-markdown-content table th[scope='row'] { text-align: left; font-weight: 400; }
+.sl-markdown-content table td strong { color: var(--accent); font-variant-numeric: tabular-nums; }
+.sl-markdown-content .benchmark-small-print { color: var(--muted); font-size: .95rem; line-height: 1.6; }
+.sl-markdown-content code { overflow-wrap: anywhere; }
+.sidebar-content a[aria-current='page'] { background: var(--accent); color: var(--paper); }
+.sidebar-content a[aria-current='page']:hover { color: var(--paper); }
+.header .brand { text-decoration: none; }
+.header .brand-initial { font-size: 2.65rem; }
+@media (max-width: 420px) {
+  .header .brand-rest { font-size: 1.05rem; }
+  .header .brand-initial { font-size: 2.3rem; }
+}

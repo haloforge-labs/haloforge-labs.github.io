@@ -1,0 +1,36 @@
+@import '@fontsource/unifrakturcook/latin-700.css';
+
+/* Owner's palette and serif stack, with the selected UnifrakturCook initial. */
+:root,
+:root[data-theme='light'] {
+  color-scheme: light;
+  --paper: #faf8f1;
+  --ink: #222;
+  --accent: #a00000;
+  --muted: #595959;
+  --line: #ddd;
+  --wash: #f3f1ea;
+  --tint: rgba(160, 0, 0, .05);
+  --serif: et-book, Palatino, 'Palatino Linotype', 'Palatino LT STD', 'Book Antiqua', Georgia, serif;
+}
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --paper: #1a1a1a;
+  --ink: #e6e6e6;
+  --accent: #ff6b6b;
+  --muted: #b0b0b0;
+  --line: #333;
+  --wash: #252525;
+  --tint: rgba(255, 107, 107, .05);
+}
+* { box-sizing: border-box; }
+html { background: var(--paper); color: var(--ink); font-family: var(--serif); }
+body { margin: 0; }
+a { color: var(--accent); text-underline-offset: .22em; }
+a:hover { text-decoration: underline; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+::selection { background: var(--accent); color: var(--paper); }
+.brand { display: inline-flex; align-items: baseline; color: var(--accent); text-decoration: none; white-space: nowrap; }
+.brand-initial { font-family: 'UnifrakturCook', cursive; font-weight: 700; font-style: normal; font-size: 2.65rem; line-height: 1; }
+.brand-rest { font-size: 1.25rem; margin-left: .04rem; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; } }

@@ -1,0 +1,92 @@
+[
+  {
+    "id": "unifrakturmaguntia",
+    "family": "UnifrakturMaguntia",
+    "weight": 400,
+    "version": "5.3.0",
+    "licence": "OFL-1.1",
+    "source": "https://fontsource.org/fonts/unifrakturmaguntia/about",
+    "file": "fonts/unifrakturmaguntia-latin-400-normal.woff2",
+    "licenceFile": "fonts/unifrakturmaguntia-LICENSE.txt"
+  },
+  {
+    "id": "unifrakturcook",
+    "family": "UnifrakturCook",
+    "weight": 700,
+    "version": "5.3.0",
+    "licence": "OFL-1.1",
+    "source": "https://fontsource.org/fonts/unifrakturcook/about",
+    "file": "fonts/unifrakturcook-latin-700-normal.woff2",
+    "licenceFile": "fonts/unifrakturcook-LICENSE.txt"
+  },
+  {
+    "id": "new-rocker",
+    "family": "New Rocker",
+    "weight": 400,
+    "version": "5.3.0",
+    "licence": "OFL-1.1",
+    "source": "https://fontsource.org/fonts/new-rocker/about",
+    "file": "fonts/new-rocker-latin-400-normal.woff2",
+    "licenceFile": "fonts/new-rocker-LICENSE.txt"
+  },
+  {
+    "id": "rye",
+    "family": "Rye",
+    "weight": 400,
+    "version": "5.3.0",
+    "licence": "OFL-1.1",
+    "source": "https://fontsource.org/fonts/rye/about",
+    "file": "fonts/rye-latin-400-normal.woff2",
+    "licenceFile": "fonts/rye-LICENSE.txt"
+  },
+  {
+    "id": "almendra-display",
+    "family": "Almendra Display",
+    "weight": 400,
+    "version": "5.3.0",
+    "licence": "OFL-1.1",
+    "source": "https://fontsource.org/fonts/almendra-display/about",
+    "file": "fonts/almendra-display-latin-400-normal.woff2",
+    "licenceFile": "fonts/almendra-display-LICENSE.txt"
+  },
+  {
+    "id": "fleur-de-leah",
+    "family": "Fleur De Leah",
+    "weight": 400,
+    "version": "5.3.0",
+    "licence": "OFL-1.1",
+    "source": "https://fontsource.org/fonts/fleur-de-leah/about",
+    "file": "fonts/fleur-de-leah-latin-400-normal.woff2",
+    "licenceFile": "fonts/fleur-de-leah-LICENSE.txt"
+  },
+  {
+    "id": "spirax",
+    "family": "Spirax",
+    "weight": 400,
+    "version": "5.3.0",
+    "licence": "OFL-1.1",
+    "source": "https://fontsource.org/fonts/spirax/about",
+    "file": "fonts/spirax-latin-400-normal.woff2",
+    "licenceFile": "fonts/spirax-LICENSE.txt"
+  },
+  {
+    "id": "ewert",
+    "family": "Ewert",
+    "weight": 400,
+    "version": "5.3.0",
+    "licence": "OFL-1.1",
+    "source": "https://fontsource.org/fonts/ewert/about",
+    "file": "fonts/ewert-latin-400-normal.woff2",
+    "licenceFile": "fonts/ewert-LICENSE.txt"
+  },
+  {
+    "id": "noto-sans-egyptian-hieroglyphs",
+    "family": "Noto Sans Egyptian Hieroglyphs",
+    "weight": 400,
+    "version": "5.3.0",
+    "licence": "OFL-1.1",
+    "source": "https://fontsource.org/fonts/noto-sans-egyptian-hieroglyphs/about",
+    "file": "fonts/noto-sans-egyptian-hieroglyphs-egyptian-hieroglyphs-400-normal.woff2",
+    "licenceFile": "fonts/noto-sans-egyptian-hieroglyphs-LICENSE.txt"
+  }
+]

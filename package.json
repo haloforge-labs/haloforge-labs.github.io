@@ -1,0 +1,35 @@
+{
+  "name": "haloforgelabs",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1 --port 4321",
+    "build": "astro build",
+    "preview": "astro preview --host 127.0.0.1 --port 4321",
+    "verify": "node scripts/verify.mjs"
+  },
+  "dependencies": {
+    "@astrojs/markdown-remark": "7.3.2",
+    "@astrojs/starlight": "0.42.6",
+    "@fontsource/unifrakturcook": "5.3.0",
+    "astro": "7.3.8"
+  },
+  "devDependencies": {
+    "@fontsource/almendra-display": "5.3.0",
+    "@fontsource/ewert": "5.3.0",
+    "@fontsource/fleur-de-leah": "5.3.0",
+    "@fontsource/new-rocker": "5.3.0",
+    "@fontsource/noto-sans-egyptian-hieroglyphs": "5.3.0",
+    "@fontsource/rye": "5.3.0",
+    "@fontsource/spirax": "5.3.0",
+    "@fontsource/unifrakturmaguntia": "5.3.0",
+    "playwright": "1.64.0"
+  },
+  "overrides": {
+    "postcss-selector-parser": "7.1.6"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

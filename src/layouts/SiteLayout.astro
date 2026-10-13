@@ -1,0 +1,54 @@
+---
+import Brand from '../components/Brand.astro';
+import Owl from '../components/Owl.astro';
+import '../styles/theme.css';
+import '../styles/site.css';
+interface Props { title: string; description: string; }
+const { title, description } = Astro.props;
+const path = Astro.url.pathname;
+---
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} | HaloForge Labs</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={new URL(path, Astro.site)} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <meta name="theme-color" content="#faf8f1" />
+    <script is:inline>
+      try {
+        const saved = localStorage.getItem('starlight-theme');
+        document.documentElement.dataset.theme = saved === 'dark' ? 'dark' : saved === 'light' ? 'light' : matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      } catch {}
+    </script>
+  </head>
+  <body class="site">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header shell">
+      <Brand />
+      <nav aria-label="Main navigation">
+        <a href="/bubo/" aria-current={path === '/bubo/' ? 'page' : undefined}>Halowin Bubo</a>
+        <a href="/docs/">Docs</a>
+        <a href="/about/" aria-current={path === '/about/' ? 'page' : undefined}>About</a>
+        <button class="theme-toggle" type="button" aria-label="Switch colour theme" title="Switch colour theme">◐</button>
+      </nav>
+    </header>
+    <main class="shell" id="main"><slot /></main>
+    <footer class="site-footer shell">
+      <span>HaloForge Labs</span>
+      <a class="footer-credit" href="https://github.com/gufo-org/gufo"><Owl size={20} /><span>Bubo is built on gufo · MIT</span></a>
+    </footer>
+    <script>
+      const button = document.querySelector<HTMLButtonElement>('.theme-toggle');
+      button?.addEventListener('click', () => {
+        const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = theme;
+        try { localStorage.setItem('starlight-theme', theme); } catch {}
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,38 @@
+---
+interface Props { compact?: boolean; }
+const { compact = false } = Astro.props;
+const metrics = [
+  { value: '1,325', label: 'tok/s prefill', note: 'pp2048, about 70 W. Estimated at 140 W: 1,617–1,762 tok/s; not measured.' },
+  { value: '51–55', label: 'tok/s up to 189K context', note: 'Real agent sessions, chained from 28K to 189K tokens. Speed stays flat as the context grows.' },
+  { value: '93.8', prefix: 'up to', label: 'tok/s on code edits', note: 'Rename-and-rewrite edits that copy most of the file. Prompt lookup + MTP, greedy, thinking on. First request: 85.9 tok/s. 93.8 tok/s uses a cached prompt.' },
+  { value: '51.6', label: 'tok/s on real agent sessions', note: 'Real coding-agent sessions, 28K–70K context. Temperature 1.0, thinking on. Not synthetic prompts.' },
+  { value: '34.5', label: 'tok/s tg128 with MTP', note: 'Upstream’s benchmark program, greedy, about 70 W. Estimated at 140 W: 35.9–36.9 tok/s; not measured.' },
+  { value: '1,268', label: 'tok/s natural-text prefill', note: '32K context, research-notes text. Median of three runs, about 70 W.' },
+];
+---
+<div class:list={['measurements', { compact }]}>
+  <dl class="benchmark-strip" aria-label="Halowin Bubo measured benchmark results">
+    {(compact ? metrics.slice(0, 4) : metrics).map(metric => (
+      <div class="benchmark-tile">
+        <Fragment set:html={``} />
+        <dt>{metric.label}</dt>
+        <dd class="benchmark-value">{metric.prefix && <span class="benchmark-prefix">{metric.prefix} </span>}{metric.value}</dd>
+        <dd class="benchmark-note">{metric.note}</dd>
+      </div>
+    ))}
+  </dl>
+</div>
+<style>
+  .benchmark-strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-block: 1px solid var(--line); padding-block: 26px; margin: 0 0 24px; gap: 30px 24px; }
+  .compact .benchmark-strip { grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 0; margin-top: 8px; }
+  .benchmark-tile { display: flex; flex-direction: column; min-width: 0; }
+  .benchmark-tile dt { order: 1; font-size: 1.05rem; line-height: 1.4; margin-top: 8px; }
+  .benchmark-tile dd { margin: 0; }
+  .benchmark-value { order: 0; color: var(--accent); font-family: var(--serif); font-size: clamp(2.5rem, 3.4vw, 3.3rem); line-height: 1.1; font-variant-numeric: tabular-nums; letter-spacing: -.035em; }
+  .benchmark-value { position: relative; }
+  .benchmark-prefix { position: absolute; bottom: 100%; left: 0; font-size: .95rem; letter-spacing: 0; margin-bottom: 4px; }
+  .benchmark-note { order: 2; color: var(--muted); font-size: .93rem; line-height: 1.55; margin-top: 12px !important; }
+  @media (max-width: 900px) { .compact .benchmark-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 600px) { .benchmark-strip { grid-template-columns: 1fr; } .compact .benchmark-strip { gap: 26px 18px; } .benchmark-value { font-size: 2.5rem; } }
+  @media (max-width: 350px) { .compact .benchmark-strip { grid-template-columns: 1fr; } }
+</style>

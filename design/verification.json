@@ -1,0 +1,186 @@
+{
+  "checkedAt": "2026-10-10T16:38:16.563Z",
+  "checks": [
+    {
+      "width": 1440,
+      "theme": "light",
+      "screenshot": "logo-candidates-desktop-light.png",
+      "fonts": [
+        {
+          "family": "UnifrakturMaguntia",
+          "loaded": true
+        },
+        {
+          "family": "UnifrakturCook",
+          "loaded": true
+        },
+        {
+          "family": "New Rocker",
+          "loaded": true
+        },
+        {
+          "family": "Rye",
+          "loaded": true
+        },
+        {
+          "family": "Almendra Display",
+          "loaded": true
+        },
+        {
+          "family": "Fleur De Leah",
+          "loaded": true
+        },
+        {
+          "family": "Spirax",
+          "loaded": true
+        },
+        {
+          "family": "Ewert",
+          "loaded": true
+        },
+        {
+          "family": "Noto Sans Egyptian Hieroglyphs",
+          "loaded": true
+        }
+      ],
+      "overflow": [],
+      "contentWidth": 1440
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "screenshot": "logo-candidates-desktop-dark.png",
+      "fonts": [
+        {
+          "family": "UnifrakturMaguntia",
+          "loaded": true
+        },
+        {
+          "family": "UnifrakturCook",
+          "loaded": true
+        },
+        {
+          "family": "New Rocker",
+          "loaded": true
+        },
+        {
+          "family": "Rye",
+          "loaded": true
+        },
+        {
+          "family": "Almendra Display",
+          "loaded": true
+        },
+        {
+          "family": "Fleur De Leah",
+          "loaded": true
+        },
+        {
+          "family": "Spirax",
+          "loaded": true
+        },
+        {
+          "family": "Ewert",
+          "loaded": true
+        },
+        {
+          "family": "Noto Sans Egyptian Hieroglyphs",
+          "loaded": true
+        }
+      ],
+      "overflow": [],
+      "contentWidth": 1440
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "screenshot": "logo-candidates-phone-light.png",
+      "fonts": [
+        {
+          "family": "UnifrakturMaguntia",
+          "loaded": true
+        },
+        {
+          "family": "UnifrakturCook",
+          "loaded": true
+        },
+        {
+          "family": "New Rocker",
+          "loaded": true
+        },
+        {
+          "family": "Rye",
+          "loaded": true
+        },
+        {
+          "family": "Almendra Display",
+          "loaded": true
+        },
+        {
+          "family": "Fleur De Leah",
+          "loaded": true
+        },
+        {
+          "family": "Spirax",
+          "loaded": true
+        },
+        {
+          "family": "Ewert",
+          "loaded": true
+        },
+        {
+          "family": "Noto Sans Egyptian Hieroglyphs",
+          "loaded": true
+        }
+      ],
+      "overflow": [],
+      "contentWidth": 390
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "screenshot": "logo-candidates-phone-dark.png",
+      "fonts": [
+        {
+          "family": "UnifrakturMaguntia",
+          "loaded": true
+        },
+        {
+          "family": "UnifrakturCook",
+          "loaded": true
+        },
+        {
+          "family": "New Rocker",
+          "loaded": true
+        },
+        {
+          "family": "Rye",
+          "loaded": true
+        },
+        {
+          "family": "Almendra Display",
+          "loaded": true
+        },
+        {
+          "family": "Fleur De Leah",
+          "loaded": true
+        },
+        {
+          "family": "Spirax",
+          "loaded": true
+        },
+        {
+          "family": "Ewert",
+          "loaded": true
+        },
+        {
+          "family": "Noto Sans Egyptian Hieroglyphs",
+          "loaded": true
+        }
+      ],
+      "overflow": [],
+      "contentWidth": 390
+    }
+  ],
+  "errors": []
+}
