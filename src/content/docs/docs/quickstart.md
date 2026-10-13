@@ -1,6 +1,13 @@
 ---
 title: Quickstart
-description: Start the Halowin Bubo server and send a first request.
+description: "Start the Halowin Bubo server on Windows and send a first request with PowerShell, curl or the OpenAI Python SDK. Connect a coding agent."
+head:
+  - tag: title
+    content: "Quickstart: OpenAI-compatible local LLM server | Halowin Bubo"
+  - tag: meta
+    attrs: { property: "og:title", content: "Quickstart: OpenAI-compatible local LLM server | Halowin Bubo" }
+  - tag: meta
+    attrs: { name: "twitter:title", content: "Quickstart: OpenAI-compatible local LLM server | Halowin Bubo" }
 ---
 
 Complete the [installation steps](/docs/install/) first.
@@ -10,7 +17,7 @@ It selects medium effort and adaptive thinking for Qwen3.8 Flash Next.
 
 ## Select the files
 
-Run `bubo prepare` first (see the [installation steps](install.md)). The prepare step writes `bubo-package.json` beside the model. The server finds the dense twin, the draft head, the MTP predictor and the vision projector through that file. You do not set file paths.
+Run `bubo prepare` first (see the [installation steps](/docs/install/)). The prepare step writes `bubo-package.json` beside the model. The server finds the dense twin, the draft head, the MTP predictor and the vision projector through that file. You do not set file paths.
 
 1. Open PowerShell in the package folder.
 2. Set the path to the first model shard.
@@ -33,7 +40,7 @@ A flag or an environment value overrides the manifest. A broken manifest or a mi
 The `bubo` model identifier is explicit so the API example can use a fixed name.
 The default profile supplies survival control, automatic draft vocabulary, and prompt lookup with MTP.
 It enables bounded lenient acceptance inside thinking spans.
-It uses one session, 262144 context tokens, and a 6 GiB RAM cache.
+It uses one session, 262144 context tokens, and a 6.4 GB RAM cache.
 Disk prompt cache stays off.
 
 2. Wait for `event=load_completed` in the log.
@@ -63,8 +70,97 @@ $response = Invoke-RestMethod -Method Post -Uri "http://127.0.0.1:8080/v1/chat/c
 $response.choices[0].message.content
 ```
 
-The server speaks the OpenAI API. Point any OpenAI-compatible client, such as a coding agent, at the base URL `http://127.0.0.1:8080/v1` and use the model name `bubo`.
+The server speaks the OpenAI API. The default port is 8080, so the base URL is `http://127.0.0.1:8080/v1`. The model name is `bubo`, the name that `--served-model-name` sets.
 Keep the local address for normal laptop use.
+
+## Send a request with curl
+
+Windows includes `curl.exe`. Use the form for your shell.
+
+In cmd, or in Git Bash:
+
+```bat
+curl http://127.0.0.1:8080/v1/chat/completions -H "Content-Type: application/json" -d "{\"model\":\"bubo\",\"max_tokens\":64,\"messages\":[{\"role\":\"user\",\"content\":\"Say hello.\"}]}"
+```
+
+In PowerShell, call `curl.exe` and not `curl`. In PowerShell, `curl` is an alias for another command. Pipe the body to `curl.exe` so that no quote needs an escape.
+
+```powershell
+'{"model":"bubo","max_tokens":64,"messages":[{"role":"user","content":"Say hello."}]}' | curl.exe http://127.0.0.1:8080/v1/chat/completions -H "Content-Type: application/json" -d "@-"
+```
+
+Both forms return one JSON object. The reply text is in `choices[0].message.content`.
+
+## Send a request with Python
+
+Install the OpenAI Python SDK.
+
+```powershell
+pip install openai
+```
+
+Run this script.
+
+```python
+from openai import OpenAI
+
+client = OpenAI(base_url="http://127.0.0.1:8080/v1", api_key="not-needed")
+reply = client.chat.completions.create(
+    model="bubo",
+    messages=[{"role": "user", "content": "Say hello."}],
+    max_tokens=64,
+)
+print(reply.choices[0].message.content)
+```
+
+The server checks no key unless you start it with `--api-key`. The SDK needs a key that is not empty, so any text works.
+
+## Use it with a coding agent
+
+Any agent that talks to an OpenAI-compatible server can use Bubo. Set these values in the agent.
+
+| Setting | Value |
+| --- | --- |
+| Base URL | `http://127.0.0.1:8080/v1` |
+| Model name | `bubo` |
+| API key | Any text, for example `not-needed`. The server checks the key only when you start it with `--api-key`. |
+| Context size | `262144`. This is the default context of the `default` profile. |
+
+Tool calling works. The server returns OpenAI-style tool calls, and the [exact-output tests](/docs/profiles/) compared them with the reference. Our agent speed numbers come from real coding-agent sessions.
+
+These two agents document the settings below. Check the agent's own documentation if a setting has changed.
+
+**Aider.** Aider reads the base URL and the key from the environment, and it needs the `openai/` prefix on the model name ([Aider: OpenAI-compatible APIs](https://aider.chat/docs/llms/openai-compat.html)).
+
+```powershell
+setx OPENAI_API_BASE http://127.0.0.1:8080/v1
+setx OPENAI_API_KEY not-needed
+```
+
+Open a new shell, then start Aider.
+
+```powershell
+aider --model openai/bubo
+```
+
+**OpenCode.** Add a custom provider that uses the `@ai-sdk/openai-compatible` package to `opencode.json`. The `limit` values tell OpenCode the context size ([OpenCode: providers](https://opencode.ai/docs/providers/)).
+
+```json
+{
+  "provider": {
+    "bubo": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Halowin Bubo",
+      "options": { "baseURL": "http://127.0.0.1:8080/v1" },
+      "models": {
+        "bubo": { "name": "Bubo", "limit": { "context": 262144, "output": 32768 } }
+      }
+    }
+  }
+}
+```
+
+Run `/models` in OpenCode and select the `bubo` model.
 
 ## Images
 
@@ -96,10 +192,10 @@ This command prints JSON and exits before it starts a server.
 
 The exact profile leaves out the MTP predictor, the dense twin and the draft head, even when the manifest names them.
 It refuses flags that turn on approximation or speculation (exit code 2).
-It disables speculation, behaviour policies, and prompt caches.
+It disables speculation, behavior policies, and prompt caches.
 Each request processes its full prompt.
 Keep the prompt and request settings fixed for reproducibility.
-See [profiles](profiles.md) for the exact scope.
+See [profiles](/docs/profiles/) for the exact scope.
 
 ## Fast restarts with the disk cache
 
@@ -116,7 +212,7 @@ Measured on a 70 W Strix Halo laptop with a 30K-token session:
 | Later starts with the cache | 29 to 32 s |
 | Size of one saved snapshot | About 954 MB for 30K tokens (about 31 KB for each token) |
 
-In an earlier test, a 109K-token session continued after a restart in 3.5 s instead of 88.8 s. A long saved session writes about 3 GB to the SSD. A 90-request agent replay wrote about 5.1 GB. Decode speed cost is about 2.5 %. The cache writes to your SSD. Use these numbers to decide if the cache is right for your disk.
+In an earlier test, a 109K-token session continued after a restart in 3.5 s instead of 88.8 s. A long saved session writes about 3 GB to the SSD. A 90-request agent replay wrote about 5.1 GB. Decode speed cost is about 2.5%. The cache writes to your SSD. Use these numbers to decide if the cache is right for your disk.
 
 To turn it on, start Bubo with the folder for the cache:
 
@@ -129,9 +225,9 @@ The first start with the cache reads the eight model files once and checks them.
 To use the server command directly, add `--cache-disk "D:\BuboCache"` to it. Run `start.cmd -DryRun` to print the command that `start.cmd` runs.
 
 - Bubo saves a snapshot about 30 s after the conversation goes idle.
-- The disk budget is 8 GiB by default. Change it with `--cache-disk-bytes`. A long session can need more.
-- `start.cmd -CacheDisk <folder>` is all you need. It also sets a 5 GiB staging area. Change the staging size with `-CacheDiskStagingBytes`.
-- If you run `bubo serve` directly, add `--cache-disk-staging-bytes 5368709120` for long sessions. Bubo stages each snapshot in RAM before it writes it. The automatic staging size follows the free RAM at start, and it can be too small for one snapshot. With about 7 GiB free, the area was 941 MB, smaller than one 30K-token snapshot (954 MB). Bubo then dropped the snapshots and the restart processed the whole prompt again (25 s).
+- The disk budget is 8 GB by default. Change it with `--cache-disk-bytes`. A long session can need more.
+- `start.cmd -CacheDisk <folder>` is all you need. It also sets a 5.4 GB staging area. Change the staging size with `-CacheDiskStagingBytes`.
+- If you run `bubo serve` directly, add `--cache-disk-staging-bytes 5368709120` for long sessions. Bubo stages each snapshot in RAM before it writes it. The automatic staging size follows the free RAM at start, and it can be too small for one snapshot. With about 7.5 GB free, the area was 941 MB, smaller than one 30K-token snapshot (954 MB). Bubo then dropped the snapshots and the restart processed the whole prompt again (25 s).
 - Turn the cache off again with `--no-cache-disk`. The `exact` profile turns all caches off and ignores the disk cache.
 
 

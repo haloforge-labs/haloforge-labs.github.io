@@ -1,6 +1,8 @@
-@import '@fontsource/unifrakturcook/latin-700.css';
+/* ET Book (MIT, Dmitry Krasny, Bonnie Scranton and Edward Tufte), self-hosted. */
+@font-face { font-family: 'ET Book'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/et-book-roman-line-figures.woff') format('woff'); }
+@font-face { font-family: 'ET Book'; font-style: italic; font-weight: 400; font-display: swap; src: url('/fonts/et-book-display-italic-old-style-figures.woff') format('woff'); }
+@font-face { font-family: 'ET Book'; font-style: normal; font-weight: 700; font-display: swap; src: url('/fonts/et-book-bold-line-figures.woff') format('woff'); }
 
-/* Owner's palette and serif stack, with the selected UnifrakturCook initial. */
 :root,
 :root[data-theme='light'] {
   color-scheme: light;
@@ -11,7 +13,8 @@
   --line: #ddd;
   --wash: #f3f1ea;
   --tint: rgba(160, 0, 0, .05);
-  --serif: et-book, Palatino, 'Palatino Linotype', 'Palatino LT STD', 'Book Antiqua', Georgia, serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+  --serif: 'ET Book', Palatino, 'Palatino Linotype', 'Palatino LT STD', 'Book Antiqua', Georgia, serif;
 }
 :root[data-theme='dark'] {
   color-scheme: dark;
@@ -30,7 +33,7 @@ a { color: var(--accent); text-underline-offset: .22em; }
 a:hover { text-decoration: underline; }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
 ::selection { background: var(--accent); color: var(--paper); }
-.brand { display: inline-flex; align-items: baseline; color: var(--accent); text-decoration: none; white-space: nowrap; }
-.brand-initial { font-family: 'UnifrakturCook', cursive; font-weight: 700; font-style: normal; font-size: 2.65rem; line-height: 1; }
-.brand-rest { font-size: 1.25rem; margin-left: .04rem; }
+.brand { display: inline-flex; align-items: center; gap: 12px; color: var(--ink); text-decoration: none; white-space: nowrap; }
+.brand-mark { color: var(--accent); flex: none; }
+.brand-word { font-size: 1.4rem; line-height: 1; letter-spacing: -.005em; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; } }

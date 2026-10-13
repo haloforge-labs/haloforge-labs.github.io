@@ -1,6 +1,13 @@
 ---
 title: NPU prefill
-description: "Use the Ryzen AI NPU for part of the prompt processing: speed, requirements and options."
+description: "Use the Ryzen AI NPU for part of the prompt processing in Halowin Bubo: measured gains, requirements and options."
+head:
+  - tag: title
+    content: "NPU prefill on AMD Strix Halo | Halowin Bubo"
+  - tag: meta
+    attrs: { property: "og:title", content: "NPU prefill on AMD Strix Halo | Halowin Bubo" }
+  - tag: meta
+    attrs: { name: "twitter:title", content: "NPU prefill on AMD Strix Halo | Halowin Bubo" }
 ---
 
 Bubo can send part of the prompt processing (prefill) to the Ryzen AI NPU while the GPU does the rest. NPU prefill is on by default when the NPU, its driver and the kernel files are present. It is always off in the `exact` and `stock` profiles. If the NPU cannot start, Bubo uses the GPU path.
@@ -11,8 +18,8 @@ Measured on a 70 W Strix Halo laptop (128 GB, Windows 11):
 
 | Prompt | Prefill speed change |
 | --- | --- |
-| 8K tokens | About 5 to 7 % faster |
-| 16K tokens | About 3.5 to 5.5 % faster |
+| 8K tokens | About 5 to 7% faster |
+| 16K tokens | About 3.5 to 5.5% faster |
 
 - Longer prompts were not measured.
 - The NPU takes only full blocks of 4,096 prompt tokens. Prompts shorter than 4,096 tokens do not use it.
@@ -37,8 +44,8 @@ Measured on a 70 W Strix Halo laptop (128 GB, Windows 11):
 
 Bubo reads the power mode and writes it to the log once. To see it, run `C:\Windows\System32\AMD\xrt-smi.exe examine --report platform` and read the line `Power Mode`. The measured gain was the same in Default and Performance mode. To change the mode, run `xrt-smi configure --pmode performance` (or `default`) in an administrator shell. The mode resets when the driver reloads.
 
-## Licences and known issues
+## Licenses and known issues
 
-The NPU kernel and design come from mikealanni/gufo (`tools/npu`, MIT) and are derived from AMD mlir-aie programming examples (Apache-2.0 WITH LLVM-exception, Copyright (C) 2026 Advanced Micro Devices, Inc.). The licence texts are in the `licenses` folder.
+The NPU kernel and design come from mikealanni/gufo (`tools/npu`, MIT) and are derived from AMD mlir-aie programming examples (Apache-2.0 WITH LLVM-exception, Copyright (C) 2026 Advanced Micro Devices, Inc.). The license texts are in the `licenses` folder.
 
 The kernel file ships as the fork built it. The compiler toolchain that built it is not recorded. We plan a rebuild with the open-source Peano compiler in a later release.

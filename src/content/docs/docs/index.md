@@ -1,9 +1,16 @@
 ---
 title: Halowin Bubo docs
-description: System settings and guides for Halowin Bubo on Windows.
+description: "Guides for Halowin Bubo, a local LLM server for AMD Strix Halo on Windows: system setup, install, quickstart, profiles, options and benchmarks."
+head:
+  - tag: title
+    content: "Docs: install and run a local LLM server on Windows | Halowin Bubo"
+  - tag: meta
+    attrs: { property: "og:title", content: "Docs: install and run a local LLM server on Windows | Halowin Bubo" }
+  - tag: meta
+    attrs: { name: "twitter:title", content: "Docs: install and run a local LLM server on Windows | Halowin Bubo" }
 ---
 
-Halowin Bubo is a fork of [gufo](https://github.com/gufo-org/gufo), the open-source LLM server under the MIT license. It runs on native Windows with AMD HIP. It is tuned for AMD Strix Halo laptops at about 70 W.
+These guides cover how to install, run and tune [Halowin Bubo](/bubo/) on Windows.
 
 ## Start here
 
@@ -23,3 +30,5 @@ Use Qwen3.8 Flash Next in GGUF format with the UD-Q4_K_XL quant. Use Performance
 - [Fast restarts with the disk cache](/docs/quickstart/#fast-restarts-with-the-disk-cache): the optional disk prompt cache.
 - [Known issues](/docs/known-issues/): memory, tracing, and the disk prompt cache.
 - [Benchmarks](/docs/benchmarks/): measured speeds and test conditions.
+- [NPU prefill](/docs/npu/): use the Ryzen AI NPU for part of the prompt processing.
+- [Under the hood](/docs/under-the-hood/): how Bubo gets its speed, with the measured numbers.

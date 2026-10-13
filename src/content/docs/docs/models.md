@@ -1,6 +1,13 @@
 ---
 title: Supported models
-description: The model families that Halowin Bubo runs, taken from gufo.
+description: "The model families that Halowin Bubo runs on AMD Strix Halo, taken from gufo, and the one it is tuned for: Qwen3.8 Flash Next."
+head:
+  - tag: title
+    content: "Supported models: Qwen3.8 Flash Next and more | Halowin Bubo"
+  - tag: meta
+    attrs: { property: "og:title", content: "Supported models: Qwen3.8 Flash Next and more | Halowin Bubo" }
+  - tag: meta
+    attrs: { name: "twitter:title", content: "Supported models: Qwen3.8 Flash Next and more | Halowin Bubo" }
 ---
 
 Halowin Bubo keeps all model families of [gufo](https://github.com/gufo-org/gufo). Download the model weights separately. The weights are not part of the Bubo package.
@@ -10,7 +17,7 @@ Halowin Bubo keeps all model families of [gufo](https://github.com/gufo-org/gufo
 <tbody>
 <tr><th scope="row">DeepSeek V4 Flash</th><td>Flash 0731 mixed IQ2/Q2/Q8 GGUF. Text.</td><td><a href="https://github.com/gufo-org/gufo/blob/main/docs/models/deepseek-v4-flash/README.md">Usage and modes</a></td></tr>
 <tr><th scope="row">Qwen3.8 27B</th><td>Q4/Q8 GGUF. Text and images.</td><td><a href="https://github.com/gufo-org/gufo/blob/main/docs/models/qwen3.8-27b/README.md">Usage and modes</a></td></tr>
-<tr><th scope="row">Qwen3.8 Flash-Next</th><td>Sharded Q4 GGUF. Text and images.</td><td><a href="https://github.com/gufo-org/gufo/blob/main/docs/models/qwen3.8-flash-next/README.md">Usage and modes</a></td></tr>
+<tr><th scope="row">Qwen3.8 Flash Next</th><td>Sharded Q4 GGUF. Text and images.</td><td><a href="https://github.com/gufo-org/gufo/blob/main/docs/models/qwen3.8-flash-next/README.md">Usage and modes</a></td></tr>
 <tr><th scope="row">Qwen3.6 35B-A3B</th><td>Q8 GGUF (<code>qwen35moe</code>) and fine-tunes. Text.</td><td><a href="https://github.com/gufo-org/gufo/blob/main/docs/models/qwen3.6-35b-a3b/README.md">Usage and modes</a></td></tr>
 <tr><th scope="row">Qwen3-ASR 1.7B</th><td>BF16 safetensors. Audio to text.</td><td><a href="https://github.com/gufo-org/gufo/blob/main/docs/models/qwen3-asr/README.md">Usage</a></td></tr>
 <tr><th scope="row">Qwen3-TTS 12Hz 1.7B</th><td>BF16 safetensors. Text and reference audio to speech.</td><td><a href="https://github.com/gufo-org/gufo/blob/main/docs/models/qwen3-tts/README.md">Voice modes</a></td></tr>
@@ -19,6 +26,6 @@ Halowin Bubo keeps all model families of [gufo](https://github.com/gufo-org/gufo
 </tbody>
 </table>
 
-Bubo is tuned for Qwen3.8 Flash Next. The other models run with upstream gufo settings.
+Bubo is tuned for Qwen3.8 Flash Next. It has 125B parameters with 6B active, plus a 51B n-gram embedding and a 4B MTP head (from the [Qwen model card](https://huggingface.co/Qwen/Qwen3.8-Flash-Next)). The other models run with upstream gufo settings.
 
 Base version: gufo v0.10.0 plus upstream main at commit 97b8645f.

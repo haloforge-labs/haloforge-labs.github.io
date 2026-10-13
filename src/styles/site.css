@@ -9,10 +9,10 @@
 .site-header nav a[aria-current='page'] { box-shadow: 0 1px var(--accent); }
 .theme-toggle { border: 1px solid var(--line); border-radius: 50%; width: 36px; height: 36px; background: transparent; color: var(--ink); cursor: pointer; font-size: 1.2rem; }
 main { flex: 1; padding-block: 66px 78px; }
-.eyebrow { display: block; font: .72rem/1.5 Consolas, monospace; text-transform: uppercase; letter-spacing: .16em; color: var(--muted); }
+.eyebrow { display: block; font: .72rem/1.5 var(--mono); text-transform: uppercase; letter-spacing: .16em; color: var(--muted); }
 h1, h2, h3 { font-weight: 400; line-height: 1.13; }
 h1 { color: var(--accent); font-style: italic; font-size: clamp(2.7rem, 5vw, 4.6rem); margin: 20px 0 28px; letter-spacing: -.025em; }
-h2 { font-style: italic; font-size: 2.15rem; margin: 0 0 22px; }
+h2 { font-size: 2.15rem; margin: 0 0 22px; }
 h3 { font-size: 1.45rem; }
 p, li { font-size: 1.16rem; line-height: 1.7; }
 p { margin: 0 0 22px; }
@@ -54,4 +54,15 @@ p { margin: 0 0 22px; }
   .site-header nav { gap: 14px; }
   .site-header nav a { white-space: nowrap; font-size: .95rem; }
   .site-header nav a.nav-download { padding: 7px 12px; font-size: .9rem; }
+}
+
+.side-box { align-self: start; position: sticky; top: 24px; border-top: 1px solid var(--accent); padding-top: 18px; order: 2; }
+.side-box h2 { font-size: 1.35rem; margin-bottom: 12px; }
+.side-box ul { margin: 0 0 16px; padding-left: 1.1rem; }
+.side-box li, .side-box p { font-size: 1rem; line-height: 1.55; }
+.side-box .side-download { margin: 4px 0 18px; }
+.side-box .side-docs { margin: 0; }
+@media (max-width: 900px) {
+  .side-box { position: static; order: -1; }
+  .side-box .side-download { display: none; }
 }

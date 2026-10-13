@@ -1,6 +1,13 @@
 ---
 title: Install
-description: "Install Halowin Bubo on Windows: prepare the laptop, get the package, the AMD runtime and the model files."
+description: "Install the Halowin Bubo package on Windows, then download the AMD ROCm runtime for gfx1151 and the model files with one command."
+head:
+  - tag: title
+    content: "Install on Windows with ROCm for gfx1151 | Halowin Bubo"
+  - tag: meta
+    attrs: { property: "og:title", content: "Install on Windows with ROCm for gfx1151 | Halowin Bubo" }
+  - tag: meta
+    attrs: { name: "twitter:title", content: "Install on Windows with ROCm for gfx1151 | Halowin Bubo" }
 ---
 
 **Supported hardware:** Bubo is built and tested for AMD Strix Halo with 128 GB of memory on Windows, mainly laptops. It can work on other machines, but we make no promise.
@@ -33,6 +40,14 @@ A page file does not replace physical RAM for full-speed operation.
 The release command is `bubo`.
 PowerShell uses `.\bubo.exe` when the executable is in the current folder.
 
+## Windows security prompts
+
+Like many open-source Windows builds, Bubo v0.1.0 is not code-signed. Windows can show warnings.
+
+- A zip that a browser downloaded carries a "downloaded from the internet" mark. Right-click the zip, select **Properties**, tick **Unblock**, select **OK**, then extract it.
+- If SmartScreen shows "Windows protected your PC" for `start.cmd`, select **More info**, then **Run anyway**.
+- If Smart App Control is on (common on new Windows 11 installs), Windows blocks unsigned apps and offers no per-app override. Bubo v0.1.0 does not run while Smart App Control is on.
+
 ## Prepare the AMD runtime
 
 The Bubo package carries no AMD files. The `bubo prepare` command downloads them.
@@ -49,11 +64,11 @@ The command downloads these official AMD wheels from [AMD's ROCm index](https://
 | `rocm_sdk_libraries` | `10.0.0` |
 | `rocm_sdk_device_gfx1151` | `10.0.0` |
 
-The total download is 1,014,229,359 bytes (967.2 MiB).
-Before the download, the command shows the address, exact size and full SHA-256 value of each wheel, the destination folders and the AMD licence information. It then asks for your approval. If you decline, nothing is installed (exit code 3).
+The total download is 1,014,229,359 bytes (1.0 GB).
+Before the download, the command shows the address, exact size and full SHA-256 value of each wheel, the destination folders and the AMD license information. It then asks for your approval. If you decline, nothing is installed (exit code 3).
 The `--yes` option accepts the displayed plan. It prints the same text first.
 The command checks the SHA-256 value of each archive before it extracts any file.
-It installs 13 DLLs and the `gfx1151` data files (about 303 MiB) beside `bubo.exe`. It saves the licence texts in the `licenses` folder.
+It installs 13 DLLs and the `gfx1151` data files (about 318 MB) beside `bubo.exe`. It saves the license texts in the `licenses` folder.
 The step needs no Python and no administrator access.
 
 By default the runtime goes beside `bubo.exe`. Use `--runtime-dir PATH` to choose another folder. The downloaded wheels stay in a cache folder (default `ROOT\cache\rocm-10.0.0-gfx1151`; change it with `--cache-dir PATH`).
@@ -66,17 +81,17 @@ If your network needs a proxy, set `HTTPS_PROXY` before you run the command. Set
 $env:HTTPS_PROXY = "http://proxy.example:8080"
 ```
 
-### AMD licence terms
+### AMD license terms
 
-Bubo does not include AMD files. The runtime step of `bubo prepare` downloads AMD's ROCm 10.0.0 packages for `gfx1151` directly from `stable.repo.amd.com`. Before it downloads, it shows the address, size and SHA-256 value of each package, and the licence information. AMD licenses ROCm per component, and components can have third-party terms. Read the [AMD ROCm 10.0.0 licence page](https://rocm.docs.amd.com/en/docs-10.0.0/about/license.html) and the licence texts that Bubo saves in the `licenses` folder. Other AMD terms can apply to these files. If you continue, you accept the terms that apply.
+Bubo does not include AMD files. The runtime step of `bubo prepare` downloads AMD's ROCm 10.0.0 packages for `gfx1151` directly from `stable.repo.amd.com`. Before it downloads, it shows the address, size and SHA-256 value of each package, and the license information. AMD licenses ROCm per component, and components can have third-party terms. Read the [AMD ROCm 10.0.0 license page](https://rocm.docs.amd.com/en/docs-10.0.0/about/license.html) and the license texts that Bubo saves in the `licenses` folder. Other AMD terms can apply to these files. If you continue, you accept the terms that apply.
 
 The pinned runtime is ROCm 10.0.0 for `gfx1151`.
 ROCm 10.1.0 does not match the tested runtime files.
 
 ## Get the model
 
-Model files have separate licences.
-Read the [Qwen licence](https://huggingface.co/Qwen/Qwen3.8-Flash-Next/blob/main/LICENSE) before the download. The command also saves the licence and notice files with the model.
+Model files have separate licenses.
+Read the [Qwen license](https://huggingface.co/Qwen/Qwen3.8-Flash-Next/blob/main/LICENSE) before the download. The command also saves the license and notice files with the model.
 
 ```powershell
 .\bubo.exe prepare model
@@ -86,17 +101,17 @@ The command downloads eight pinned files and checks each one against its SHA-256
 
 | Files | Source | Size |
 | --- | --- | ---: |
-| Four `UD-Q4_K_XL` shards | [Huihui GGUF repository](https://huggingface.co/huihui-ai/Huihui-Qwen3.8-Flash-Next-abliterated-GGUF/tree/73e9eb7c69fdbf667def63e233e70845e7d5ac0b/UD-Q4_K_XL) (revision `73e9eb7c`) | 111,334,655,392 bytes (103.7 GiB) |
-| MTP predictor and vision projector | [Unsloth base repository](https://huggingface.co/unsloth/Qwen3.8-Flash-Next-GGUF) | 3,694,111,200 bytes (3.4 GiB) |
-| Dense twin and Q4_K draft head | HaloForge Labs Hugging Face repository (commit `bb72204d`) | 1,588,370,016 bytes (1.5 GiB) |
+| Four `UD-Q4_K_XL` shards | [Huihui GGUF repository](https://huggingface.co/huihui-ai/Huihui-Qwen3.8-Flash-Next-abliterated-GGUF/tree/73e9eb7c69fdbf667def63e233e70845e7d5ac0b/UD-Q4_K_XL) (revision `73e9eb7c`) | 111,334,655,392 bytes (111 GB) |
+| MTP predictor and vision projector | [Unsloth base repository](https://huggingface.co/unsloth/Qwen3.8-Flash-Next-GGUF) | 3,694,111,200 bytes (3.7 GB) |
+| Dense twin and Q4_K draft head | HaloForge Labs Hugging Face repository (commit `bb72204d`) | 1,588,370,016 bytes (1.6 GB) |
 
-The total is 116,617,136,608 bytes (108.6 GiB). Before it downloads, the command shows this plan and asks for approval. Use `--yes` to accept the plan.
+The total is 116,617,136,608 bytes (117 GB). Before it downloads, the command shows this plan and asks for approval. Use `--yes` to accept the plan.
 
 The twin and the draft head are derived from the Huihui `UD-Q4_K_XL` shards. They match only that source model. Both use the Qwen Community License 1.0, not MIT. The source model is an abliterated model; read the usage warnings on its model card.
 
 By default the files go in `%LOCALAPPDATA%\Bubo`. Use `--output ROOT` to choose another folder, for example `.\bubo.exe prepare model --output "D:\BuboData"`. The model folder is `ROOT\models\huihui-qwen38-flash-next-ud-q4-k-xl-v1\`. The command writes `bubo-package.json` last. The server finds the other files through that file.
 
-Plan about 113 GiB of free space for the runtime and the model together (an estimate).
+Plan about 121 GB of free space for the runtime and the model together (an estimate).
 
 To prepare the runtime and the model with one approval, run `.\bubo.exe prepare` with no step name.
 
@@ -137,7 +152,7 @@ $d = "D:\Models\Qwen3.8-Flash-Next-base"
 
 The default profile applies on its own. To check that the server bound the twin and the draft head, add `--print-effective-settings` to the command. It prints `twin_bound` and `draft_head_bound`.
 
-The base twin and the draft head work only with these shards. The Huihui twin does not fit them. The draft head is the same file for both models. On the original model the twin and the draft head gave 46.06 to 51.76 tok/s (+12.4 %) in our six-probe test. See the [model card](https://huggingface.co/HaloForgeLabs/bubo-qwen3.8-flash-next) for the quality checks.
+The base twin and the draft head work only with these shards. The Huihui twin does not fit them. The draft head is the same file for both models. On the original model the twin and the draft head gave 46.06 to 51.76 tok/s (+12.4%) in our six-probe test. See the [model card](https://huggingface.co/HaloForgeLabs/bubo-qwen3.8-flash-next) for the quality checks.
 
 ## Notices
 
@@ -145,7 +160,7 @@ The base twin and the draft head work only with these shards. The Huihui twin do
 2. Read `THIRD_PARTY_NOTICES.md`.
 3. Keep the `licenses` folder beside the installed runtime.
 
-Gufo and the pixmaate Windows layer retain the MIT licence.
-AMD components and model files retain their separate licences.
+Gufo and the pixmaate Windows layer retain the MIT license.
+AMD components and model files retain their separate licenses.
 
 Continue with the [quickstart](/docs/quickstart/).

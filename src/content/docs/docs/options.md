@@ -1,6 +1,13 @@
 ---
 title: Options
-description: Every Halowin Bubo option with its default and when to change it.
+description: "Every Halowin Bubo server option and environment value with its default and when to change it."
+head:
+  - tag: title
+    content: "Server options and defaults | Halowin Bubo"
+  - tag: meta
+    attrs: { property: "og:title", content: "Server options and defaults | Halowin Bubo" }
+  - tag: meta
+    attrs: { name: "twitter:title", content: "Server options and defaults | Halowin Bubo" }
 ---
 
 Use the `default` profile for normal use on a 70 W Strix Halo laptop.
@@ -40,9 +47,9 @@ Use `bubo serve llm --help` for command-specific help.
 | `--allow-unmeasured-memory` | Allow subagent context above the measured token limit. | Unset | Keep it off unless the necessary context exceeds the measured memory limit. |
 | `--api-key VALUE` | Make clients supply an API key. | Unset | Set a key when clients must authenticate to the server. |
 | `--cache-disk VALUE` | Set the disk prompt cache directory. | Off | Set a directory when prompt snapshots must persist across server restarts. |
-| `--cache-disk-bytes VALUE` | Limit disk prompt cache storage. | 8589934592 (8 GiB) | Keep 8 GiB unless the disk cache must retain more prompt snapshots. |
+| `--cache-disk-bytes VALUE` | Limit disk prompt cache storage. | 8589934592 (8 GB) | Keep 8 GB unless the disk cache must retain more prompt snapshots. |
 | `--cache-disk-staging-bytes VALUE` | Limit RAM used to stage disk prompt snapshots. | 0 (automatic). At most the disk budget and one eighth of available RAM. | Keep the automatic limit unless disk persistence needs a different RAM limit. |
-| `--cache-ram-bytes VALUE` | Set the RAM snapshot cache budget. | 6442450944 (6 GiB). Zero means automatic. | Keep 6 GiB. Use the subagents profile for 4 GiB. Reduce the budget if host RAM is limited. |
+| `--cache-ram-bytes VALUE` | Set the RAM snapshot cache budget. | 6442450944 (6.4 GB). Zero means automatic. | Keep 6.4 GB. Use the subagents profile for 4.3 GB. Reduce the budget if host RAM is limited. |
 | `--context VALUE` | Set the context token limit for each session. | 262144 | Keep the profile context unless the task needs a different token limit. |
 | `--draft-tokens VALUE` | Set the maximum speculative draft length. | 7 | Keep seven tokens unless speculative draft length tests need another value. |
 | `--exact` | Select the exact profile. | Unset | Use it when output must repeat with the same build, prompt, and seed. |
@@ -53,10 +60,10 @@ Use `bubo serve llm --help` for command-specific help.
 | `--max-buffered-output-bytes VALUE` | Limit buffered output for each request. | 65536 (64 KiB) | Keep 64 KiB unless slow clients need more buffered output per request. |
 | `--max-buffered-output-total VALUE` | Limit buffered output across all requests. | 262144 (256 KiB) | Keep 256 KiB unless concurrent slow clients need more total buffered output. |
 | `--max-connections VALUE` | Limit simultaneous HTTP connections. | 16 | Keep 16 unless the client workload needs more simultaneous HTTP connections. |
-| `--max-output-bytes VALUE` | Limit output text bytes for each request. | 1048576 (1 MiB) | Keep 1 MiB unless a request must return more output text. |
+| `--max-output-bytes VALUE` | Limit output text bytes for each request. | 1048576 (1 MB) | Keep 1 MB unless a request must return more output text. |
 | `--max-pending VALUE` | Limit queued requests. | 16 | Keep 16 unless the workload needs a larger request queue. |
 | `--max-pending-per-client VALUE` | Limit queued requests from each client. | Same as --max-pending | Keep the queue limit unless one client must have a smaller request allowance. |
-| `--max-request-bytes VALUE` | Set the maximum HTTP request body size. | 67108864 | Keep 64 MiB unless larger request bodies are necessary. |
+| `--max-request-bytes VALUE` | Set the maximum HTTP request body size. | 67108864 | Keep 67.1 MB unless larger request bodies are necessary. |
 | `--max-tokens VALUE` | Limit new tokens generated per request. | -1 | Keep unlimited generation unless responses need a fixed new token limit. |
 | `--min-draft-tokens VALUE` | Set the minimum speculative draft length. | 1 | Keep one token unless speculative draft tests need a larger minimum. |
 | `--min-keep VALUE` | Retain a minimum number of sampling candidates. | 0 | Keep zero unless probability filters must retain a minimum number of candidates. |
@@ -65,7 +72,7 @@ Use `bubo serve llm --help` for command-specific help.
 | `--mtp-draft-vocab auto\|full\|latin` | Select the MTP draft head vocabulary. | Auto with MTP. Otherwise unused. | Keep the profile vocabulary unless draft vocabulary tests need another setting. |
 | `--mtp-model VALUE` | Set the MTP sidecar file. | Unset | Set the matching MTP sidecar when speculative decoding is necessary. |
 | `--mtp-policy survival\|length` | Select the MTP draft length controller. | Survival with MTP. Otherwise unused. | Keep survival unless draft acceptance tests need the length policy. |
-| `--no-behaviour` | Turn off the nine behaviour defaults. | Off. Exact enables it. | Keep policies enabled unless plain sampling is necessary outside the exact profile. |
+| `--no-behavior` | Turn off the nine behavior defaults. | Off. Exact enables it. | Keep policies enabled unless plain sampling is necessary outside the exact profile. |
 | `--no-cache` | Turn off RAM and disk prompt caches for all requests. | Off. Exact enables it. | Keep caches on for normal use. Use exact when every request must process its full prompt. |
 | `--no-cache-disk` | Turn off the disk snapshot cache. | Unset | Use it when the supplied disk cache directory must be ignored. |
 | `--no-draft-head` | Omit a default Q4_K draft head. Explicit environment paths still apply. | Off. Exact refuses a set draft-head path. | Use it to suppress a default file. Remove explicit environment paths separately. |
@@ -153,9 +160,9 @@ $env:GUFO_DENSE_TWIN_MODEL = "D:\Models\Qwen3.8-Flash-Next\iq4-nofullattn-nohc.g
 | `HOST` | Set the server address through the environment fallback. | Unset | Leave it unset unless the server address must come from the environment fallback. |
 | `PORT` | Set the server port through the environment fallback. | Unset | Leave it unset unless the server port must come from the environment fallback. |
 
-## Default behaviour
+## Default behavior
 
-The default profile enables the behaviour policies.
+The default profile enables the behavior policies.
 They control response boundaries, unfinished thinking, and repeat loops.
 Adaptive thinking uses the map `low:-2,medium:-1,xhigh:0`.
 Medium is the default effort.
@@ -173,9 +180,9 @@ Set `--cache-disk` only when prompts must persist across restarts.
 To turn it on, start Bubo with `start.cmd -CacheDisk <folder>`, or add `--cache-disk <folder>` to the server command. The first start with the cache checks the model files once and saves a stamp. The 109K-token test used `--cache-disk-staging-bytes` 5 GB.
 Measured on a 109K-token session: restore after a restart takes 3.5 s instead of 88.8 s.
 SSD writes are about 3 GB for each long saved session and about 5 GB for a 90-request agent replay.
-Decode speed cost is about 2.5 %.
+Decode speed cost is about 2.5%.
 The resolver supplies the disk policies when that folder option is set.
-The default disk budget is 8 GiB.
+The default disk budget is 8 GB.
 
 ## Preparation with bubo prepare
 
@@ -206,7 +213,7 @@ Set `HTTPS_PROXY` (and `NO_PROXY` if needed) when your network needs a proxy.
 | ---: | --- |
 | 0 | Success, help, or nothing to do. |
 | 2 | Syntax, schema, header or profile error. |
-| 3 | You declined the plan, or there was no answer, or you cancelled. |
+| 3 | You declined the plan, or there was no answer, or you canceled. |
 | 4 | Offline and a file is missing, or a source is not pinned. |
 | 5 | Network or TLS failure. |
 | 6 | Size or hash check failed. |
@@ -226,7 +233,7 @@ The server checks file sizes, GGUF headers and tensor tables, and the manifest e
 
 ## Chat API limits
 
-Two requests have fixed conditions. Both are designed behaviour.
+Two requests have fixed conditions. Both are designed behavior.
 
 - **Logprobs.** A chat request can return logprobs only when thinking is off, the request is plain text (no tools and no images), and it has no stop sequences. Otherwise the server returns HTTP 400 with the message `chat logprobs require thinking off, plain text, and no stop sequences`.
 - **Prompt inspection.** The `/debug/prompt` endpoint accepts plain text only. A request with tools or images returns the message `prompt inspection requires plain text without tools`.

@@ -1,6 +1,13 @@
 ---
 title: Profiles
-description: The default, stock, exact and subagents profiles.
+description: "The four Halowin Bubo profiles for a local LLM server on Windows: default for speed, exact for token-for-token output, stock and subagents."
+head:
+  - tag: title
+    content: "Profiles: default, exact, stock and subagents | Halowin Bubo"
+  - tag: meta
+    attrs: { property: "og:title", content: "Profiles: default, exact, stock and subagents | Halowin Bubo" }
+  - tag: meta
+    attrs: { name: "twitter:title", content: "Profiles: default, exact, stock and subagents | Halowin Bubo" }
 ---
 
 Use `default` for normal use on a 70 W Strix Halo laptop.
@@ -17,7 +24,7 @@ For other model families, `exact` supplies the seed rule and keeps their existin
 | Purpose | Normal use | Plain gufo | Reproducible-output mode | Concurrent agent requests |
 | Sessions | 1 | Upstream default | 1 | 4 |
 | Context per session | 262144 | Model native | 262144 | 131072 |
-| RAM cache budget | 6 GiB | Upstream automatic budget | Disabled | 4 GiB |
+| RAM cache budget | 6.4 GB | Upstream automatic budget | Disabled | 4.3 GB |
 | Disk prompt cache | Off | Off unless set | Disabled | Off |
 | Default effort | Medium | Upstream default | Medium | Medium |
 | Thinking | On | Model default | On | On |
@@ -25,7 +32,7 @@ For other model families, `exact` supplies the seed rule and keeps their existin
 | MTP policy | Survival | Upstream settings | Unused | Survival |
 | MTP draft vocabulary | Auto | Upstream settings | Unused | Latin |
 | Prompt lookup | On with MTP | Upstream settings | Off | On with MTP |
-| Behaviour policies | On | No profile defaults | Off | On |
+| Behavior policies | On | No profile defaults | Off | On |
 | Lenient acceptance | Bounded with MTP | No profile defaults | Off | Bounded with MTP |
 | Dense twin | With matching file | No profile defaults | Disabled | With matching file and batched twin enabled |
 | Q4_K draft head | With matching file and MTP | No profile defaults | Disabled | With matching file and MTP |
@@ -40,7 +47,7 @@ Use this profile for normal chat, code tasks, and agent work.
 Its optimal setup includes the MTP predictor, dense twin, and Q4_K draft head.
 Medium effort selects marker bias `-1` in the map `low:-2,medium:-1,xhigh:0`.
 Bounded lenient acceptance applies inside thinking spans.
-The behaviour set includes the engine loop breaker.
+The behavior set includes the engine loop breaker.
 
 The default output is not byte-exact.
 Without an MTP predictor, the source skips MTP defaults and uses plain autoregressive decode.
@@ -51,7 +58,7 @@ Without a manifest or explicit paths, the twin and the draft head do not load.
 Select this profile with `--profile stock`.
 It injects no Bubo environment values or flag defaults.
 Existing environment values and explicit flags still apply.
-Plain gufo behaviour needs an environment without Bubo tuning overrides.
+Plain gufo behavior needs an environment without Bubo tuning overrides.
 
 ## Exact
 
@@ -65,7 +72,7 @@ The guarantee does not extend across builds, hardware, or other engines.
 Exact disables these features.
 
 - Speculative decode and prompt lookup.
-- Behaviour policies and lenient acceptance.
+- Behavior policies and lenient acceptance.
 - Dense twin and draft head.
 - RAM and disk prompt caches.
 
@@ -92,7 +99,7 @@ In exact mode, Bubo gives the same tokens as the stock reference. We tested this
 
 Select this profile with `--profile subagents`.
 It allocates four sessions with 131072 context tokens each.
-It enables the batched twin control and uses a 4 GiB RAM cache.
+It enables the batched twin control and uses a 4.3 GB RAM cache.
 The total measured context limit is 524288 tokens.
 
 Four deep concurrent sessions can reach the host RAM guard near 50K tokens per session.

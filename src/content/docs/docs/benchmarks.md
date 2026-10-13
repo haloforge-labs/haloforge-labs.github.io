@@ -1,6 +1,13 @@
 ---
 title: Benchmarks
-description: Halowin Bubo measured benchmark results and separate estimates at 140 W.
+description: "Measured decode and prefill speed, reasoning checks and a same-laptop comparison for Halowin Bubo on AMD Strix Halo at about 70 W."
+head:
+  - tag: title
+    content: "Benchmarks: Strix Halo decode and prefill tok/s | Halowin Bubo"
+  - tag: meta
+    attrs: { property: "og:title", content: "Benchmarks: Strix Halo decode and prefill tok/s | Halowin Bubo" }
+  - tag: meta
+    attrs: { name: "twitter:title", content: "Benchmarks: Strix Halo decode and prefill tok/s | Halowin Bubo" }
 ---
 
 Halowin Bubo on the ASUS ProArt PX13 with Radeon 8060S, about 70 W. Model: Qwen3.8 Flash Next UD-Q4_K_XL with a Q8_0 MTP draft head. Windows 11. Performance power mode. Every measured number comes from our own logs.
@@ -23,7 +30,7 @@ Both engines answered the same 35 requests on the same laptop in Performance mod
 </tbody>
 </table>
 
-Halowin Bubo gives the same or better accuracy than gufo with pixmaate’s Windows port and decodes about 24 % faster on these requests. The 95 % intervals of the two engines overlap in every set, and each set has few items. Read the result as "no loss of accuracy", not as "more accurate".
+Halowin Bubo gives the same or better accuracy than gufo with pixmaate’s Windows port and decodes about 24% faster on these requests. The 95% intervals of the two engines overlap in every set, and each set has few items. Read the result as "no loss of accuracy", not as "more accurate".
 
 gufo with pixmaate’s Windows port ended 3 requests without a final answer. Halowin Bubo ended 1: a long repeating loop that its next build cuts short.
 
@@ -69,7 +76,7 @@ The sums differ by one point. That is within noise. The final-answer count in th
 <tr><th scope="row">Decode tg128, MTP</th><td><strong>34.5</strong></td><td>Same program, MTP drafting. Median of five runs. 2026-10-10.</td></tr>
 <tr><th scope="row">Natural-text prefill, 2K / 8K / 32K</th><td><strong>1,288 / 1,201 / 1,268</strong></td><td>Research-notes text. Median of three runs. 2026-10-10.</td></tr>
 <tr><th scope="row">Six short greedy prompts</th><td><strong>54.2</strong></td><td>Mean across six probes with the production launcher. 2026-10-10.</td></tr>
-<tr><th scope="row">Copy-heavy code edit</th><td><strong>Up to 93.8</strong></td><td>85.9 on the first request; 93.8 on the second request with the same prompt cached. Rename-and-rewrite task, prompt lookup + MTP. Greedy, thinking on. Lookup acceptance: 99%. 2026-10-10.</td></tr>
+<tr><th scope="row">Copy-heavy code edit</th><td><strong>Up to 97.4</strong></td><td>96.5 on the first request; 97.4 on the second request with the same prompt cached. Rename-and-rewrite task, prompt lookup + MTP, release build v0.1.0. Lookup acceptance: 99%. 2026-10-12. The same run is in the comparison table below.</td></tr>
 <tr><th scope="row">Prose decode</th><td><strong>59–60</strong></td><td>Greedy, thinking on, 3,000 tokens. 2026-10-10.</td></tr>
 </tbody>
 </table>
@@ -89,7 +96,7 @@ Combined decode speed with several users at the same time. Upstream gufo’s own
 
 Upstream figures are the numbers published in the gufo repository. With MTP, the speed depends on how many draft tokens are accepted, and this changes between starts of the same server. At 8 users, identical starts gave about 100 to 107 tok/s with identical outputs, so the table shows a range. Read the 4-user MTP result as level with upstream. At 1 user, Halowin Bubo with MTP is ahead. The upstream figures come from full-power hardware; the Halowin Bubo figures come from a laptop at about 70 W.
 
-Free host memory affects speed. These numbers were measured with more than 11 GiB of memory available. In one run with 5 GiB available, plain decode at 4 users was 4.5 % lower.
+Free host memory affects speed. These numbers were measured with more than 11.8 GB of memory available. In one run with 5.4 GB available, plain decode at 4 users was 4.5% lower.
 
 
 ## Estimated at 140 W
@@ -117,13 +124,13 @@ Three tests give three different gains, because they measure different things.
 <table>
 <thead><tr><th scope="col">Test</th><th scope="col">Gain</th><th scope="col">What differs between the two runs</th></tr></thead>
 <tbody>
-<tr><th scope="row">Upstream pp2048 and tg128 program</th><td>None. Same speed.</td><td>Only the kernels. The twin, the draft head, prompt lookup, the survival policy, draft vocabulary trimming, lenient acceptance and the behaviour set are off in both runs. MTP is on in both MTP columns.</td></tr>
-<tr><th scope="row">Six task probes, 49.35 to 52.28 tok/s</th><td>+5.9 % decode</td><td>The twin and the draft head. Both runs use the full MTP stack (survival policy, prompt lookup, draft vocabulary trimming).</td></tr>
-<tr><th scope="row">35 long reasoning requests, 42.60 to 52.64 tok/s</th><td>About +24 % decode</td><td>The whole stack against plain upstream MTP. That run used upstream defaults with MTP: length policy, full draft vocabulary, no prompt lookup, no twin or draft head, no lenient acceptance, no behaviour set.</td></tr>
+<tr><th scope="row">Upstream pp2048 and tg128 program</th><td>None. Same speed.</td><td>Only the kernels. The twin, the draft head, prompt lookup, the survival policy, draft vocabulary trimming, lenient acceptance and the behavior set are off in both runs. MTP is on in both MTP columns.</td></tr>
+<tr><th scope="row">Six task probes, 49.35 to 52.28 tok/s</th><td>+5.9% decode</td><td>The twin and the draft head. Both runs use the full MTP stack (survival policy, prompt lookup, draft vocabulary trimming).</td></tr>
+<tr><th scope="row">35 long reasoning requests, 42.60 to 52.64 tok/s</th><td>About +24% decode</td><td>The whole stack against plain upstream MTP. That run used upstream defaults with MTP: length policy, full draft vocabulary, no prompt lookup, no twin or draft head, no lenient acceptance, no behavior set.</td></tr>
 </tbody>
 </table>
 
-The first test shows that Bubo does not slow the kernels down. The other two show what the extra features add. Long generations gain most, because prompt lookup and the draft policies pay off the more the model writes. The 24 % figure is token-weighted decode on the requests that ran in Performance mode on both engines.
+The first test shows that Bubo does not slow the kernels down. The other two show what the extra features add. Long generations gain most, because prompt lookup and the draft policies pay off the more the model writes. The 24% figure is token-weighted decode on the requests that ran in Performance mode on both engines.
 
 ## Same-protocol comparisons
 
@@ -134,10 +141,10 @@ The first test shows that Bubo does not slow the kernels down. The other two sho
 </tbody>
 </table>
 
-## Same-laptop comparison: Rulith, gufo and Halowin Bubo
+## Same-laptop comparison: Rulith (tuned llama.cpp), gufo and Halowin Bubo
 
 <table>
-<thead><tr><th scope="col">Test, tok/s</th><th scope="col">Rulith 0.5.7 (batch 4096)</th><th scope="col">gufo (pixmaate prebuilt, 2026-10-03)</th><th scope="col">Bubo v0.1.0</th></tr></thead>
+<thead><tr><th scope="col">Test, tok/s</th><th scope="col">Rulith 0.5.7 (tuned llama.cpp, batch 4096)</th><th scope="col">gufo (pixmaate prebuilt, 2026-10-03)</th><th scope="col">Bubo v0.1.0</th></tr></thead>
 <tbody>
 <tr><th scope="row">Model files</th><td>Unsloth UD-IQ4_XS, mmproj-F16, own draft</td><td>Huihui UD-Q4_K_XL, shared Q8_0 MTP</td><td>Huihui UD-Q4_K_XL, shared Q8_0 MTP, twin, draft head</td></tr>
 <tr><th scope="row">Prefill pp2048, without / with MTP</th><td>1,183 / 1,164</td><td>1,227 / 1,203</td><td>1,364 / 1,218</td></tr>
@@ -155,11 +162,12 @@ Same laptop, about 70 W, one pass per engine, measured on 12 and 13 October 2026
 
 Lookup drafting is in Bubo only.
 
-## Conditions
+## Test conditions
 
 <table>
 <thead><tr><th scope="col">Item</th><th scope="col">Test condition</th></tr></thead>
 <tbody>
+<tr><th scope="row">Dates</th><td>8 to 13 October 2026.</td></tr>
 <tr><th scope="row">System</th><td>ASUS ProArt PX13, Radeon 8060S, Windows 11, Performance mode.</td></tr>
 <tr><th scope="row">Model</th><td>Qwen3.8 Flash Next, GGUF, UD-Q4_K_XL, Q8_0 MTP draft head.</td></tr>
 <tr><th scope="row">Measured power</th><td>Mean GPU power: about 70–71 W.</td></tr>

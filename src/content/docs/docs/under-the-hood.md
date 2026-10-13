@@ -1,6 +1,13 @@
 ---
 title: Under the hood
-description: "The dense twin, MTP drafting, NPU prefill, the disk cache and exact mode in Halowin Bubo, with measured numbers."
+description: "How Halowin Bubo gets its speed on AMD Strix Halo: the dense twin, the draft head, MTP drafting, NPU prefill, the disk cache and exact mode."
+head:
+  - tag: title
+    content: "Under the hood: MTP drafting, NPU prefill, disk cache | Halowin Bubo"
+  - tag: meta
+    attrs: { property: "og:title", content: "Under the hood: MTP drafting, NPU prefill, disk cache | Halowin Bubo" }
+  - tag: meta
+    attrs: { name: "twitter:title", content: "Under the hood: MTP drafting, NPU prefill, disk cache | Halowin Bubo" }
 ---
 
 One chip. One package. Every layer tuned for it.
@@ -9,13 +16,13 @@ Bubo starts from gufo and a Windows port. The rest is our work: a 4-bit twin of 
 
 ## Janus: a second face for decode
 
-Decode runs 5.9 % faster: 52.28 tok/s against 49.35 tok/s on six agent and coding prompts. The twin and the draft head together give this gain.
+Decode runs 5.9% faster: 52.28 tok/s against 49.35 tok/s on six agent and coding prompts. The twin and the draft head together give this gain.
 
 Bubo keeps two copies of 252 dense weights: the original 8-bit set and a 4-bit twin, named after the two-faced god Janus. Decode and draft checking read the small twin. Prefill and `exact` mode read the original.
 
 Pygmy owls wear a second face on the back of the head: two dark spots that look like eyes. In a model study, owl decoys with the false eyes drew fewer close approaches from behind. The twin is the same idea. One face serves decode. The real face serves prefill and `exact`.
 
-The twin stays close to the reference. Against a 6-bit reference, the perplexity ratio is 1.0014 on agent text and 1.0050 on code. The twin agrees with the reference on the top token in 96.7 % of positions (teacher-forced text check).
+The twin stays close to the reference. Against a 6-bit reference, the perplexity ratio is 1.0014 on agent text and 1.0050 on code. The twin agrees with the reference on the top token in 96.7% of positions (teacher-forced text check).
 
 The twin is not byte-exact, so `exact` mode does not use it. The twin copies the tensors that Huihui abliterated (the shared-expert down projection and the SSM output projection), so it matches the Huihui `UD-Q4_K_XL` shards. A twin for the plain Unsloth shards needs its own build.
 
@@ -23,11 +30,11 @@ The twin is not byte-exact, so `exact` mode does not use it. The twin copies the
 
 MTP drafts several tokens at once. The main model then checks them. Bubo gives the draft step a Q4_K copy of the output head. The main model checks every token with its original 8-bit output head.
 
-The draft head is part of the 5.9 % decode gain above. We did not measure it alone. `exact` mode does not use it. We built and tested it with the Huihui shards.
+The draft head is part of the 5.9% decode gain above. We did not measure it alone. `exact` mode does not use it. We built and tested it with the Huihui shards.
 
-## The MTP stack: up to 93.8 tok/s on code edits
+## The MTP stack: up to 97.4 tok/s on code edits
 
-Decode with MTP runs at 34.5 tok/s. Plain decode runs at 27.8 tok/s. On a copy-heavy code edit, MTP reaches 93.8 tok/s on the second request, with the prompt cached. The first request runs at 85.9 tok/s. On real coding-agent sessions of 28K to 70K tokens, decode runs at 51.6 tok/s.
+Decode with MTP runs at 34.5 tok/s. Plain decode runs at 27.8 tok/s. On a copy-heavy code edit, MTP reaches 97.4 tok/s on the second request, with the prompt cached. The first request runs at 96.5 tok/s. On real coding-agent sessions of 28K to 70K tokens, decode runs at 51.6 tok/s.
 
 Three parts work together:
 
@@ -53,7 +60,7 @@ The test used one model and 15 prompts. The loop breaker finds repeat periods up
 
 ## NPU prefill: the GPU keeps working
 
-Prefill runs about 5 to 7 % faster on an 8K-token prompt and about 3.5 to 5.5 % faster on a 16K-token prompt. Decode does not change.
+Prefill runs about 5 to 7% faster on an 8K-token prompt and about 3.5 to 5.5% faster on a 16K-token prompt. Decode does not change.
 
 The Ryzen AI chip has an NPU. Bubo sends part of the prompt work to it while the GPU does the rest:
 

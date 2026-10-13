@@ -2,28 +2,37 @@
 import SiteLayout from '../layouts/SiteLayout.astro';
 import Measurements from '../components/Measurements.astro';
 ---
-<SiteLayout title="Halowin Bubo" description="Halowin Bubo is a fork of gufo, ported to native Windows with AMD HIP. See measured speeds, test conditions, and documentation.">
+<SiteLayout title="Qwen3.8 Flash Next on AMD Strix Halo, Windows | Halowin Bubo" description="Run Qwen3.8 Flash Next on an AMD Strix Halo laptop under Windows. See measured speeds, supported models and what you need. Open source, MIT license.">
   <span class="eyebrow">Native Windows · AMD HIP</span>
   <h1>Halowin Bubo</h1>
-  <p class="intro">Halowin Bubo is a fork of the open-source gufo LLM server. It runs on native Windows with AMD HIP. It is tuned for AMD Strix Halo laptops at about 70 W.</p>
+  <p class="intro">General-purpose tools such as LM Studio, Ollama and llama.cpp aim at every GPU. Halowin Bubo is built for one chip and one model, and it runs natively on Windows with AMD HIP. This page covers what it runs, how fast it is and what you need. The <a href="/">home page</a> has the short version.</p>
   <div class="cta-row"><a class="button" href="https://github.com/haloforge-labs/bubo/releases/tag/v0.1.0">Download v0.1.0 for Windows</a><a class="cta-link" href="/docs/system-setup/">System setup <span aria-hidden="true">→</span></a></div>
-  <div class="credit intro">Bubo is built on <a href="https://github.com/gufo-org/gufo">gufo</a>. Credit goes to the gufo authors for the upstream server. gufo uses the MIT license.</div>
   <div class="article-grid">
+    <aside class="side-box" aria-label="Requirements and download">
+      <h2>You need</h2>
+      <ul>
+        <li>Windows 11</li>
+        <li>An AMD Strix Halo machine with 128 GB of memory, with 96 GB set as GPU memory and a 128 GB page file</li>
+        <li>The Microsoft Visual C++ Redistributable (x64)</li>
+        <li>About 121 GB of free disk for the model files</li>
+      </ul>
+      <p>Other 128 GB machines with the same chip may work. We make no promise.</p>
+      <a class="button side-download" href="https://github.com/haloforge-labs/bubo/releases/tag/v0.1.0">Download v0.1.0</a>
+      <p class="side-docs"><a href="/docs/">Read the documentation <span aria-hidden="true">→</span></a></p>
+    </aside>
     <div class="article-body">
-      <section aria-labelledby="for"><h2 id="for">For your Windows laptop</h2><p><strong>Supported hardware:</strong> Bubo is built and tested for AMD Strix Halo with 128 GB of memory on Windows, mainly laptops. It can work on other machines, but we make no promise.</p><p>Bubo is tuned for Ryzen AI Max laptops with Radeon 8060S graphics. Use Qwen3.8 Flash Next in GGUF format with the UD-Q4_K_XL quant. Use Performance mode at about 70 W.</p><p><a href="/docs/system-setup/">Set up your system</a> before you install Bubo.</p></section>
+      <section aria-labelledby="for"><h2 id="for">For your Windows laptop</h2><p>Bubo is built and tested for AMD Strix Halo machines with 128 GB of memory that run Windows, mostly laptops. It can work on other machines, but we make no promise.</p><p>It is tuned for Ryzen AI Max laptops with Radeon 8060S graphics, Qwen3.8 Flash Next in GGUF format with the UD-Q4_K_XL quant, and Performance mode. <a href="/docs/system-setup/">Set up your system</a> before you install it.</p></section>
       <section aria-labelledby="speed">
         <h2 id="speed">Measured speed</h2>
-        <p>Halowin Bubo on the ASUS ProArt PX13 with Radeon 8060S. Windows 11, Performance mode, about 70 W. Qwen3.8 Flash Next UD-Q4_K_XL with an MTP draft head. Tests: 8–12 October 2026.</p>
+        <p>Every number here comes from our own tests on one laptop. The <a href="/docs/benchmarks/#test-conditions">test conditions</a> list the hardware, the model and the dates.</p>
         <Measurements />
-        <p class="benchmark-comparison">With several users at once, Halowin Bubo with MTP reaches 37.4 tok/s for 1 user, 79.2 for 4 users and about 100–107 for 8 users (combined decode, 4K context each, about 70 W). It is ahead of upstream gufo’s published 1-user MTP rate and level with it at 4 users. At 8 users it runs at about 70 W against upstream’s full-power hardware. <a href="/docs/benchmarks/#many-users">See the table</a>.</p>
-        <p class="benchmark-comparison">Reasoning check against gufo with pixmaate’s Windows port on 35 GPQA, AIME, HMMT and IMO requests: 29/35 correct for Halowin Bubo and 27/35 for gufo with pixmaate’s Windows port, with about 24 % faster decode. No loss of accuracy; the sets are small. <a href="/docs/benchmarks/">See the table</a>.</p>
-        <a href="/docs/benchmarks/">Read the benchmark details</a>
+        <p class="benchmark-comparison">With several users at once, Bubo with MTP reaches 37.4 tok/s for one user and 79.2 for four. At eight users, plain decode reaches 102.2 tok/s in total. Each user has 4K of context. The one-user rate is ahead of upstream gufo’s published one-user MTP rate, and the four-user rate is level with it. Bubo runs on a laptop while upstream’s numbers come from full-power hardware. <a href="/docs/benchmarks/#many-users">See the table</a>.</p>
+        <p class="benchmark-comparison">On 35 GPQA, AIME, HMMT and IMO requests, Bubo solved 29 and gufo with pixmaate’s Windows port solved 27, and Bubo decoded about 24% faster. The sets are small, so read this as no loss of accuracy. <a href="/docs/benchmarks/">See the table</a>.</p>
+        <a href="/docs/benchmarks/">Read the benchmark details <span aria-hidden="true">→</span></a>
       </section>
-      <section aria-labelledby="models"><h2 id="models">Supported models</h2><p>Bubo keeps all model families of gufo: DeepSeek V4 Flash, Qwen3.8 27B, Qwen3.8 Flash-Next, Qwen3.6 35B-A3B, Qwen3-ASR 1.7B, Qwen3-TTS 1.7B, Qwen-Image-2.1, and MiniMax H3.</p><p>Bubo is tuned for Qwen3.8 Flash Next. The other models run with upstream gufo settings.</p><p>The default model is an abliterated build of Qwen3.8 Flash Next (from Huihui). It refuses less than the original. The benchmarks on this site use it, and the twin and the draft head match it. Read the usage warnings on its model card. The plain Qwen shards also run, without the twin and the draft head.</p><p>The default profile trades exact output for speed: it accepts near-miss drafts in thinking text. <code>--profile exact</code> matched the stock reference token for token in our proof.</p><a href="/docs/models/">See the model table</a></section>
-      <section aria-labelledby="downloads"><h2 id="downloads">Downloads</h2><p><a href="https://github.com/haloforge-labs/bubo/releases/tag/v0.1.0">Halowin Bubo v0.1.0 for Windows (zip and SHA-256) on GitHub</a>. Open source, MIT licence. This is the first release: see the <a href="/docs/known-issues/">known issues</a>.</p><p><strong>You need:</strong> Windows 11, an AMD Strix Halo machine with 128 GB of memory (96 GB set as GPU memory and a 128 GB page file), the Microsoft Visual C++ Redistributable (x64) and about 113 GiB of free disk for the model files. Other 128 GB machines with the same chip may work. We make no promise.</p></section>
+      <section aria-labelledby="models"><h2 id="models">Supported models</h2><p>Bubo keeps every model family of gufo: DeepSeek V4 Flash, Qwen3.8 27B, Qwen3.8 Flash Next, Qwen3.6 35B-A3B, Qwen3-ASR 1.7B, Qwen3-TTS 1.7B, Qwen-Image-2.1 and MiniMax H3. It is tuned for Qwen3.8 Flash Next, which has 125B parameters with 6B active, plus a 51B n-gram embedding and a 4B MTP head. The other models run with upstream gufo settings.</p><p>The default model is an abliterated build of Qwen3.8 Flash Next from Huihui, which refuses less than the original. The benchmarks on this site use it, and the twin and the draft head match it. Read the usage warnings on its model card. The plain Qwen shards also run, without the twin and the draft head.</p><p>The default profile trades exact output for speed: it accepts near-miss drafts in thinking text. <code>--profile exact</code> matched the stock reference token for token in our test.</p><a href="/docs/models/">See the model table <span aria-hidden="true">→</span></a></section>
+      <section aria-labelledby="downloads"><h2 id="downloads">Downloads</h2><p><a href="https://github.com/haloforge-labs/bubo/releases/tag/v0.1.0">Halowin Bubo v0.1.0 for Windows (zip and SHA-256) on GitHub</a>. This is the first release, so read the <a href="/docs/known-issues/">known issues</a> first.</p></section>
+      <section aria-labelledby="license"><h2 id="license">License and credit</h2><p>Bubo is open source under the <a href="https://github.com/haloforge-labs/bubo/blob/main/LICENSE">MIT license</a>, the same license as gufo. The code is copyright HaloForge Labs and the gufo contributors.</p><p>Bubo is built on <a href="https://github.com/gufo-org/gufo">gufo</a>. Credit goes to the gufo authors for the upstream server and to pixmaate for the gufo Windows port.</p><p>The model files keep the Qwen Community License 1.0, as the <a href="https://huggingface.co/HaloForgeLabs/bubo-qwen3.8-flash-next">model card</a> states. Third-party notices are in <a href="https://github.com/haloforge-labs/bubo/blob/main/THIRD_PARTY_NOTICES.md">THIRD_PARTY_NOTICES.md</a>.</p></section>
     </div>
-    <aside class="margin-note" aria-label="Halowin Bubo notes">
-      <h2>Documentation</h2><p><a href="/docs/">Read the Halowin Bubo docs</a> for system settings, profiles, and known issues.</p>
-    </aside>
   </div>
 </SiteLayout>

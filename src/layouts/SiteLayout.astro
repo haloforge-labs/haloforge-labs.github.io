@@ -1,6 +1,5 @@
 ---
 import Brand from '../components/Brand.astro';
-import Owl from '../components/Owl.astro';
 import '../styles/theme.css';
 import '../styles/site.css';
 interface Props { title: string; description: string; }
@@ -12,15 +11,22 @@ const path = Astro.url.pathname;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title} | HaloForge Labs</title>
+    <title>{title}</title>
     <meta name="description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="HaloForge Labs" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={new URL(path, Astro.site)} />
-    <meta property="og:image" content={new URL('/apple-touch-icon.png', Astro.site)} />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={new URL('/og-card.png', Astro.site)} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Halowin Bubo from HaloForge Labs: a local LLM server for AMD Strix Halo, native on Windows. 51–55 tok/s decode, 29/35 on reasoning checks, 1,325 tok/s prefill." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL('/og-card.png', Astro.site)} />
+    <meta name="twitter:image:alt" content="Halowin Bubo from HaloForge Labs: a local LLM server for AMD Strix Halo, native on Windows. 51–55 tok/s decode, 29/35 on reasoning checks, 1,325 tok/s prefill." />
     <link rel="canonical" href={new URL(path, Astro.site)} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="16x16 32x32" />
@@ -42,13 +48,14 @@ const path = Astro.url.pathname;
         <a href="/docs/">Docs</a>
         <a href="/about/" aria-current={path === '/about/' ? 'page' : undefined}>About</a>
         <a class="nav-download" href="https://github.com/haloforge-labs/bubo/releases/tag/v0.1.0">Download</a>
-        <button class="theme-toggle" type="button" aria-label="Switch colour theme" title="Switch colour theme">◐</button>
+        <button class="theme-toggle" type="button" aria-label="Switch color theme" title="Switch color theme">◐</button>
       </nav>
     </header>
     <main class="shell" id="main"><slot /></main>
     <footer class="site-footer shell">
       <span>HaloForge Labs</span>
-      <a class="footer-credit" href="https://github.com/haloforge-labs"><Owl size={20} decorative /><span>GitHub</span></a>
+      <a class="footer-credit" href="https://github.com/haloforge-labs"><span>GitHub</span></a>
+      <a href="https://github.com/haloforge-labs/bubo/blob/main/LICENSE">MIT License</a>
     </footer>
     <script>
       const button = document.querySelector<HTMLButtonElement>('.theme-toggle');
