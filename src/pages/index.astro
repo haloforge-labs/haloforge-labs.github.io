@@ -63,7 +63,7 @@ const fmt = (n: number, dec: boolean) => dec ? n.toFixed(1) : n.toLocaleString('
     <h2 id="versus-title">Faster than a tuned llama.cpp fork on the same laptop</h2>
     <div class="table-wrap">
       <table>
-        <thead><tr><th scope="col"><span class="visually-hidden">Workload</span></th><th scope="col" class="us">Bubo v0.1.0</th><th scope="col">Rulith 0.5.7<br /><span class="sub">tuned llama.cpp fork</span></th><th scope="col">gufo<br /><span class="sub">Windows port, latest release</span></th></tr></thead>
+        <thead><tr><th scope="col"><span class="visually-hidden">Workload</span></th><th scope="col" class="us">Bubo v0.1.0</th><th scope="col">Rulith 0.5.7<br /><span class="sub">tuned llama.cpp fork</span></th><th scope="col">gufo<br /><span class="sub">pixmaate’s Windows port</span></th></tr></thead>
         <tbody>
           {rows.map(r => {
             const best = Math.max(...r.v);
