@@ -34,7 +34,7 @@ The draft head is part of the 5.9% decode gain above. We did not measure it alon
 
 ## The MTP stack: up to 97.4 tok/s on code edits
 
-Decode with MTP runs at 34.5 tok/s. Plain decode runs at 27.8 tok/s. On a copy-heavy code edit, MTP reaches 97.4 tok/s on the second request, with the prompt cached. The first request runs at 96.5 tok/s. On real coding-agent sessions of 28K to 70K tokens, decode runs at 51.6 tok/s.
+Decode at 128 tokens runs at 37.15 tok/s with MTP and 32.19 tok/s without MTP (release build v0.1.0, upstream’s benchmark program). On a copy-heavy code edit, MTP reaches 97.4 tok/s on the second request, with the prompt cached. The first request runs at 96.5 tok/s. On real coding-agent sessions of 28K to 70K tokens, decode runs at 51.6 tok/s.
 
 Three parts work together:
 

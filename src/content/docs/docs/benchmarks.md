@@ -72,8 +72,8 @@ The sums differ by one point. That is within noise. The final-answer count in th
 <tbody>
 <tr><th scope="row">Prefill pp2048, plain</th><td><strong>1,325</strong></td><td>Upstream’s prompt recipe, greedy. Median of five runs. 2026-10-10.</td></tr>
 <tr><th scope="row">Prefill pp2048, MTP</th><td><strong>1,325</strong></td><td>Same prompt recipe, MTP drafting. Median. 2026-10-10.</td></tr>
-<tr><th scope="row">Decode tg128, plain</th><td><strong>27.8</strong></td><td>Upstream’s benchmark program, greedy. Median. 2026-10-10.</td></tr>
-<tr><th scope="row">Decode tg128, MTP</th><td><strong>34.5</strong></td><td>Same program, MTP drafting. Median of five runs. 2026-10-10.</td></tr>
+<tr><th scope="row">Decode tg128, without MTP</th><td><strong>32.19</strong></td><td>Upstream’s benchmark program, greedy. Median of 3. Release build v0.1.0. 2026-10-12.</td></tr>
+<tr><th scope="row">Decode tg128, MTP</th><td><strong>37.15</strong></td><td>Same program, MTP drafting. Median of 3. Release build v0.1.0. 2026-10-12.</td></tr>
 <tr><th scope="row">Natural-text prefill, 2K / 8K / 32K</th><td><strong>1,288 / 1,201 / 1,268</strong></td><td>Research-notes text. Median of three runs. 2026-10-10.</td></tr>
 <tr><th scope="row">Six short greedy prompts</th><td><strong>54.2</strong></td><td>Mean across six probes with the production launcher. 2026-10-10.</td></tr>
 <tr><th scope="row">Copy-heavy code edit</th><td><strong>Up to 97.4</strong></td><td>96.5 on the first request; 97.4 on the second request with the same prompt cached. Rename-and-rewrite task, prompt lookup + MTP, release build v0.1.0. Lookup acceptance: 99%. 2026-10-12. The same run is in the comparison table below.</td></tr>
