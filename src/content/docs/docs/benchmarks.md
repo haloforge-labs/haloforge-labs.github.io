@@ -38,26 +38,6 @@ In the gufo run (pixmaate’s Windows port), 3 requests ended without a final an
 
 In the Halowin Bubo run, 1 request ended without a final answer. On this pre-release build, AIME item 29 (aime26-29) repeated a 44-token block until the context limit (261,913 tokens), because the loop breaker of that build only caught repeats of up to 16 tokens. v0.1.0 catches repeats of up to 128 tokens in reasoning. A re-run on a later pre-release build with this fix (B6.2, 2026-10-11) finished in 70,776 tokens with no loop, and the answer was wrong. The table keeps the first run. The re-run does not change the totals.
 
-### Tokens used
-
-Completion tokens are the tokens each engine generated, reasoning included, for the same requests. Pre-release build (B6.1), 2026-10-10.
-
-<table>
-<thead><tr><th scope="col">Set</th><th scope="col">Requests</th><th scope="col">Halowin Bubo tokens (per request)</th><th scope="col">gufo (pixmaate’s Windows port) tokens (per request)</th></tr></thead>
-<tbody>
-<tr><th scope="row">GPQA Diamond</th><td>24</td><td>102,707 (4,279)</td><td>144,531 (6,022)</td></tr>
-<tr><th scope="row">AIME 2026 *</th><td>4</td><td>424,762 (106,190)</td><td>168,862 (42,216)</td></tr>
-<tr><th scope="row">HMMT 2026</th><td>4</td><td>203,936 (50,984)</td><td>152,039 (38,010)</td></tr>
-<tr><th scope="row">IMO 2026 (final answer)</th><td>3</td><td>148,449 (49,483)</td><td>146,603 (48,868)</td></tr>
-<tr><th scope="row">Total, all requests</th><td>35</td><td>879,854 (25,139)</td><td>612,035 (17,487)</td></tr>
-<tr><th scope="row">Total, 32 answered by both</th><td>32</td><td>580,456 (18,139)</td><td>525,293 (16,415)</td></tr>
-</tbody>
-</table>
-
-<p class="benchmark-small-print">* The AIME row of Halowin Bubo includes item 29, which repeated a block until the context limit (261,913 tokens) on this pre-release build. The 32-request row leaves out the three requests that did not get an answer from both engines: AIME item 29 and the two GPQA requests that gufo ended early.</p>
-
-Per request, token use is even. On the 32 requests that both engines answered, the median ratio of Halowin Bubo tokens to gufo tokens is 1.00 (geometric mean 0.96), and Halowin Bubo used fewer tokens on 16 of the 32. It used 29% fewer tokens on GPQA Diamond. On a few long AIME and HMMT problems it generated more tokens (hmmt26-33: 74,414 tokens against 38,279; hmmt26-7: 65,403 against 27,563), so its total on the 32 requests is 10% higher.
-
 Decode speed is the total completion tokens divided by the engine decode seconds, on the requests that ran in Performance mode on both engines (33 of 35 for the total; AIME uses 2 of 4). The first table scores the IMO final answer only.
 
 ### IMO 2026 write-ups
