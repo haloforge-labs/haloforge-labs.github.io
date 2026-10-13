@@ -2,10 +2,12 @@
 interface Props { compact?: boolean; }
 const { compact = false } = Astro.props;
 const metrics = [
-  { value: '1,325', label: 'tok/s prefill', note: 'Prompt processing, 2K-token prompt.' },
-  { value: '51–55', label: 'tok/s up to 189K context', note: 'Real agent sessions, chained from 28K to 189K tokens. Speed stays flat as the context grows.' },
-  { value: '93.8', prefix: 'up to', label: 'tok/s on code edits', note: 'Rename-and-rewrite edits that copy most of the file. Prompt lookup + MTP, greedy, thinking on. First request: 85.9 tok/s. 93.8 tok/s uses a cached prompt.' },
+  { value: '29/35', label: 'hard reasoning problems solved', note: 'GPQA Diamond, AIME 2026, HMMT 2026 and IMO 2026, the same 35 requests on both engines. One IMO 2026 write-up scored 7/7 (model-judged).' },
+  { value: '55', label: 'tok/s decode on real agent sessions', note: 'Flat from 28K to 189K tokens of context. Up to 67 tok/s on AIME-style reasoning.' },
+  { value: '1,325', label: 'tok/s prefill', note: 'Prompt processing, 2K-token prompt. NPU prefill adds about 5 to 7 % at 8K tokens.' },
+  { value: '3.5 s', label: 'to resume a 109K-token chat after a restart', note: 'With the optional disk cache. Without it the same prompt takes 88.8 s.' },
   { value: '102.2', label: 'tok/s total with 8 users', note: 'Eight users at once, 4K context each. Combined speed for all users.' },
+  { value: '93.8', prefix: 'up to', label: 'tok/s on code edits', note: 'Rename-and-rewrite edits that copy most of the file. Prompt lookup + MTP, greedy, thinking on. First request: 85.9 tok/s. 93.8 tok/s uses a cached prompt.' },
   { value: '51.6', label: 'tok/s on real agent sessions', note: 'Real coding-agent sessions, 28K–70K context. Temperature 1.0, thinking on. Not synthetic prompts.' },
   { value: '34.5', label: 'tok/s tg128 with MTP', note: 'Upstream’s benchmark program, greedy decode with MTP.' },
   { value: '1,268', label: 'tok/s natural-text prefill', note: '32K context, research-notes text. Median of three runs, about 70 W.' },
@@ -13,7 +15,7 @@ const metrics = [
 ---
 <div class:list={['measurements', { compact }]}>
   <dl class="benchmark-strip" aria-label="Halowin Bubo measured benchmark results">
-    {(compact ? metrics.slice(0, 4) : metrics).map(metric => (
+    {(compact ? metrics.slice(0, 6) : metrics).map(metric => (
       <div class="benchmark-tile">
         <dt>{metric.label}</dt>
         <dd class="benchmark-value">{metric.prefix && <span class="benchmark-prefix">{metric.prefix} </span>}{metric.value}</dd>
@@ -24,7 +26,7 @@ const metrics = [
 </div>
 <style>
   .benchmark-strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-block: 1px solid var(--line); padding-block: 26px; margin: 0 0 24px; gap: 30px 24px; }
-  .compact .benchmark-strip { grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 0; margin-top: 8px; }
+  .compact .benchmark-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 0; margin-top: 8px; }
   .benchmark-tile { display: flex; flex-direction: column; min-width: 0; }
   .benchmark-tile dt { order: 1; font-size: 1.05rem; line-height: 1.4; margin-top: 8px; }
   .benchmark-tile dd { margin: 0; }
