@@ -141,10 +141,10 @@ The first test shows that Bubo does not slow the kernels down. The other two sho
 </tbody>
 </table>
 
-## Same-laptop comparison: Rulith (tuned llama.cpp), gufo and Halowin Bubo
+## Same-laptop comparison: Rulith (tuned llama.cpp fork), gufo and Halowin Bubo
 
 <table>
-<thead><tr><th scope="col">Test, tok/s</th><th scope="col">Rulith 0.5.7 (tuned llama.cpp, batch 4096)</th><th scope="col">gufo (pixmaate prebuilt, 2026-10-03)</th><th scope="col">Bubo v0.1.0</th></tr></thead>
+<thead><tr><th scope="col">Test, tok/s</th><th scope="col">Rulith 0.5.7 (tuned llama.cpp fork, batch 4096)</th><th scope="col">gufo (pixmaate prebuilt, 2026-10-03)</th><th scope="col">Bubo v0.1.0</th></tr></thead>
 <tbody>
 <tr><th scope="row">Model files</th><td>Unsloth UD-IQ4_XS, mmproj-F16, own draft</td><td>Huihui UD-Q4_K_XL, shared Q8_0 MTP</td><td>Huihui UD-Q4_K_XL, shared Q8_0 MTP, twin, draft head</td></tr>
 <tr><th scope="row">Prefill pp2048, without / with MTP</th><td>1,183 / 1,164</td><td>1,227 / 1,203</td><td>1,364 / 1,218</td></tr>
