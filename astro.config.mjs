@@ -23,7 +23,7 @@ export default defineConfig({
         { tag: 'meta', attrs: { name: 'twitter:image:alt', content: 'Halowin Bubo from HaloForge Labs: a local LLM server for AMD Strix Halo, native on Windows. 51–55 tok/s decode, 29/35 on reasoning checks, 1,364 tok/s prefill, at about 70 W.' } },
       ],
       customCss: ['./src/styles/theme.css', './src/styles/docs.css'],
-      components: { SiteTitle: './src/components/DocsSiteTitle.astro', Header: './src/components/DocsHeader.astro' },
+      components: { SiteTitle: './src/components/DocsSiteTitle.astro', Header: './src/components/DocsHeader.astro', Footer: './src/components/DocsFooter.astro' },
       sidebar: [
         { label: 'Halowin Bubo', link: '/bubo/' },
         {

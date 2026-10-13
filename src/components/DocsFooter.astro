@@ -1,0 +1,42 @@
+---
+import Default from '@astrojs/starlight/components/Footer.astro';
+---
+<Default {...Astro.props}><slot /></Default>
+<section class="feedback" aria-labelledby="feedback-title">
+  <h2 id="feedback-title">Feedback</h2>
+  <p>Comments on this page use GitHub Discussions. You need a GitHub account to comment. For bugs, open an <a href="https://github.com/haloforge-labs/bubo/issues">issue</a>.</p>
+  <div class="giscus-slot"></div>
+</section>
+<script is:inline>
+  (function () {
+    var slot = document.querySelector('.giscus-slot');
+    if (!slot) return;
+    var theme = function () { return document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light'; };
+    var s = document.createElement('script');
+    s.src = 'https://giscus.app/client.js';
+    s.setAttribute('data-repo', 'haloforge-labs/bubo');
+    s.setAttribute('data-repo-id', 'R_kgDOVGsZSw');
+    s.setAttribute('data-category', 'Announcements');
+    s.setAttribute('data-category-id', 'DIC_kwDOVGsZS84DIU0P');
+    s.setAttribute('data-mapping', 'pathname');
+    s.setAttribute('data-strict', '1');
+    s.setAttribute('data-reactions-enabled', '1');
+    s.setAttribute('data-emit-metadata', '0');
+    s.setAttribute('data-input-position', 'top');
+    s.setAttribute('data-theme', theme());
+    s.setAttribute('data-lang', 'en');
+    s.setAttribute('data-loading', 'lazy');
+    s.crossOrigin = 'anonymous';
+    s.async = true;
+    slot.appendChild(s);
+    new MutationObserver(function () {
+      var frame = document.querySelector('iframe.giscus-frame');
+      if (frame) frame.contentWindow.postMessage({ giscus: { setConfig: { theme: theme() } } }, 'https://giscus.app');
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  })();
+</script>
+<style>
+  .feedback { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+  .feedback h2 { font-size: 1.5rem; margin: 0 0 .5rem; }
+  .feedback p { font-size: 1rem; color: var(--muted); }
+</style>
