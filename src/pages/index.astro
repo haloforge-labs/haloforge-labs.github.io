@@ -23,10 +23,10 @@ const step2 = String.raw`$model = "$env:LOCALAPPDATA\Bubo\models\huihui-qwen38-f
 const step3 = String.raw`'{"model":"bubo","messages":[{"role":"user","content":"Hello"}]}' | curl.exe -s http://127.0.0.1:8080/v1/chat/completions -H "Content-Type: application/json" -d "@-"`;
 
 const rows = [
-  { label: 'Agent, code and prose tasks', note: 'Temperature 1.0, thinking on. tok/s', v: [59.1, 44.5, 39.6] },
-  { label: 'Code edits, first request', note: 'Edits that reuse your file’s text. tok/s', v: [96.5, 58, 60.1] },
-  { label: 'Prose', note: 'tok/s', v: [43.9, 33.9, 44.5] },
-  { label: 'Prefill, 32K of natural text', note: 'tok/s', v: [1287, 796, 1126] },
+  { label: 'Agent, code and prose tasks', note: 'Temperature 1.0, thinking on. tok/s', v: [59.1, 44.5] },
+  { label: 'Code edits, first request', note: 'Edits that reuse your file’s text. tok/s', v: [96.5, 58] },
+  { label: 'Prose', note: 'tok/s', v: [43.9, 33.9] },
+  { label: 'Prefill, 32K of natural text', note: 'tok/s', v: [1287, 796] },
 ];
 const fmt = (n: number, dec: boolean) => dec ? n.toFixed(1) : n.toLocaleString('en-US');
 ---
@@ -63,7 +63,7 @@ const fmt = (n: number, dec: boolean) => dec ? n.toFixed(1) : n.toLocaleString('
     <h2 id="versus-title">Faster than a tuned llama.cpp fork on the same laptop</h2>
     <div class="table-wrap">
       <table>
-        <thead><tr><th scope="col"><span class="visually-hidden">Workload</span></th><th scope="col" class="us">Bubo v0.1.0</th><th scope="col">Rulith 0.5.7<br /><span class="sub">tuned llama.cpp fork</span></th><th scope="col">gufo<br /><span class="sub">Windows port, prebuilt 2026-10-03</span></th></tr></thead>
+        <thead><tr><th scope="col"><span class="visually-hidden">Workload</span></th><th scope="col" class="us">Bubo v0.1.0</th><th scope="col">Rulith 0.5.7<br /><span class="sub">tuned llama.cpp fork</span></th></tr></thead>
         <tbody>
           {rows.map(r => {
             const best = Math.max(...r.v);
