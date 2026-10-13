@@ -17,7 +17,7 @@ Pygmy owls wear a second face on the back of the head: two dark spots that look 
 
 The twin stays close to the reference. Against a 6-bit reference, the perplexity ratio is 1.0014 on agent text and 1.0050 on code. The twin agrees with the reference on the top token in 96.7 % of positions (teacher-forced text check).
 
-The twin is not byte-exact, so `exact` mode does not use it. The twin copies the tensors that Huihui abliterated (attention output and the shared-expert down projection), so it matches the Huihui `UD-Q4_K_XL` shards. A twin for the plain Unsloth shards needs its own build.
+The twin is not byte-exact, so `exact` mode does not use it. The twin copies the tensors that Huihui abliterated (the shared-expert down projection and the SSM output projection), so it matches the Huihui `UD-Q4_K_XL` shards. A twin for the plain Unsloth shards needs its own build.
 
 ## Draft head: cheaper drafts
 
