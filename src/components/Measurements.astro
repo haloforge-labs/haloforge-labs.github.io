@@ -2,7 +2,7 @@
 interface Props { compact?: boolean; }
 const { compact = false } = Astro.props;
 const metrics = [
-  { value: '29/35', label: 'hard reasoning problems solved', note: 'GPQA Diamond, AIME 2026, HMMT 2026 and IMO 2026, the same 35 requests on both engines. One IMO 2026 write-up scored 7/7 (model-judged).' },
+  { value: '29/35', label: 'hard reasoning problems solved', note: 'Against 27/35 for gufo with pixmaate’s Windows port, with about 24 % faster decode. The same 35 GPQA, AIME, HMMT and IMO requests on both engines.' },
   { value: '55', label: 'tok/s decode on real agent sessions', note: 'Flat from 28K to 189K tokens of context. Up to 67 tok/s on AIME-style reasoning.' },
   { value: '1,325', label: 'tok/s prefill', note: 'Prompt processing, 2K-token prompt. NPU prefill adds about 5 to 7 % at 8K tokens.' },
   { value: '3.5 s', label: 'to resume a 109K-token chat after a restart', note: 'With the optional disk cache. Without it the same prompt takes 88.8 s.' },
