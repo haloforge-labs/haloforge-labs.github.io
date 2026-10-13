@@ -1,6 +1,6 @@
 ---
 title: Profiles
-description: "The four Halowin Bubo profiles for a local LLM server on Windows: default for speed, exact for token-for-token output, stock and subagents."
+description: "Four profiles for a local LLM server on AMD Strix Halo under Windows: default for speed, exact for token-for-token output, stock and subagents."
 head:
   - tag: title
     content: "Profiles: default, exact, stock and subagents | Halowin Bubo"
@@ -10,7 +10,7 @@ head:
     attrs: { name: "twitter:title", content: "Profiles: default, exact, stock and subagents | Halowin Bubo" }
 ---
 
-Use `default` for normal use on a 70 W Strix Halo laptop.
+Use `default` for normal use on a Strix Halo laptop.
 Bubo selects it automatically.
 
 Bubo is tuned for Qwen3.8 Flash Next. The other models run with upstream gufo settings.

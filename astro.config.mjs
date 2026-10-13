@@ -36,6 +36,7 @@ export default defineConfig({
             { label: 'Supported models', slug: 'docs/models' },
             { label: 'Profiles', slug: 'docs/profiles' },
             { label: 'Options', slug: 'docs/options' },
+            { label: 'API reference', slug: 'docs/api' },
             { label: 'Known issues', slug: 'docs/known-issues' },
             { label: 'Benchmarks', slug: 'docs/benchmarks' },
             { label: 'Under the hood', slug: 'docs/under-the-hood' },

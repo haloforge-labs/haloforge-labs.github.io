@@ -1,6 +1,6 @@
 ---
 title: Halowin Bubo docs
-description: "Guides for Halowin Bubo, a local LLM server for AMD Strix Halo on Windows: system setup, install, quickstart, profiles, options and benchmarks."
+description: "Guides for Halowin Bubo, a local LLM server for AMD Strix Halo (Ryzen AI Max+ 395) on Windows: setup, install, quickstart, API, options, benchmarks."
 head:
   - tag: title
     content: "Docs: install and run a local LLM server on Windows | Halowin Bubo"
@@ -27,6 +27,7 @@ Use Qwen3.8 Flash Next in GGUF format with the UD-Q4_K_XL quant. Use Performance
 - [Supported models](/docs/models/): all gufo model families.
 - [Profiles](/docs/profiles/): settings for each use.
 - [Options](/docs/options/): every server option and environment value.
+- [API reference](/docs/api/): every HTTP endpoint, with request fields, streaming, tool calls and errors.
 - [Fast restarts with the disk cache](/docs/quickstart/#fast-restarts-with-the-disk-cache): the optional disk prompt cache.
 - [Known issues](/docs/known-issues/): memory, tracing, and the disk prompt cache.
 - [Benchmarks](/docs/benchmarks/): measured speeds and test conditions.

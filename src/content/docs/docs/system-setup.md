@@ -12,7 +12,7 @@ head:
 
 **Supported hardware:** Bubo is built and tested for AMD Strix Halo with 128 GB of memory on Windows, mainly laptops. It can work on other machines, but we make no promise.
 
-Use these settings for an AMD Strix Halo laptop at about 70 W. Each section gives the reason for the setting and a read-only check.
+Use these settings for an AMD Strix Halo laptop. Each section gives the reason for the setting and a read-only check.
 
 ## Check everything with one command
 
@@ -52,11 +52,23 @@ The first command must show `InitialSize` and `MaximumSize` of 131072, and the s
 
 ## Power mode
 
-Use **Performance** mode. Armoury Crate sets it on ASUS laptops. On other machines, use the power mode of your maker's tool.
+Use the full-power adapter and the **Performance** profile. Every speed number on this site comes from a 13-inch laptop at this setting: full-speed inference at laptop power, approximately 70 W on the GPU.
 
-Why: the mode sets the power limit of the chip. All our benchmarks ran in Performance mode at about 70 W.
+How to reach it:
 
-Check that it took effect: the tool of your maker must show Performance. Run a long request, and then read the GPU power in a monitor such as the Adrenalin performance overlay. It must show about 70 W.
+1. Plug in the laptop's own full-power adapter (the ASUS 200 W adapter on the ProArt PX13). Do not use a USB-C dock. A dock cannot hold full power under sustained load.
+2. Set the performance profile of your maker. On ASUS laptops, open Armoury Crate and choose **Performance**. On other brands, use the equivalent profile.
+3. Set the Windows power mode to **Best performance**.
+
+Why: the profile sets the power limit of the chip. Quiet profiles such as Whisper, and battery power, cap the power lower and run slower.
+
+Check that it took effect: run a long generation and watch the GPU power in the AMD Adrenalin metrics overlay or in HWiNFO.
+
+- The first 6 seconds or so read higher, 74 to 83 W. This is the boost after an idle gap.
+- After that, GPU power must hold approximately 70 W, at a clock of about 2,030 to 2,200 MHz.
+- A lower value means a quiet profile, battery power or a dock.
+
+Manual mode on the same laptop can go higher (SPL 85 W, SPPT 95 W, fans at 100%). We measured about 95 W on the GPU and a clock 11% higher. An older llama.cpp engine gained 6 to 9% prefill and 5 to 7% decode there. We did not test Bubo in Manual mode. Desktop Strix Halo machines run up to about 140 W: see the [140 W estimate](/docs/benchmarks/#estimated-at-140-w).
 
 ## Graphics driver
 

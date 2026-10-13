@@ -1,6 +1,6 @@
 ---
 title: Known issues
-description: "Known issues in Halowin Bubo v0.1.0: tracing, host memory, the disk prompt cache and unsigned Windows builds."
+description: "Known issues of the Halowin Bubo v0.1.0 local LLM server for AMD Strix Halo on Windows: tracing, host memory, the disk prompt cache and unsigned builds."
 head:
   - tag: title
     content: "Known issues on Windows with Strix Halo | Halowin Bubo"

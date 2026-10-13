@@ -1,6 +1,6 @@
 ---
 title: Options
-description: "Every Halowin Bubo server option and environment value with its default and when to change it."
+description: "Every option and environment value of the Halowin Bubo local LLM server for AMD Strix Halo on Windows, with defaults and when to change each one."
 head:
   - tag: title
     content: "Server options and defaults | Halowin Bubo"
@@ -10,7 +10,7 @@ head:
     attrs: { name: "twitter:title", content: "Server options and defaults | Halowin Bubo" }
 ---
 
-Use the `default` profile for normal use on a 70 W Strix Halo laptop.
+Use the `default` profile for normal use on a Strix Halo laptop.
 The defaults below apply to Qwen3.8 Flash Next.
 Bubo is tuned for Qwen3.8 Flash Next. The other models run with upstream gufo settings.
 
@@ -230,6 +230,8 @@ The manifest path is chosen in this order: `--manifest PATH`, then the `BUBO_MAN
 The server checks file sizes, GGUF headers and tensor tables, and the manifest entries. It never hashes model payloads, including the first start.
 `--verify-model` needs a valid package manifest. It hashes all eight model files (about 2 to 4 minutes on an SSD, an estimate) and the files you select with explicit paths.
 `--cache-disk` needs a prepared manifest. The first start with the cache checks the model files once and saves a stamp.
+
+The [API reference](/docs/api/) lists every endpoint and request field.
 
 ## Chat API limits
 

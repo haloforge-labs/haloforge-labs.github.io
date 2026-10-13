@@ -1,6 +1,6 @@
 ---
 title: NPU prefill
-description: "Use the Ryzen AI NPU for part of the prompt processing in Halowin Bubo: measured gains, requirements and options."
+description: "Use the Ryzen AI NPU on Ryzen AI Max+ 395 (Strix Halo) for part of LLM prompt processing under Windows: measured gains, requirements and options."
 head:
   - tag: title
     content: "NPU prefill on AMD Strix Halo | Halowin Bubo"
@@ -14,7 +14,7 @@ Bubo can send part of the prompt processing (prefill) to the Ryzen AI NPU while 
 
 ## What to expect
 
-Measured on a 70 W Strix Halo laptop (128 GB, Windows 11):
+Measured on a Strix Halo laptop (128 GB, Windows 11):
 
 | Prompt | Prefill speed change |
 | --- | --- |

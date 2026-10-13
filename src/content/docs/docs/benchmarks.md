@@ -1,6 +1,6 @@
 ---
 title: Benchmarks
-description: "Measured decode and prefill speed, reasoning checks and a same-laptop comparison for Halowin Bubo on AMD Strix Halo at about 70 W."
+description: "Qwen3.8 Flash Next speed on AMD Strix Halo (Ryzen AI Max+ 395) under Windows: measured decode and prefill tok/s, reasoning checks, engine comparison."
 head:
   - tag: title
     content: "Benchmarks: Strix Halo decode and prefill tok/s | Halowin Bubo"
@@ -10,7 +10,7 @@ head:
     attrs: { name: "twitter:title", content: "Benchmarks: Strix Halo decode and prefill tok/s | Halowin Bubo" }
 ---
 
-Halowin Bubo on the ASUS ProArt PX13 with Radeon 8060S, about 70 W. Model: Qwen3.8 Flash Next UD-Q4_K_XL with a Q8_0 MTP draft head. Windows 11. Performance power mode. Every measured number comes from our own logs.
+Halowin Bubo on the ASUS ProArt PX13 with Radeon 8060S. Every number comes from a 13-inch laptop at its normal plugged-in Performance setting, approximately 70 W. That is full-speed local inference at laptop power: about half of what a desktop Strix Halo draws, so less heat and fan noise than a desktop or an overclocked laptop, on a machine you can carry. [How to reach this power](/docs/system-setup/#power-mode). Desktops and Manual mode have more headroom: see the [140 W estimate](#estimated-at-140-w). Model: Qwen3.8 Flash Next UD-Q4_K_XL with a Q8_0 MTP draft head. Windows 11. Performance power mode. Every measured number comes from our own logs.
 
 Tests: 8–12 October 2026. tok/s means tokens per second.
 
@@ -83,14 +83,14 @@ The sums differ by one point. That is within noise. The final-answer count in th
 
 ## Many users
 
-Combined decode speed with several users at the same time. Upstream gufo’s own benchmark program, 4K context per user, thinking off, Performance mode, about 70 W. For 4 and 8 users: median of six runs, with the range in brackets. 2026-10-12.
+Combined decode speed with several users at the same time. Upstream gufo’s own benchmark program, 4K context per user, thinking off, Performance mode. For 4 and 8 users: median of six runs, with the range in brackets. 2026-10-12.
 
 <table>
 <thead><tr><th scope="col">Users</th><th scope="col">Halowin Bubo, plain decode</th><th scope="col">Halowin Bubo, MTP</th><th scope="col">Upstream gufo, plain decode</th><th scope="col">Upstream gufo, MTP</th></tr></thead>
 <tbody>
 <tr><th scope="row">1</th><td>27.7</td><td><strong>37.4</strong></td><td>25.84</td><td>31.28</td></tr>
 <tr><th scope="row">4</th><td>74.3 (73.4–75.7)</td><td><strong>79.2</strong> (74.9–82.8)</td><td>76.33</td><td>76.16</td></tr>
-<tr><th scope="row">8 (about 70 W against upstream full power)</th><td>102.2 (101.8–103.7)</td><td>about 100–107</td><td>108.68</td><td>107.77</td></tr>
+<tr><th scope="row">8 (laptop against upstream full power)</th><td>102.2 (101.8–103.7)</td><td>about 100–107</td><td>108.68</td><td>107.77</td></tr>
 </tbody>
 </table>
 
@@ -156,7 +156,7 @@ The first test shows that Bubo does not slow the kernels down. The other two sho
 </tbody>
 </table>
 
-Same laptop, about 70 W, one pass per engine, measured on 12 and 13 October 2026.
+Same laptop, one pass per engine, measured on 12 and 13 October 2026.
 
 Lookup drafting is in Bubo only.
 

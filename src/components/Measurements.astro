@@ -12,7 +12,7 @@ const metrics = [
 ];
 ---
 <div class:list={['measurements', { compact }]}>
-  <p class="model-line">Measured with Qwen3.8 Flash Next (125B parameters, 6B active) in the UD-Q4_K_XL quant, on AMD Strix Halo at about 70 W.</p>
+  <p class="model-line">Measured with Qwen3.8 Flash Next (125B parameters, 6B active) in the UD-Q4_K_XL quant, on AMD Strix Halo. Every number comes from a 13-inch laptop at its normal plugged-in Performance setting, approximately 70 W. That is full-speed local inference at laptop power: about half of what a desktop Strix Halo draws, so less heat and fan noise than a desktop or an overclocked laptop, on a machine you can carry. <a href="/docs/system-setup/#power-mode">How to reach this power</a>. Desktops and Manual mode have more headroom: see the <a href="/docs/benchmarks/#estimated-at-140-w">140 W estimate</a>.</p>
   <dl class="benchmark-strip" aria-label="Halowin Bubo measured benchmark results">
     {(compact ? metrics.slice(0, 6) : metrics).map(metric => (
       <div class="benchmark-tile">

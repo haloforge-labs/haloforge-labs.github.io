@@ -1,6 +1,6 @@
 ---
 title: Quickstart
-description: "Start the Halowin Bubo server on Windows and send a first request with PowerShell, curl or the OpenAI Python SDK. Connect a coding agent."
+description: "Start a local Qwen3.8 Flash Next server on Windows and send a first request with PowerShell, curl or the OpenAI Python SDK. Connect a coding agent."
 head:
   - tag: title
     content: "Quickstart: OpenAI-compatible local LLM server | Halowin Bubo"
@@ -115,6 +115,8 @@ print(reply.choices[0].message.content)
 
 The server checks no key unless you start it with `--api-key`. The SDK needs a key that is not empty, so any text works.
 
+For every endpoint, request field and error, see the [API reference](/docs/api/).
+
 ## Use it with a coding agent
 
 Any agent that talks to an OpenAI-compatible server can use Bubo. Set these values in the agent.
@@ -201,7 +203,7 @@ See [profiles](/docs/profiles/) for the exact scope.
 
 The disk prompt cache is off by default. When you turn it on, Bubo keeps the computed prompt state of long conversations on the disk. After a server restart, or after the RAM cache drops a conversation, the conversation continues without processing the whole prompt again.
 
-Measured on a 70 W Strix Halo laptop with a 30K-token session:
+Measured on a Strix Halo laptop with a 30K-token session:
 
 | Measured | Value |
 | --- | --- |

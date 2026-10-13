@@ -1,6 +1,6 @@
 ---
 title: Under the hood
-description: "How Halowin Bubo gets its speed on AMD Strix Halo: the dense twin, the draft head, MTP drafting, NPU prefill, the disk cache and exact mode."
+description: "How a local Qwen3.8 Flash Next server gets its speed on AMD Strix Halo: dense twin, draft head, MTP drafting, NPU prefill, disk cache and exact mode."
 head:
   - tag: title
     content: "Under the hood: MTP drafting, NPU prefill, disk cache | Halowin Bubo"
@@ -12,7 +12,7 @@ head:
 
 One chip. One package. Every layer tuned for it.
 
-Bubo starts from gufo and a Windows port. The rest is our work: a 4-bit twin of the model, a draft head, an MTP drafting stack, fixes for long reasoning, NPU prefill, a disk cache and an exact mode. Most of it runs by default. All numbers come from one 70 W Strix Halo laptop in Performance mode.
+Bubo starts from gufo and a Windows port. The rest is our work: a 4-bit twin of the model, a draft head, an MTP drafting stack, fixes for long reasoning, NPU prefill, a disk cache and an exact mode. Most of it runs by default. All numbers come from one Strix Halo laptop in Performance mode ([power setup](/docs/system-setup/#power-mode)).
 
 ## Janus: a second face for decode
 

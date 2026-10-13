@@ -1,6 +1,6 @@
 ---
 title: Supported models
-description: "The model families that Halowin Bubo runs on AMD Strix Halo, taken from gufo, and the one it is tuned for: Qwen3.8 Flash Next."
+description: "Models for a local LLM server on AMD Strix Halo (Ryzen AI Max+ 395) under Windows: Qwen3.8 Flash Next, Qwen3.8 27B, DeepSeek V4 Flash and more."
 head:
   - tag: title
     content: "Supported models: Qwen3.8 Flash Next and more | Halowin Bubo"

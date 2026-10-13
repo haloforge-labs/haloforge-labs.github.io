@@ -1,6 +1,6 @@
 ---
 title: Install
-description: "Install the Halowin Bubo package on Windows, then download the AMD ROCm runtime for gfx1151 and the model files with one command."
+description: "Install a local LLM server on Windows for AMD Strix Halo (Ryzen AI Max+ 395): get the package, then download the ROCm gfx1151 runtime and Qwen model files."
 head:
   - tag: title
     content: "Install on Windows with ROCm for gfx1151 | Halowin Bubo"
@@ -12,7 +12,7 @@ head:
 
 **Supported hardware:** Bubo is built and tested for AMD Strix Halo with 128 GB of memory on Windows, mainly laptops. It can work on other machines, but we make no promise.
 
-Use this setup for a Strix Halo laptop with Radeon 8060S graphics at approximately 70 W.
+Use this setup for a Strix Halo laptop with Radeon 8060S graphics.
 Bubo runs natively on Windows 11 x64 with AMD HIP.
 
 ## Prepare the laptop
