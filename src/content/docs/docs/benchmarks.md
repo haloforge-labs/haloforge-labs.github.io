@@ -8,12 +8,12 @@ Halowin Bubo on the ASUS ProArt PX13 with Radeon 8060S, about 70 W. Model: Qwen3
 Tests: 8–12 October 2026. tok/s means tokens per second.
 
 
-## Reasoning check: Halowin Bubo and stock gufo
+## Reasoning check: Halowin Bubo and gufo with pixmaate’s Windows port
 
 Both engines answered the same 35 requests on the same laptop in Performance mode. The requests came from GPQA Diamond, AIME 2026, HMMT 2026 and IMO 2026. Both engines used the same request bodies and seeds. The score counts final answers only. An answer that never arrives counts as wrong.
 
 <table>
-<thead><tr><th scope="col">Set</th><th scope="col">Halowin Bubo correct</th><th scope="col">Stock gufo correct</th><th scope="col">Bubo decode tok/s</th><th scope="col">Stock decode tok/s</th></tr></thead>
+<thead><tr><th scope="col">Set</th><th scope="col">Halowin Bubo correct</th><th scope="col">gufo with pixmaate’s Windows port correct</th><th scope="col">Bubo decode tok/s</th><th scope="col">gufo with pixmaate’s Windows port decode tok/s</th></tr></thead>
 <tbody>
 <tr><th scope="row">GPQA Diamond</th><td><strong>20/24</strong></td><td>19/24</td><td><strong>58.7</strong></td><td>46.8</td></tr>
 <tr><th scope="row">AIME 2026</th><td><strong>3/4</strong></td><td>2/4</td><td><strong>67.0</strong></td><td>54.2</td></tr>
@@ -23,9 +23,9 @@ Both engines answered the same 35 requests on the same laptop in Performance mod
 </tbody>
 </table>
 
-Halowin Bubo gives the same or better accuracy than stock gufo and decodes about 24 % faster on these requests. The 95 % intervals of the two engines overlap in every set, and each set has few items. Read the result as "no loss of accuracy", not as "more accurate".
+Halowin Bubo gives the same or better accuracy than gufo with pixmaate’s Windows port and decodes about 24 % faster on these requests. The 95 % intervals of the two engines overlap in every set, and each set has few items. Read the result as "no loss of accuracy", not as "more accurate".
 
-Stock gufo ended 3 requests without a final answer. Halowin Bubo ended 1: a long repeating loop that its next build cuts short.
+gufo with pixmaate’s Windows port ended 3 requests without a final answer. Halowin Bubo ended 1: a long repeating loop that its next build cuts short.
 
 AIME item 29 (aime26-29): the first run, on an earlier build, repeated text until the context limit. A re-run on the release build answered in 70,776 tokens, and the answer was wrong. The table keeps the first run. The re-run does not change the totals.
 
@@ -36,7 +36,7 @@ Decode speed is the total completion tokens divided by the engine decode seconds
 Halowin Bubo solves IMO 2026 P4 and P5. A model judge (GPT-6.1 Sol) gave full marks (7/7) to its P4 write-up and to one of its two P5 write-ups. The judge graded the final write-up only, on a scale of 0 to 7. The prompts asked for the final answer, not a proof.
 
 <table>
-<thead><tr><th scope="col">Problem and seed</th><th scope="col">Halowin Bubo (0–7)</th><th scope="col">Stock gufo (0–7)</th></tr></thead>
+<thead><tr><th scope="col">Problem and seed</th><th scope="col">Halowin Bubo (0–7)</th><th scope="col">gufo with pixmaate’s Windows port (0–7)</th></tr></thead>
 <tbody>
 <tr><th scope="row">P4</th><td>7</td><td>7</td></tr>
 <tr><th scope="row">P5, seed 1001</th><td>7</td><td>7</td></tr>
@@ -45,7 +45,7 @@ Halowin Bubo solves IMO 2026 P4 and P5. A model judge (GPT-6.1 Sol) gave full ma
 </tbody>
 </table>
 
-The sums differ by one point. That is within noise. The final-answer count in the first table is the reverse (Bubo 3/3, stock 2/3). Three write-ups per engine are too few to rank the two engines.
+The sums differ by one point. That is within noise. The final-answer count in the first table is the reverse (Bubo 3/3, gufo 2/3). Three write-ups per engine are too few to rank the two engines.
 
 ## Real work
 
@@ -110,14 +110,50 @@ These are estimates. They are not measurements at 140 W.
 
 At 140 W, Halowin Bubo is estimated at **1,617–1,762 tok/s prefill (pp2048)**, level with upstream’s published rate. Upstream gufo publishes **1,700 tok/s on full-power Strix Halo hardware**. This comparison uses gufo v0.10.0 plus main at commit 97b8645f, the base of Halowin Bubo.
 
+## Where the speed comes from
+
+Three tests give three different gains, because they measure different things.
+
+<table>
+<thead><tr><th scope="col">Test</th><th scope="col">Gain</th><th scope="col">What differs between the two runs</th></tr></thead>
+<tbody>
+<tr><th scope="row">Upstream pp2048 and tg128 program</th><td>None. Same speed.</td><td>Only the kernels. The twin, the draft head, prompt lookup, the survival policy, draft vocabulary trimming, lenient acceptance and the behaviour set are off in both runs. MTP is on in both MTP columns.</td></tr>
+<tr><th scope="row">Six task probes, 49.35 to 52.28 tok/s</th><td>+5.9 % decode</td><td>The twin and the draft head. Both runs use the full MTP stack (survival policy, prompt lookup, draft vocabulary trimming).</td></tr>
+<tr><th scope="row">35 long reasoning requests, 42.60 to 52.64 tok/s</th><td>About +24 % decode</td><td>The whole stack against plain upstream MTP. That run used upstream defaults with MTP: length policy, full draft vocabulary, no prompt lookup, no twin or draft head, no lenient acceptance, no behaviour set.</td></tr>
+</tbody>
+</table>
+
+The first test shows that Bubo does not slow the kernels down. The other two show what the extra features add. Long generations gain most, because prompt lookup and the draft policies pay off the more the model writes. The 24 % figure is token-weighted decode on the requests that ran in Performance mode on both engines.
+
 ## Same-protocol comparisons
 
 <table>
 <thead><tr><th scope="col">Protocol</th><th scope="col">Result</th><th scope="col">Conditions and date</th></tr></thead>
 <tbody>
-<tr><th scope="row">Upstream pp2048 / tg128 program</th><td>Halowin Bubo and stock upstream gufo gave the same speed within test noise.</td><td>Same laptop, files, and commands. Paired test on 2026-10-10.</td></tr>
+<tr><th scope="row">Upstream pp2048 / tg128 program</th><td>Halowin Bubo and gufo with pixmaate’s Windows port gave the same speed within test noise: prefill 1,372 against 1,363 tok/s, and decode with MTP 35.48 against 35.39 tok/s.</td><td>Same laptop, files, and commands. Paired test on 2026-10-10.</td></tr>
 </tbody>
 </table>
+
+## Same-laptop comparison: Rulith, gufo and Halowin Bubo
+
+<table>
+<thead><tr><th scope="col">Test, tok/s</th><th scope="col">Rulith 0.5.7 (batch 4096)</th><th scope="col">gufo (pixmaate prebuilt, 2026-10-03)</th><th scope="col">Bubo v0.1.0</th></tr></thead>
+<tbody>
+<tr><th scope="row">Model files</th><td>Unsloth UD-IQ4_XS, mmproj-F16, own draft</td><td>Huihui UD-Q4_K_XL, shared Q8_0 MTP</td><td>Huihui UD-Q4_K_XL, shared Q8_0 MTP, twin, draft head</td></tr>
+<tr><th scope="row">Prefill pp2048, without / with MTP</th><td>1,183 / 1,164</td><td>1,227 / 1,203</td><td>1,364 / 1,218</td></tr>
+<tr><th scope="row">Prefill, natural text, 2K / 8K / 32K</th><td>1,117 / 1,126 / 796</td><td>1,196 / 1,156 / 1,126</td><td>1,240 / 1,292 / 1,287</td></tr>
+<tr><th scope="row">Decode tg128, without / with MTP</th><td>26.83 / 35.69</td><td>27.21 / 34.06</td><td>32.19 / 37.15</td></tr>
+<tr><th scope="row">Decode tg128, no speculation</th><td>27.75</td><td>28.67</td><td>32.69</td></tr>
+<tr><th scope="row">Six agent, code and prose requests, thinking on, temperature 1.0</th><td>44.5</td><td>39.6</td><td>59.1</td></tr>
+<tr><th scope="row">Code edit that renames, first / second request</th><td>58.0 / 58.4</td><td>60.1 / 60.5</td><td>96.5 / 97.4</td></tr>
+<tr><th scope="row">Code edit that changes a comment, first / second request</th><td>56.0 / 56.1</td><td>54.0 / 54.3</td><td>90.8 / 91.3</td></tr>
+<tr><th scope="row">Prose, first / second request</th><td>33.9 / 35.0</td><td>44.5 / 45.5</td><td>43.9 / 44.1</td></tr>
+</tbody>
+</table>
+
+Same laptop, about 70 W, one pass per engine, measured on 12 and 13 October 2026.
+
+Lookup drafting is in Bubo only.
 
 ## Conditions
 
