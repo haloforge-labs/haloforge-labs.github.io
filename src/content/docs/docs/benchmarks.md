@@ -15,12 +15,12 @@ Halowin Bubo on the ASUS ProArt PX13 with Radeon 8060S. Every number comes from 
 Tests: 8–12 October 2026. tok/s means tokens per second.
 
 
-## Reasoning check: Halowin Bubo and gufo with pixmaate’s Windows port
+## Reasoning check: Halowin Bubo and gufo (pixmaate’s Windows port)
 
 Both engines answered the same 35 requests on the same laptop in Performance mode. The requests came from GPQA Diamond, AIME 2026, HMMT 2026 and IMO 2026. Both engines used the same request bodies and seeds. The score counts final answers only. An answer that never arrives counts as wrong.
 
 <table>
-<thead><tr><th scope="col">Set</th><th scope="col">Halowin Bubo correct</th><th scope="col">gufo with pixmaate’s Windows port correct</th><th scope="col">Bubo decode tok/s</th><th scope="col">gufo with pixmaate’s Windows port decode tok/s</th></tr></thead>
+<thead><tr><th scope="col">Set</th><th scope="col">Halowin Bubo correct</th><th scope="col">gufo (pixmaate’s Windows port) correct</th><th scope="col">Bubo decode tok/s</th><th scope="col">gufo (pixmaate’s Windows port) decode tok/s</th></tr></thead>
 <tbody>
 <tr><th scope="row">GPQA Diamond</th><td><strong>20/24</strong></td><td>19/24</td><td><strong>58.7</strong></td><td>46.8</td></tr>
 <tr><th scope="row">AIME 2026</th><td><strong>3/4</strong></td><td>2/4</td><td><strong>67.0</strong></td><td>54.2</td></tr>
@@ -30,9 +30,26 @@ Both engines answered the same 35 requests on the same laptop in Performance mod
 </tbody>
 </table>
 
-Halowin Bubo gives the same or better accuracy than gufo with pixmaate’s Windows port and decodes about 24% faster on these requests. The 95% intervals of the two engines overlap in every set, and each set has few items. Read the result as "no loss of accuracy", not as "more accurate".
+Halowin Bubo gives the same or better accuracy than gufo (pixmaate’s Windows port) and decodes about 24% faster on these requests. The 95% intervals of the two engines overlap in every set, and each set has few items. Read the result as "no loss of accuracy", not as "more accurate".
 
-gufo with pixmaate’s Windows port ended 3 requests without a final answer. Halowin Bubo ended 1: a long repeating loop that its next build cuts short.
+In the gufo run (pixmaate’s Windows port), 3 requests ended without a final answer. In the Halowin Bubo run, 1 did: a long repeating loop that its next build cuts short.
+
+### Tokens used
+
+Completion tokens are the tokens each engine generated, reasoning included, for the same 35 requests.
+
+<table>
+<thead><tr><th scope="col">Set</th><th scope="col">Requests</th><th scope="col">Halowin Bubo tokens (per request)</th><th scope="col">gufo (pixmaate’s Windows port) tokens (per request)</th></tr></thead>
+<tbody>
+<tr><th scope="row">GPQA Diamond</th><td>24</td><td>102,707 (4,279)</td><td>144,531 (6,022)</td></tr>
+<tr><th scope="row">AIME 2026</th><td>4</td><td>424,762 (106,190)</td><td>168,862 (42,216)</td></tr>
+<tr><th scope="row">HMMT 2026</th><td>4</td><td>203,936 (50,984)</td><td>152,039 (38,010)</td></tr>
+<tr><th scope="row">IMO 2026 (final answer)</th><td>3</td><td>148,449 (49,483)</td><td>146,603 (48,868)</td></tr>
+<tr><th scope="row">Total</th><td>35</td><td>879,854 (25,139)</td><td>612,035 (17,487)</td></tr>
+</tbody>
+</table>
+
+Halowin Bubo used more tokens in total. One request, AIME item 29, repeated text until the context limit and used 261,913 tokens. Without it, Halowin Bubo used 617,941 tokens over 34 requests (18,175 per request), close to the other engine. On GPQA Diamond, Halowin Bubo used fewer tokens.
 
 AIME item 29 (aime26-29): the first run, on an earlier build, repeated text until the context limit. A re-run on the release build answered in 70,776 tokens, and the answer was wrong. The table keeps the first run. The re-run does not change the totals.
 
@@ -43,7 +60,7 @@ Decode speed is the total completion tokens divided by the engine decode seconds
 Halowin Bubo solves IMO 2026 P4 and P5. A model judge (GPT-6.1 Sol) gave full marks (7/7) to its P4 write-up and to one of its two P5 write-ups. The judge graded the final write-up only, on a scale of 0 to 7. The prompts asked for the final answer, not a proof.
 
 <table>
-<thead><tr><th scope="col">Problem and seed</th><th scope="col">Halowin Bubo (0–7)</th><th scope="col">gufo with pixmaate’s Windows port (0–7)</th></tr></thead>
+<thead><tr><th scope="col">Problem and seed</th><th scope="col">Halowin Bubo (0–7)</th><th scope="col">gufo (pixmaate’s Windows port) (0–7)</th></tr></thead>
 <tbody>
 <tr><th scope="row">P4</th><td>7</td><td>7</td></tr>
 <tr><th scope="row">P5, seed 1001</th><td>7</td><td>7</td></tr>
@@ -135,7 +152,7 @@ The first test shows that Bubo does not slow the kernels down. The other two sho
 <table>
 <thead><tr><th scope="col">Protocol</th><th scope="col">Result</th><th scope="col">Conditions and date</th></tr></thead>
 <tbody>
-<tr><th scope="row">Upstream pp2048 / tg128 program</th><td>Halowin Bubo and gufo with pixmaate’s Windows port gave the same speed within test noise: prefill 1,372 against 1,363 tok/s, and decode with MTP 35.48 against 35.39 tok/s.</td><td>Same laptop, files, and commands. Paired test on 2026-10-10.</td></tr>
+<tr><th scope="row">Upstream pp2048 / tg128 program</th><td>Halowin Bubo and gufo (pixmaate’s Windows port) gave the same speed within test noise: prefill 1,372 against 1,363 tok/s, and decode with MTP 35.48 against 35.39 tok/s.</td><td>Same laptop, files, and commands. Paired test on 2026-10-10.</td></tr>
 </tbody>
 </table>
 
