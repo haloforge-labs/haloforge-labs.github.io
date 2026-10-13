@@ -12,6 +12,7 @@ export default defineConfig({
       favicon: '/favicon.svg',
       disable404Route: true,
       head: [
+        { tag: 'script', attrs: { src: '/review-loader.js', defer: true } },
         { tag: 'link', attrs: { rel: 'icon', href: '/favicon.ico', sizes: '16x16 32x32' } },
         { tag: 'link', attrs: { rel: 'apple-touch-icon', href: '/apple-touch-icon.png', sizes: '180x180' } },
         { tag: 'meta', attrs: { property: 'og:image', content: 'https://haloforgelabs.com/og-card-dark.png' } },
