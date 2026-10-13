@@ -14,11 +14,15 @@ Bubo is tuned for one chip, AMD Strix Halo.
 
 Bubo starts from gufo and a Windows port. The rest is our work: a 4-bit twin of the model, a draft head, an MTP drafting stack, fixes for long reasoning, NPU prefill, a disk cache and an exact mode. Most of it runs by default. All numbers come from one 70 W Strix Halo laptop in Performance mode ([power setup](/docs/system-setup/#power-mode)).
 
-## Dense twin: a 4-bit copy for decode
+## Janus dense twin: a 4-bit copy for decode
 
 Decode runs 5.9% faster: 52.28 tok/s against 49.35 tok/s on six agent and coding prompts. The twin and the draft head together give this gain.
 
 Bubo keeps two copies of 252 dense weights: the original 8-bit set and a 4-bit twin. Decode and draft checking read the small twin. Prefill and `exact` mode read the original.
+
+The name is Janus, the Roman god with two faces: the model has a second, faster copy for decode.
+
+Pygmy owls have eye-like patches on the back of the head, a second "face". The twin follows the same idea: one copy for decode, one for prefill and `exact`.
 
 The twin stays close to the reference. Against a 6-bit reference, the perplexity ratio is 1.0014 on agent text and 1.0050 on code. The twin agrees with the reference on the top token in 96.7% of positions (teacher-forced text check).
 
