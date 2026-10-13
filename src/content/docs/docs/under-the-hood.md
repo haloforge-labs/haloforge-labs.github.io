@@ -1,26 +1,24 @@
 ---
-title: Under the hood
+title: How it works
 description: "How a local Qwen3.8 Flash Next server gets its speed on AMD Strix Halo: dense twin, draft head, MTP drafting, NPU prefill, disk cache and exact mode."
 head:
   - tag: title
-    content: "Under the hood: MTP drafting, NPU prefill, disk cache | Halowin Bubo"
+    content: "How it works: MTP drafting, NPU prefill, disk cache | Halowin Bubo"
   - tag: meta
-    attrs: { property: "og:title", content: "Under the hood: MTP drafting, NPU prefill, disk cache | Halowin Bubo" }
+    attrs: { property: "og:title", content: "How it works: MTP drafting, NPU prefill, disk cache | Halowin Bubo" }
   - tag: meta
-    attrs: { name: "twitter:title", content: "Under the hood: MTP drafting, NPU prefill, disk cache | Halowin Bubo" }
+    attrs: { name: "twitter:title", content: "How it works: MTP drafting, NPU prefill, disk cache | Halowin Bubo" }
 ---
 
-One chip. One package. Every layer tuned for it.
+Bubo is tuned for one chip, AMD Strix Halo.
 
 Bubo starts from gufo and a Windows port. The rest is our work: a 4-bit twin of the model, a draft head, an MTP drafting stack, fixes for long reasoning, NPU prefill, a disk cache and an exact mode. Most of it runs by default. All numbers come from one 70 W Strix Halo laptop in Performance mode ([power setup](/docs/system-setup/#power-mode)).
 
-## Janus: a second face for decode
+## Dense twin: a 4-bit copy for decode
 
 Decode runs 5.9% faster: 52.28 tok/s against 49.35 tok/s on six agent and coding prompts. The twin and the draft head together give this gain.
 
-Bubo keeps two copies of 252 dense weights: the original 8-bit set and a 4-bit twin, named after the two-faced god Janus. Decode and draft checking read the small twin. Prefill and `exact` mode read the original.
-
-Pygmy owls wear a second face on the back of the head: two dark spots that look like eyes. In a model study, owl decoys with the false eyes drew fewer close approaches from behind. The twin is the same idea. One face serves decode. The real face serves prefill and `exact`.
+Bubo keeps two copies of 252 dense weights: the original 8-bit set and a 4-bit twin. Decode and draft checking read the small twin. Prefill and `exact` mode read the original.
 
 The twin stays close to the reference. Against a 6-bit reference, the perplexity ratio is 1.0014 on agent text and 1.0050 on code. The twin agrees with the reference on the top token in 96.7% of positions (teacher-forced text check).
 
@@ -44,13 +42,13 @@ Three parts work together:
 
 Lenient acceptance changes outputs, so `exact` mode turns all drafting off. The edit number is for one copy-heavy task. Other tasks give less.
 
-## Long answers that finish
+## Fixes for long answers
 
 In a test of 15 long answers at temperature 1.0, 14 stopped in the middle without the end-of-turn fix. With the fix, 1 stopped. Decode speed did not change.
 
 Long reasoning can fail in three ways. Bubo has a fix for each:
 
-- The loop breaker finds repeated text and moves the model on.
+- The loop breaker detects repeated text. In reasoning it first adds a nudge, then ends the thinking span if the repeat continues. In the answer it stops the answer.
 - The thinking guard blocks the end-of-turn token inside an unfinished thinking span.
 - The end-of-turn fix allows that token only at a text boundary, and only when it is likely enough.
 
@@ -58,19 +56,19 @@ Bubo also sets a thinking marker bias from the reasoning effort. Low, medium and
 
 The test used one model and 15 prompts. The loop breaker finds repeat periods up to 128 tokens in thinking and up to 16 tokens in the answer. Longer repeats in the answer can continue. See [Known issues](/docs/known-issues/).
 
-## NPU prefill: the GPU keeps working
+## NPU prefill
 
 Prefill runs about 5 to 7% faster on an 8K-token prompt and about 3.5 to 5.5% faster on a 16K-token prompt. Decode does not change.
 
 The Ryzen AI chip has an NPU. Bubo sends part of the prompt work to it while the GPU does the rest:
 
-- The NPU job queues in the order of the GPU stream. The GPU keeps working instead of stopping to wait for each NPU job.
-- The NPU keeps its weights (about 1.2 GB) in memory. They do not move for each job.
+- The NPU job queues in the order of the GPU stream. The GPU does not wait for each NPU job.
+- The NPU holds its weights (about 1.2 GB) in memory. They do not move for each job.
 - The NPU takes full blocks of 4,096 prompt tokens.
 
 Prompts under 4,096 tokens do not use the NPU. Most agent turns are shorter, so the gain shows on the first turn of a session and on large pasted files. The NPU needs the AMD NPU driver. The output is not byte-exact, so `exact` and `stock` turn it off. See [NPU prefill](/docs/npu/).
 
-## The disk cache: seconds, not minutes
+## The disk cache: faster restarts
 
 A 30K-token conversation continues after a restart in about 2 seconds. Without the cache, the prompt takes about 25 seconds. A 109K-token conversation continues in 3.5 seconds instead of 88.8 seconds.
 

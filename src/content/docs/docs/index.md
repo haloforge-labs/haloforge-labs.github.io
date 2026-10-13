@@ -32,4 +32,4 @@ Use Qwen3.8 Flash Next in GGUF format with the UD-Q4_K_XL quant. Use Performance
 - [Known issues](/docs/known-issues/): memory, tracing, and the disk prompt cache.
 - [Benchmarks](/docs/benchmarks/): measured speeds and test conditions.
 - [NPU prefill](/docs/npu/): use the Ryzen AI NPU for part of the prompt processing.
-- [Under the hood](/docs/under-the-hood/): how Bubo gets its speed, with the measured numbers.
+- [How it works](/docs/under-the-hood/): the features behind the speed, with the measured numbers.

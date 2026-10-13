@@ -56,7 +56,7 @@ Completion tokens are the tokens each engine generated, reasoning included, for 
 
 <p class="benchmark-small-print">* The AIME row of Halowin Bubo includes item 29, which repeated a block until the context limit (261,913 tokens) on this pre-release build. The 32-request row leaves out the three requests that did not get an answer from both engines: AIME item 29 and the two GPQA requests that gufo ended early.</p>
 
-Per request, token use is even. On the 32 requests that both engines answered, the median ratio of Halowin Bubo tokens to gufo tokens is 1.00 (geometric mean 0.96), and Halowin Bubo used fewer tokens on 16 of the 32. It used 29% fewer tokens on GPQA Diamond. On a few long AIME and HMMT problems it thought longer (hmmt26-33: 74,414 tokens against 38,279; hmmt26-7: 65,403 against 27,563), so its total on the 32 requests is 10% higher.
+Per request, token use is even. On the 32 requests that both engines answered, the median ratio of Halowin Bubo tokens to gufo tokens is 1.00 (geometric mean 0.96), and Halowin Bubo used fewer tokens on 16 of the 32. It used 29% fewer tokens on GPQA Diamond. On a few long AIME and HMMT problems it generated more tokens (hmmt26-33: 74,414 tokens against 38,279; hmmt26-7: 65,403 against 27,563), so its total on the 32 requests is 10% higher.
 
 Decode speed is the total completion tokens divided by the engine decode seconds, on the requests that ran in Performance mode on both engines (33 of 35 for the total; AIME uses 2 of 4). The first table scores the IMO final answer only.
 
@@ -150,7 +150,7 @@ Three tests give three different gains, because they measure different things.
 </tbody>
 </table>
 
-The first test shows that Bubo does not slow the kernels down. The other two show what the extra features add. Long generations gain most, because prompt lookup and the draft policies pay off the more the model writes. The 24% figure is token-weighted decode on the requests that ran in Performance mode on both engines.
+The first test shows that Bubo does not slow the kernels down. The other two show what the extra features add. Long generations gain most, because prompt lookup and the draft policies give more gain the longer the output. The 24% figure is token-weighted decode on the requests that ran in Performance mode on both engines.
 
 ## Same-protocol comparisons
 

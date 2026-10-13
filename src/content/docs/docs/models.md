@@ -10,7 +10,7 @@ head:
     attrs: { name: "twitter:title", content: "Supported models: Qwen3.8 Flash Next and more | Halowin Bubo" }
 ---
 
-Halowin Bubo keeps all model families of [gufo](https://github.com/gufo-org/gufo). Download the model weights separately. The weights are not part of the Bubo package.
+Halowin Bubo includes all model families of [gufo](https://github.com/gufo-org/gufo). Download the model weights separately. The weights are not part of the Bubo package.
 
 <table>
 <thead><tr><th scope="col">Model</th><th scope="col">Weights and inputs</th><th scope="col">Guide</th></tr></thead>

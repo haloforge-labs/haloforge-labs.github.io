@@ -55,7 +55,7 @@ const fmt = (n: number, dec: boolean) => dec ? n.toFixed(1) : n.toLocaleString('
         <polyline class="trace" points={line} fill="none" />
         {points.map(([d, v]) => <g><circle class="dot" cx={px(d)} cy={py(v)} r="4.2" /><text class="val" x={px(d)} y={py(v) - 11} text-anchor="middle">{v.toFixed(1)}</text></g>)}
       </svg>
-      <figcaption>Decode speed in tok/s. 113 turns across three real agent sessions at about 70 W, measured 8 October 2026. Each point sits at the middle of its depth range. <a href="/docs/benchmarks/">Benchmarks <span aria-hidden="true">→</span></a></figcaption>
+      <figcaption>Decode speed in tok/s. 113 turns across three real agent sessions at about 70 W, measured 8 October 2026. Each point is plotted at the middle of its depth range. <a href="/docs/benchmarks/">Benchmarks <span aria-hidden="true">→</span></a></figcaption>
     </figure>
   </section>
 

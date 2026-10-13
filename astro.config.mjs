@@ -39,7 +39,7 @@ export default defineConfig({
             { label: 'API reference', slug: 'docs/api' },
             { label: 'Known issues', slug: 'docs/known-issues' },
             { label: 'Benchmarks', slug: 'docs/benchmarks' },
-            { label: 'Under the hood', slug: 'docs/under-the-hood' },
+            { label: 'How it works', slug: 'docs/under-the-hood' },
             { label: 'NPU prefill', slug: 'docs/npu' },
           ],
         },
