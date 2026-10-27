@@ -23,8 +23,8 @@ For other model families, `exact` supplies the seed rule and keeps their existin
 | --- | --- | --- | --- | --- |
 | Purpose | Normal use | Plain gufo | Reproducible-output mode | Concurrent agent requests |
 | Sessions | 1 | Upstream default | 1 | 4 |
-| Context per session | 262144 | Model native | 262144 | 131072 |
-| RAM cache budget | 6.4 GB | Upstream automatic budget | Disabled | 4.3 GB |
+| Context per session | 200000 | Model native | 200000 | 131072 |
+| RAM cache budget | 8.6 GB | Upstream automatic budget | Disabled | 4.3 GB |
 | Disk prompt cache | Off | Off unless set | Disabled | Off |
 | Default effort | Medium | Upstream default | Medium | Medium |
 | Thinking | On | Model default | On | On |
@@ -82,12 +82,12 @@ It refuses settings that enable a disabled feature or change the fixed geometry.
 If you set a flag or an environment value that would change an exact-profile value, the server stops with a one-line error, for example `Error: profile=exact: explicit value re-enables GUFO_DENSE_TWIN_MAX_N`. The name in the message changes with the setting. Remove that setting, or do not combine it with `--profile exact`.
 Each request processes its full prompt, so long multi-turn sessions are slower in exact mode.
 The exact profile runs with the prompt cache off (RAM and disk). In the measured exact run every request reported zero cached tokens. The cache RAM budget setting has no effect in this profile.
-Cached restores are outside the exactness guarantee. In our tests (temperature 1, seed 1) they were not bit-identical to a fresh prefill, including a restore at an unaligned point (4090 tokens). That is why exact turns the cache off.
+Cached restores are outside the exactness guarantee. In tests (temperature 1, seed 1) they were not bit-identical to a fresh prefill, including a restore at an unaligned point (4090 tokens). That is why exact turns the cache off.
 Use `default` for routine agent work.
 
 ### What was tested
 
-In exact mode, Bubo gives the same tokens as the stock reference. We tested this on the release source tree. This is a result for one source tree. It is not a promise for all builds.
+In exact mode, Bubo gives the same tokens as the stock reference. This was tested on the release source tree. This is a result for one source tree. It is not a promise for all builds.
 
 1. `--exact` was tested against the stock-flag reference on 24 fixed cases: short, 8K and 33K natural, thinking, tool, stop, 4095, 4096 and 4097 token edges, image, long decode and non-ASCII. The tests used temperature 0 and 1 and seed 1. There were five exact passes and one retained pass, and in each pass all 24 cases matched the reference. The comparison covered the text, the reasoning, the tool calls, the token ids and the finish reasons.
 2. Logprobs were compared only where the product supports them (thinking-off cases). The thinking, tool, stop and image cases were compared by text and token ids.

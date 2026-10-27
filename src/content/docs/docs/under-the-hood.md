@@ -12,11 +12,11 @@ head:
 
 Bubo is tuned for one chip, AMD Strix Halo.
 
-Bubo starts from gufo and a Windows port. The rest is our work: a 4-bit twin of the model, a draft head, an MTP drafting stack, fixes for long reasoning, NPU prefill, a disk cache and an exact mode. Most of it runs by default. All numbers come from one 70 W Strix Halo laptop in Performance mode ([power setup](/docs/system-setup/#power-mode)).
+Bubo starts from gufo and a Windows port. The rest is added by HaloForge Labs: a 4-bit twin of the model, a draft head, an MTP drafting stack, fixes for long reasoning, an NPU prefill option, a disk cache and an exact mode. Most of it runs by default. NPU prefill is off by default. All numbers come from one 70 W Strix Halo laptop in Performance mode ([power setup](/docs/system-setup/#power-mode)).
 
 ## Janus dense twin: a 4-bit copy for decode
 
-Decode runs 5.9% faster: 52.28 tok/s against 49.35 tok/s on six agent and coding prompts. The twin and the draft head together give this gain.
+In an earlier build, decode ran 5.9% faster: 52.28 tok/s against 49.35 tok/s on six agent and coding prompts. The twin and the draft head together gave this gain.
 
 Bubo keeps two copies of 252 dense weights: the original 8-bit set and a 4-bit twin. Decode and draft checking read the small twin. Prefill and `exact` mode read the original.
 
@@ -32,11 +32,11 @@ The twin is not byte-exact, so `exact` mode does not use it. The twin copies the
 
 MTP drafts several tokens at once. The main model then checks them. Bubo gives the draft step a Q4_K copy of the output head. The main model checks every token with its original 8-bit output head.
 
-The draft head is part of the 5.9% decode gain above. We did not measure it alone. `exact` mode does not use it. We built and tested it with the Huihui shards.
+The draft head is part of the 5.9% decode gain above. It was not measured alone. `exact` mode does not use it. It was built and tested with the Huihui shards.
 
-## The MTP stack: up to 97.4 tok/s on code edits
+## The MTP stack: up to 107.5 tok/s on code edits
 
-Decode at 128 tokens runs at 37.15 tok/s with MTP and 32.19 tok/s without MTP (release build v0.1.0, upstream’s benchmark program). On a copy-heavy code edit, MTP reaches 97.4 tok/s on the second request, with the prompt cached. The first request runs at 96.5 tok/s. On real coding-agent sessions of 28K to 70K tokens, decode runs at 51.6 tok/s.
+On a copy-heavy code edit (a rename, greedy), MTP reaches 107.5 tok/s. On a long agent session of 31K to 37K tokens, decode runs at 68.5 tok/s (sampled, thinking on, Bubo 0.1.1 at about 70 W). See [Benchmarks](/benchmarks/).
 
 Three parts work together:
 
@@ -62,30 +62,24 @@ The test used one model and 15 prompts. The loop breaker finds repeat periods up
 
 ## NPU prefill
 
-Prefill runs about 5 to 7% faster on an 8K-token prompt and about 3.5 to 5.5% faster on a 16K-token prompt. Decode does not change.
+NPU prefill is off by default. To turn it on, add `--npu-prefill on` to the server command. After the prompt-reading speed-ups in v0.1.1, it adds less than 1 %, so it stays off. Decode does not change.
 
-The Ryzen AI chip has an NPU. Bubo sends part of the prompt work to it while the GPU does the rest:
+The Ryzen AI chip has an NPU. With the option on, Bubo sends part of the prompt work to it while the GPU does the rest:
 
 - The NPU job queues in the order of the GPU stream. The GPU does not wait for each NPU job.
 - The NPU holds its weights (about 1.2 GB) in memory. They do not move for each job.
 - The NPU takes full blocks of 4,096 prompt tokens.
 
-Prompts under 4,096 tokens do not use the NPU. Most agent turns are shorter, so the gain shows on the first turn of a session and on large pasted files. The NPU needs the AMD NPU driver. The output is not byte-exact, so `exact` and `stock` turn it off. See [NPU prefill](/docs/npu/).
+Prompts under 4,096 tokens do not use the NPU. Most agent turns are shorter, so the gain shows on the first turn of a session and on large pasted files. The NPU needs the AMD NPU driver. The output is not byte-exact, so `exact` and `stock` keep it off. See [NPU prefill](/docs/npu/).
 
 ## The disk cache: faster restarts
 
-A 30K-token conversation continues after a restart in about 2 seconds. Without the cache, the prompt takes about 25 seconds. A 109K-token conversation continues in 3.5 seconds instead of 88.8 seconds.
+In v0.1.0 tests, a 30K-token conversation continued after a restart in about 2 seconds. Without the cache, the prompt took about 25 seconds.
 
 Bubo saves the computed prompt state to the disk. The cache is off by default. It writes to your SSD: a snapshot is about 954 MB for 30K tokens. See [Fast restarts with the disk cache](/docs/quickstart/#fast-restarts-with-the-disk-cache).
 
 ## Exact mode: the same tokens
 
-In our proof, `exact` mode gave the same tokens as the stock reference on 24 fixed test cases. Five exact passes and one retained pass matched in every case.
+In the proof, `exact` mode gave the same tokens as the stock reference on 24 fixed test cases. Five exact passes and one retained pass matched in every case.
 
 `exact` turns off everything that changes the numbers: drafting, the twin, the caches, NPU prefill and the grouped expert kernel. The proof covers one machine and one source tree. See [Profiles](/docs/profiles/#what-was-tested) for the full list.
-
-## Many users at once
-
-With 8 users and 4K of context each, plain decode gives 102.2 tok/s in total (range 101.8 to 103.7). With MTP, the total is about 100 to 107 tok/s. One real coding agent decodes at 51.6 tok/s.
-
-These are combined speeds for all users, not per user. The MTP total changes between starts because the number of accepted drafts changes. Free host memory also affects speed. See [Benchmarks](/docs/benchmarks/#many-users).

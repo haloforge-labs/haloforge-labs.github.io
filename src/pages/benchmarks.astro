@@ -1,0 +1,85 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { ENGINES, ROWS, FIRST_TOKEN_WAIT, RULITH_MODEL_URL, fmt, cell } from '../data/rb';
+
+const other: string[][] = [
+  ['2K prompt, benchmark tool, first run', '1,530', '`bubo bench`, empty context'],
+  ['2K prompt, through the server', '1,384 to 1,403', 'sustained, plain and with drafting'],
+  ['Cold 100K prompt', '1,357', 'server, natural text'],
+  ['Eight users at 40K each, total', '99.1', 'server, drafting off'],
+];
+---
+<SiteLayout title="Benchmarks | Halowin Bubo" description="Halowin Bubo 0.1.1 speed on an AMD Strix Halo laptop at about 70 W, against Bubo 0.1.0 and other engines, with the conditions of every row.">
+  <article class="prose">
+    <h1 class="page-title">Benchmarks</h1>
+
+    <h2>Setup</h2>
+    <ul>
+      <li>Laptop: ASUS ProArt PX13, AMD Radeon 8060S, Performance mode at about 70 W, Windows 11. 23 to 25 October 2026.</li>
+      <li>Model: Huihui Qwen3.8 Flash Next, UD-Q4_K_XL. The same file for every engine except Rulith, which ran its own file: <a href={RULITH_MODEL_URL}>EXL3, 4.05 bits per weight, 104 GB</a>.</li>
+      <li>Bubo 0.1.1 was measured on build d69b7c07. The release build (engine commit 0cb4bd87) differs in the model list, memory planning, the served model name and the default context. Its diff to d69b7c07 has no change to the Flash Next compute code. Bubo 0.1.0 is 3ff74dce. The ratios against other engines were measured in the earlier run with an earlier build of Bubo 0.1.1 (e3091121).</li>
+      <li>The other engines, as measured:
+        <ul>
+          {ENGINES.map(e => <li><a href={e.url}>{e.name}</a>, {e.sub}.{e.id === 'T' ? ' Built on this laptop with the project’s own setup, 17 commits after its 2026.10.29 release.' : ''}{e.id === 'E' ? ' Prebuilt release.' : ''}{e.id === 'J' ? ' Prebuilt release, with its launcher’s recommended settings.' : ''}{e.id === 'R' ? ' Its app’s default profile.' : ''}</li>)}
+        </ul>
+      </li>
+      <li>Rows marked “sampled” use temperature 1.0, top-p 0.95, top-k 20, thinking on, medium effort. Edit rows are greedy.</li>
+      <li>All speeds are tokens per second. Higher is better.</li>
+    </ul>
+
+    <h2>Results</h2>
+    <p>Bubo’s speeds and the “vs Bubo 0.1.0” column are from one run on build d69b7c07 (25 October). Each engine column is a ratio from an earlier run (23 and 24 October), in which Bubo and that engine ran in the same time slots. The table shows no speed for the other engines, only how much faster Bubo is. “Level” means the ratio is between 0.97 and 1.03, inside the spread between two starts of the same engine.</p>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th class="text" scope="col" rowspan="2">Row</th>
+            <th class="text" scope="col" rowspan="2">Setting</th>
+            <th scope="col" rowspan="2"><a href="https://github.com/haloforge-labs/bubo/releases/tag/v0.1.1">Bubo 0.1.1</a></th>
+            <th scope="col" rowspan="2">vs <a href="https://github.com/haloforge-labs/bubo/releases/tag/v0.1.0">Bubo 0.1.0</a></th>
+            <th scope="colgroup" colspan="4" class="group">Bubo is faster than</th>
+          </tr>
+          <tr>
+            {ENGINES.map(e => <th scope="col"><a href={e.url}>{e.name}</a>{e.id === 'R' ? '*' : ''}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          {ROWS.map(r => <tr><th class="text" scope="row">{r.label}</th><td class="text">{r.setting}</td><td>{fmt(r.bubo, r.decimals)}</td><td class="ratio">{r.vsPrev}</td>{ENGINES.map(e => <td class="ratio">{cell(r[e.id])}</td>)}</tr>)}
+        </tbody>
+      </table>
+    </div>
+    <p class="fine">* Rulith ran its own model file, not the file the other engines ran. Its prose row is its first request after start, so it is a few percent low. “n/a”: Rulith’s server returned an error on the agent-session prompts (a tool schema with a null enum), so those rows have no result. “vs Bubo 0.1.0” comes from the first run.</p>
+    <p class="fine">gufo-win 0.2.0, “see below”: over the ten turns it reads about four times as many tokens as Bubo (52,186 against 13,522) because it reuses less of the earlier conversation, so a speed per second would not compare. The wait that matters is below.</p>
+    <p class="fine">gufo Windows 0.22.0, edit rows: its build accepts one draft setting for this model, so there is no flag to tune.</p>
+
+    <h2>Waiting for the first token</h2>
+    <p>Total wait for the first token, summed over the ten turns of the agent session, in seconds:</p>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead><tr><th class="text" scope="col">Engine</th><th scope="col">Seconds</th></tr></thead>
+        <tbody>
+          {FIRST_TOKEN_WAIT.map(w => <tr><th class="text" scope="row">{w.who}</th><td>{w.wait}{w.note ? ` (${w.note})` : ''}</td></tr>)}
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Other readings, Bubo 0.1.1</h2>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead><tr><th class="text" scope="col">Reading</th><th scope="col">tok/s</th><th class="text" scope="col">Setting</th></tr></thead>
+        <tbody>
+          {other.map(r => <tr><th class="text" scope="row">{r[0]}</th><td>{r[1]}</td><td class="text">{r[2].replace(/`/g, '')}</td></tr>)}
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="power">Power</h2>
+    <p>From 70 W to 95 W, 2K prompt speed rose 12 % and generation 2.4 % on this laptop. At 140 W, a desktop-class limit, the estimate is 1.2x to 1.3x for short prompts and 1.04x to 1.07x for generation. These are estimates, not measurements.</p>
+
+    <h2>Older results</h2>
+    <p>The results of 0.1.0 (12 October 2026) stay on the <a href="https://github.com/haloforge-labs/bubo/releases/tag/v0.1.0">0.1.0 release page</a>.</p>
+  </article>
+</SiteLayout>
+<style>
+  .data-table thead th.group { text-align: center; border-bottom: 1px solid var(--line); }
+</style>

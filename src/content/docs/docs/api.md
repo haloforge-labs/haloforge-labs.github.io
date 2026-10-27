@@ -10,15 +10,15 @@ head:
     attrs: { name: "twitter:title", content: "API reference: OpenAI-compatible local LLM server | Halowin Bubo" }
 ---
 
-This page lists every HTTP endpoint that the v0.1.0 server serves for a text model such as Qwen3.8 Flash Next. We checked each endpoint against a running server.
+This page lists every HTTP endpoint that the v0.1.1 server serves for a text model such as Qwen3.8 Flash Next. Each endpoint was checked against a running server.
 
 ## Address and model name
 
 - The server listens on `127.0.0.1:8080`. Change this with `--host` and `--port`.
-- The model name is the value of `--served-model-name`. If you do not set it, the server uses the name in the model metadata. Read the name from `GET /v1/models`.
+- Requests use the model's id, for example `huihui-qwen38-flash-next-ud-q4-k-xl-v1`. `GET /v1/models` lists it, and it lists `bubo` too. Both names work. To use another name, set `--served-model-name`. Any other name returns 404 with the served id in the message.
 - A request with a `model` that the server does not serve gets error 404 `model_not_found`. A request with no `model` gets error 400 `missing_model`.
 
-The examples use the base address `http://127.0.0.1:8080` and the model name `bubo`. See the [quickstart](/docs/quickstart/) to start the server.
+The examples use the base address `http://127.0.0.1:8080` and the model name `bubo`, which always works. See the [quickstart](/docs/quickstart/) to start the server.
 
 ## Endpoint list
 
@@ -36,7 +36,7 @@ The examples use the base address `http://127.0.0.1:8080` and the model name `bu
 | GET | `/slots` | State of the session slot. Also `/v1/slots`. |
 | GET | `/metrics` | Prometheus text metrics. Also `/v1/metrics`. |
 
-These paths exist but answer 501 `not_implemented` on a text model: `POST /v1/embeddings`, `/v1/messages/count_tokens`, `/v1/rerank`, `/v1/reranking`, `/rerank`, `/infill` and the `/sdapi/v1/...` paths. Any other path answers 404 `not_found`.
+These paths exist but answer 501 `not_implemented` on a text model: `POST /v1/embeddings`, `/v1/rerank`, `/v1/reranking`, `/rerank`, `/infill` and the `/sdapi/v1/...` paths. Any other path answers 404 `not_found`.
 
 When you serve an audio, image or video model, the server adds the endpoints for that model. This page does not cover them.
 
@@ -46,10 +46,12 @@ When you serve an audio, image or video model, the server adds the endpoints for
 curl.exe -s http://127.0.0.1:8080/health
 # {"status":"ok"}
 curl.exe -s http://127.0.0.1:8080/ready
-# {"status":"ready","model":"bubo"}
+# {"status":"ready","model":"huihui-qwen38-flash-next-ud-q4-k-xl-v1"}
 curl.exe -s http://127.0.0.1:8080/v1/models
-# {"object":"list","data":[{"id":"bubo","object":"model","created":...,"owned_by":"gufo","context_length":262144,"architecture":{"input_modalities":["text","image"]}}]}
+# {"object":"list","data":[{"id":"huihui-qwen38-flash-next-ud-q4-k-xl-v1","object":"model","created":1793047296,"owned_by":"bubo","context_length":2e+05,"max_model_len":2e+05,"meta":{"n_ctx":2e+05},"architecture":{"input_modalities":["text","image"]}},{"id":"bubo","object":"model","created":1793047296,"owned_by":"bubo","context_length":2e+05,"max_model_len":2e+05,"meta":{"n_ctx":2e+05},"architecture":{"input_modalities":["text","image"]}}]}
 ```
+
+This is the output of Bubo 0.1.1 with Qwen3.8 Flash Next and the default settings. The two entries are the same model under two names. The server prints the context of 200,000 tokens as `2e+05`, which is a valid JSON number.
 
 `/ready` answers 503 `not_ready` while the model loads. After a GPU context loss, `/health`, `/ready` and every POST answer 503 with `"status":"device_lost"`.
 
@@ -69,7 +71,7 @@ curl.exe -s http://127.0.0.1:8080/v1/models
 |---|---|
 | `model` | Required. The served model name. |
 | `messages` | Required. A non-empty array of messages with the roles `system`, `user`, `assistant` and `tool`. Content is a string or an array of parts, with image parts for models that take images. |
-| `max_tokens`, `max_completion_tokens` | Limit on generated tokens. |
+| `max_tokens`, `max_completion_tokens` | Limit on generated tokens. A value of `-1` or `null` keeps the server default. Any other value must be a positive integer. |
 | `stream` | `true` returns server-sent events. |
 | `stream_options` | `{"include_usage": true}` adds a final usage chunk. |
 | `temperature`, `top_p`, `top_k`, `min_p`, `seed` | Sampling. |
@@ -109,7 +111,7 @@ A non-streaming response has the OpenAI shape:
 
 - `reasoning_content` holds the reasoning text when thinking is on. Thinking is on by default. Set `reasoning_effort` to `off` to turn it off.
 - `finish_reason` is `stop`, `length` or `tool_calls`.
-- `usage` also reports `prompt_tokens_per_second`, `completion_tokens_per_second`, cached tokens, the draft tokens that MTP proposed and accepted, and prompt-cache details in `usage.gufo`.
+- `usage` also reports `prompt_tokens_per_second`, `completion_tokens_per_second`, cached tokens, the draft tokens that MTP proposed and accepted, and prompt-cache details in `usage.gufo`. The cache fields (`cache_hit`, `cache_miss_reason`, `cache_snapshots_skipped` and others) are in [options](/docs/options/#size-of-a-saved-snapshot).
 - `timings` reports the time of the prompt and of each generated token.
 
 ### Streaming
@@ -155,9 +157,14 @@ Send the tools in `tools`, in the OpenAI function format. When the model calls a
 
 `POST /v1/responses` takes `model`, `input` (a string or an array of items) and `max_output_tokens`. The response has the object `response`, a `status` of `completed` or `incomplete`, and an `output` array. The array holds a `reasoning` item and a `message` item with `output_text` content. The `usage` object has `input_tokens`, `output_tokens` and `output_tokens_details.reasoning_tokens`.
 
+Tools in a Responses request follow the `strict` field. When a tool has no `strict` field, or `strict` is `null`, Bubo uses the tool schema as you sent it: optional properties stay optional. `strict: true` and `strict: false` act as the field says.
 ## Anthropic messages
 
 `POST /v1/messages` takes the Anthropic Messages request: `model`, `max_tokens` and `messages`. The response has `type: "message"`, a `content` array with `thinking` and `text` blocks, a `stop_reason` (`end_turn`, `max_tokens`, `stop_sequence` or `tool_use`) and `usage` with `input_tokens` and `output_tokens`.
+
+`POST /v1/messages/count_tokens` takes the same text, system and tool history as Messages and returns `{"input_tokens": N}`. It does not generate text. A prompt can be longer than the context, so a client can size it before it trims it. Images are not supported. `stream: true` gives an error.
+
+Errors on `/v1/messages` and `/v1/messages/count_tokens` use the Anthropic body, `{"type":"error","error":{"type":...,"message":...},"request_id":...}`, with the stable code in an extra `code` field of the `error` object. All other routes use the error shape in [Errors](#errors).
 
 ## llama-server endpoints
 
@@ -178,7 +185,7 @@ A missing or wrong key gives 401 with the header `WWW-Authenticate: Bearer`. Wit
 
 ## Errors
 
-Errors use one JSON shape:
+Errors use this JSON shape. Only `/v1/messages` and `/v1/messages/count_tokens` use the Anthropic shape (see [Anthropic messages](#anthropic-messages)).
 
 ```json
 {"error":{"message":"model 'nope' is not served by this process","type":"invalid_request_error","code":"model_not_found"}}
@@ -190,7 +197,10 @@ Errors use one JSON shape:
 | 401 | `authentication_error` | `invalid_api_key` |
 | 404 | `invalid_request_error` | `model_not_found`, `not_found` |
 | 501 | `server_error` | `not_implemented` |
-| 503 | `server_error` | `not_ready`, `device_lost` |
+| 503 | `server_error` | `not_ready`, `device_lost`, `insufficient_memory`, `memory_pressure` |
+| 507 | `server_error` | `insufficient_memory_permanent` |
+
+The codes `insufficient_memory` and `memory_pressure` come from the [memory guard](/docs/system-setup/#memory-guard). They have a `Retry-After: 5` header: free memory, then send the request again. The code `insufficient_memory_permanent` has no `Retry-After` header: the request needs more memory than the computer can provide, so shorten the prompt or remove the image.
 
 ## Debug endpoints, not for normal use
 

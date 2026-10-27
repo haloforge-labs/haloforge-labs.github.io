@@ -1,0 +1,48 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+
+const parts: string[][] = [
+  ['Grouped expert kernel (adapted from Strata)', 'MIT'],
+  ['NPU prefill kernel files (from the gufo NPU work, derived from AMD mlir-aie examples)', 'MIT; Apache-2.0 with LLVM exception'],
+  ['OpenSSL libcrypto', 'Apache-2.0'],
+  ['curl libcurl', 'curl licence'],
+  ['ICU', 'Unicode License V3'],
+  ['libpng', 'PNG Reference Library License'],
+  ['libjpeg-turbo', 'IJG and BSD-3-Clause'],
+  ['libwebp, libsharpyuv', 'BSD-3-Clause'],
+  ['zlib', 'zlib licence'],
+  ['App and updater libraries', 'listed in licenses\\gui'],
+];
+---
+<SiteLayout title="Licences | Halowin Bubo" description="The licences of Halowin Bubo, its parts, the AMD runtime files and the models.">
+  <article class="prose">
+    <h1 class="page-title">Licences</h1>
+
+    <h2>Bubo</h2>
+    <p>The Bubo code and the Windows layer use the MIT licence. Bubo is a fork of <a href="https://github.com/gufo-org/gufo">gufo</a> (MIT). The Windows layer comes from the gufo Windows port by pixmaate. Thanks to the gufo contributors.</p>
+    <p>The package includes these parts, each with its own licence file in the <code>licenses</code> folder:</p>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead><tr><th class="text" scope="col">Part</th><th class="text" scope="col">Licence</th></tr></thead>
+        <tbody>
+          {parts.map(r => <tr><th class="text" scope="row">{r[0]}</th><td class="text">{r[1]}</td></tr>)}
+        </tbody>
+      </table>
+    </div>
+    <p>The package also ships <code>LICENSE</code> and <code>THIRD-PARTY.txt</code>.</p>
+
+    <h2>AMD runtime files</h2>
+    <p>The package contains no AMD files. The app and <code>bubo prepare</code> download the AMD ROCm files from AMD. They show the AMD licence and ask for your approval first. Keep the notices that come with the files.</p>
+
+    <h2>Models</h2>
+    <ul>
+      <li><strong>Qwen3.8 Flash Next</strong> model files, the dense twin and the draft head use the Qwen Community License 1.0. Keep <code>LICENSE</code> and <code>NOTICE</code> with any copy. The notice chain is Qwen, Huihui, Unsloth, HaloForge Labs.</li>
+      <li>The expert tensors of the <strong>lower-memory build</strong> come from Qwen3.8-Flash-Next-GSQ-RCO-GGUF by ISTA-DASLab (Institute of Science and Technology Austria), made with GSQ and RCO (arXiv:2604.18556, arXiv:2605.00649). The build is a derivative of Qwen3.8 Flash Next and uses the Qwen Community License 1.0. The notice chain is Qwen, Huihui, ISTA-DASLab, Unsloth, HaloForge Labs.</li>
+      <li><strong>Other models</strong> in the app keep their authors’ licences. The app shows each licence before the download.</li>
+      <li>The Huihui model is abliterated and can produce sensitive content. You are responsible for your use.</li>
+    </ul>
+  </article>
+</SiteLayout>
+<style>
+  code { font: .92em var(--mono); }
+</style>

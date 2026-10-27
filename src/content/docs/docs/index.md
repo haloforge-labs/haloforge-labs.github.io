@@ -10,13 +10,13 @@ head:
     attrs: { name: "twitter:title", content: "Docs: install and run a local LLM server on Windows | Halowin Bubo" }
 ---
 
-These guides cover how to install, run and tune [Halowin Bubo](/bubo/) on Windows.
+These guides cover how to install, run and tune Halowin Bubo on Windows.
 
 ## Start here
 
 1. [Set up your system](/docs/system-setup/).
 2. [Install Halowin Bubo](/docs/install/).
-3. [Read the quickstart](/docs/quickstart/).
+3. [Use the app](/docs/app/), or [read the quickstart](/docs/quickstart/) for the command line.
 
 ## Recommended settings
 
@@ -24,12 +24,12 @@ Use Qwen3.8 Flash Next in GGUF format with the UD-Q4_K_XL quant. Use Performance
 
 ## Reference
 
-- [Supported models](/docs/models/): all gufo model families.
+- [Supported models](/docs/models/): the models that were tested on Windows.
 - [Profiles](/docs/profiles/): settings for each use.
 - [Options](/docs/options/): every server option and environment value.
 - [API reference](/docs/api/): every HTTP endpoint, with request fields, streaming, tool calls and errors.
 - [Fast restarts with the disk cache](/docs/quickstart/#fast-restarts-with-the-disk-cache): the optional disk prompt cache.
 - [Known issues](/docs/known-issues/): memory, tracing, and the disk prompt cache.
-- [Benchmarks](/docs/benchmarks/): measured speeds and test conditions.
-- [NPU prefill](/docs/npu/): use the Ryzen AI NPU for part of the prompt processing.
+- [Benchmarks](/benchmarks/): measured speeds and test conditions.
+- [NPU prefill](/docs/npu/): an option, off by default, that uses the Ryzen AI NPU for part of the prompt processing.
 - [How it works](/docs/under-the-hood/): the features behind the speed, with the measured numbers.

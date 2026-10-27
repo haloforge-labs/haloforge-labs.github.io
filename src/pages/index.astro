@@ -1,139 +1,94 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
-import Measurements from '../components/Measurements.astro';
+import { ENGINES, ROWS, fmt, cell, cellShort } from '../data/rb';
 
-const DOWNLOAD = 'https://github.com/haloforge-labs/bubo/releases/tag/v0.1.0';
-const SHA = 'd1c92dacf68e8e379b8e02c8d68ba18ba102b2fd22784e25cb06b0757fac1306';
-const SUMS = 'https://github.com/haloforge-labs/bubo/releases/download/v0.1.0/SHA256SUMS.txt';
+const DOWNLOAD = 'https://github.com/haloforge-labs/bubo/releases/tag/v0.1.1';
 
-// Decode speed by context depth: [midpoint of the depth bucket in K tokens, tok/s, turns].
-const points = [[30, 51.12, 6], [48, 54.40, 33], [80, 51.44, 8], [112, 52.78, 18], [144, 52.51, 33], [174.5, 52.45, 15]];
-const X0 = 46, X1 = 426, D0 = 28, D1 = 189, Y0 = 204, Y1 = 28, VMAX = 60;
-const px = (d: number) => X0 + ((d - D0) / (D1 - D0)) * (X1 - X0);
-const py = (v: number) => Y0 - (v / VMAX) * (Y0 - Y1);
-const line = points.map(([d, v]) => `${px(d).toFixed(1)},${py(v).toFixed(1)}`).join(' ');
-const xticks = [32, 64, 96, 128, 160];
-const yticks = [0, 20, 40, 60];
-const desc = 'Decode speed in tokens per second at six context depths, each plotted at the middle of its depth range on a linear axis: ' +
-  points.map(([d, v, n]) => `${d}K ${v} (${n} turns)`).join('; ') + '.';
-
-const step1 = String.raw`.\bubo.exe prepare`;
-const step2 = String.raw`$model = "$env:LOCALAPPDATA\Bubo\models\huihui-qwen38-flash-next-ud-q4-k-xl-v1\Qwen3.8-Flash-Next-UD-Q4_K_XL-00001-of-00004.gguf"
-.\bubo.exe serve llm --model $model --served-model-name bubo`;
-const step3 = String.raw`'{"model":"bubo","messages":[{"role":"user","content":"Hello"}]}' | curl.exe -s http://127.0.0.1:8080/v1/chat/completions -H "Content-Type: application/json" -d "@-"`;
-
-const rows = [
-  { label: 'Agent, code and prose tasks', note: 'Temperature 1.0, thinking on. tok/s', v: [59.1, 44.5, 39.6] },
-  { label: 'Code edits, first request', note: 'Edits that reuse your file’s text. tok/s', v: [96.5, 58, 60.1] },
-  { label: 'Prose', note: 'tok/s', v: [43.9, 33.9, 44.5] },
-  { label: 'Prefill, 32K of natural text', note: 'tok/s', v: [1287, 796, 1126] },
-];
-const fmt = (n: number, dec: boolean) => dec ? n.toFixed(1) : n.toLocaleString('en-US');
+const rows = ROWS.filter(r => r.front);
+const rivals = ENGINES.filter(e => e.id !== 'R');
 ---
-<SiteLayout title="Local LLM server for AMD Strix Halo on Windows | Halowin Bubo" description="Run Qwen3.8 Flash Next locally on AMD Strix Halo (Ryzen AI Max+ 395) under Windows. Open-source LLM server: 51–55 tok/s on real agent sessions at 70 W.">
+<SiteLayout title="Halowin Bubo: a local LLM server for AMD Strix Halo on Windows" description="Halowin Bubo runs Qwen3.8 Flash Next (125B parameters, 6B active) on AMD Strix Halo laptops at about 70 W. Native on Windows, free, OpenAI-compatible.">
   <section class="hero" aria-labelledby="home-title">
     <div class="hero-main">
-      <span class="eyebrow">v0.1.0 · MIT · Windows 11</span>
+      <span class="eyebrow">v0.1.1 · MIT · Windows 11</span>
       <p class="display">The most intelligence a laptop can fit</p>
-      <p class="proof"><strong>125B parameters</strong> (6B active) at <a href="/docs/system-setup/#power-mode">about 70 W</a></p>
       <h1 id="home-title">A local LLM server for AMD Strix Halo, native on Windows</h1>
-      <p class="intro">Halowin Bubo runs Qwen3.8 Flash Next on AMD Strix Halo with HIP, at 51–55 tok/s on real agent sessions at about 70 W laptop power. It adds lookup drafting, NPU prefill, a disk cache for fast restarts and a dense twin of the model.</p>
-      <div class="cta-row"><a class="button" href={DOWNLOAD}>Download v0.1.0 for Windows</a><a class="cta-link" href="/docs/system-setup/">System setup <span aria-hidden="true">→</span></a></div>
-      <p class="feature-line"><a href="/docs/api/">OpenAI-compatible API</a> · tool calling · 262K context · works with <a href="/docs/quickstart/#use-it-with-a-coding-agent">Aider and OpenCode</a></p>
-      <p class="needs">Needs 128 GB of memory, Windows 11, about 121 GB of free disk and an AMD Strix Halo machine. MIT license. This is the first release: see the <a href="/docs/known-issues/">known issues</a>.</p>
-      <p class="sha"><span>SHA-256 <code title={SHA}>{SHA.slice(0, 8)}…{SHA.slice(-4)}</code></span> <button class="copy" type="button" data-copy={SHA} aria-label="Copy the full SHA-256 of the zip">Copy</button> <a href={SUMS}>SHA256SUMS</a></p>
+      <p class="intro">Halowin Bubo runs Qwen3.8 Flash Next on your laptop. The new app helps you download the model, starts it and shows what it uses. Version 0.1.1 reads prompts and writes faster than 0.1.0 and adds support for <a href="https://huggingface.co/ISTA-DASLab/Qwen3.8-Flash-Next-GSQ-RCO-GGUF">ISTA GSQ-RCO</a> derived memory efficient quants without compromising on reasoning quality for lower memory usage enabling more subagents and more context at slightly slower speeds.</p>
+      <div class="cta-row"><a class="button" href={DOWNLOAD}>Download v0.1.1 for Windows</a><a class="cta-link" href="/docs/system-setup/">System setup <span aria-hidden="true">→</span></a></div>
+      <p class="feature-line">OpenAI-compatible API · tool calling · up to 262K context · tested with the Pi coding agent</p>
+      <p class="needs">Needs Windows 11 and an AMD Strix Halo machine. Qwen3.8 Flash Next needs 128 GB of memory and about 113 GiB of free disk. Smaller models need less. On a 96 GB machine, use the <a href="/models/">lower-memory build</a>. MIT license. See the <a href="/docs/known-issues/">known issues</a>.</p>
     </div>
-    <figure class="chart-figure hero-chart">
-      <p class="chart-stat"><span class="chart-num">51–55</span> <span class="chart-unit">tok/s</span></p>
-      <p class="chart-claim">on real agent sessions at about 70 W, flat from 28K to 189K of context</p>
-      <svg class="chart" viewBox="0 0 440 252" role="img" aria-labelledby="chart-title chart-desc">
-        <title id="chart-title">Decode speed by context depth</title>
-        <desc id="chart-desc">{desc}</desc>
-        {yticks.map(v => <g><line class="grid" x1={X0} x2={X1} y1={py(v)} y2={py(v)} /><text class="yl" x={X0 - 8} y={py(v) + 4} text-anchor="end">{v}</text></g>)}
-        {xticks.map(d => <text class="xl" x={px(d)} y="226" text-anchor="middle">{d}K</text>)}
-        <text class="xl" x={(X0 + X1) / 2} y="246" text-anchor="middle">Context depth, tokens</text>
-        <polyline class="trace" points={line} fill="none" />
-        {points.map(([d, v]) => <g><circle class="dot" cx={px(d)} cy={py(v)} r="4.2" /><text class="val" x={px(d)} y={py(v) - 11} text-anchor="middle">{v.toFixed(1)}</text></g>)}
-      </svg>
-      <figcaption>Decode speed in tok/s. 113 turns across three real agent sessions at about 70 W, measured 8 October 2026. Each point is plotted at the middle of its depth range. <a href="/docs/benchmarks/">Benchmarks <span aria-hidden="true">→</span></a></figcaption>
-    </figure>
+    <div class="hero-stats">
+      <p class="proof"><strong>Qwen3.8 Flash Next: 125B parameters</strong> (6B active) at <a href="/docs/system-setup/#power-mode">about 70 W</a></p>
+      <p class="chart-stat"><span class="chart-num">68.5</span> <span class="chart-unit">tok/s</span></p>
+      <p class="chart-claim">writing, in a long agent session at about 70 W</p>
+      <p class="chart-stat second"><span class="chart-num">1,384</span> <span class="chart-unit">tok/s</span></p>
+      <p class="chart-claim">reading a 32K prompt</p>
+      <p class="measure-note">Bubo 0.1.1, same laptop and model file as the table below. <a href="/benchmarks/">Benchmarks <span aria-hidden="true">→</span></a></p>
+    </div>
   </section>
 
   <section class="versus" aria-labelledby="versus-title">
     <h2 id="versus-title">Faster on the same laptop</h2>
     <div class="table-wrap">
       <table>
-        <thead><tr><th scope="col"><span class="visually-hidden">Workload</span></th><th scope="col" class="us">Bubo v0.1.0</th><th scope="col">Rulith 0.5.7<br /><span class="sub">tuned llama.cpp fork</span></th><th scope="col">gufo<br /><span class="sub">pixmaate’s Windows port</span></th></tr></thead>
+        <thead>
+          <tr>
+            <th scope="col" rowspan="2"><span class="visually-hidden">Workload</span></th>
+            <th scope="col" rowspan="2" class="us">Bubo 0.1.1</th>
+            <th scope="colgroup" colspan="3" class="group">Bubo is faster than</th>
+          </tr>
+          <tr>
+            {rivals.map(e => <th scope="col"><a href={e.url}>{e.name}</a><br /><span class="sub">{e.sub}{e.frontSub ? ' · ' + e.frontSub : ''}</span></th>)}
+          </tr>
+        </thead>
         <tbody>
-          {rows.map(r => {
-            const best = Math.max(...r.v);
-            return <tr><th scope="row">{r.label}<span class="sub">{r.note}</span></th>{r.v.map((x, i) => <td class:list={{ us: i === 0, best: x === best }}>{fmt(x, r.v[0] < 1000)}</td>)}</tr>;
-          })}
+          {rows.map(r => <tr><th scope="row">{r.front!.label}<span class="sub">{r.front!.what}</span></th><td class="us">{fmt(r.bubo, r.decimals)}</td>{rivals.map(e => <td class="ratio">{cellShort(r[e.id])}</td>)}</tr>)}
         </tbody>
       </table>
     </div>
-    <p class="measure-note">Same laptop at about 70 W, measured 2026-10-12, one pass per engine. Rulith ran its own smaller IQ4_XS quant, which favors it. <a href="/docs/benchmarks/#same-laptop-comparison-rulith-tuned-llamacpp-fork-gufo-and-halowin-bubo">Method and every row <span aria-hidden="true">→</span></a></p>
+    <p class="measure-note">Same laptop at about 70 W, same model file for every engine. Level means within 3 %. <a href="/benchmarks/">Method and every row <span aria-hidden="true">→</span></a></p>
   </section>
 
-  <section aria-label="Halowin Bubo benchmarks">
-    <Measurements compact />
-    <p class="measure-note">Every number on this site has its <a href="/docs/benchmarks/#test-conditions">test conditions</a>. <a href="/bubo/#speed">More results <span aria-hidden="true">→</span></a></p>
+  <section class="news" aria-labelledby="news-title">
+    <h2 id="news-title">New in 0.1.1</h2>
+    <ul>
+      <li><strong>An app.</strong> Pick a model, press Start, and watch memory and requests. Update Bubo with one click.</li>
+      <li><strong>Faster.</strong> Mixed work runs up to 11 % faster than 0.1.0, and code edits 10 % faster.</li>
+      <li><strong>Memory guard.</strong> Bubo keeps 4 GiB of memory free and turns away a request that does not fit, so the PC keeps running.</li>
+      <li><strong>A lower-memory Flash Next.</strong> A build of Qwen3.8 Flash Next with smaller expert weights from ISTA-DASLab’s GSQ-RCO quantization. At the default context it needs about 66 GiB of GPU memory instead of about 91 GiB. It is the build to use on a 96 GB machine. Prose runs at about the same speed; code and agent text at about 0.75 to 0.9 of the standard build. <a href="/models/">Models supported</a></li>
+      <li><strong>Eight more models,</strong> 16 to 23 GB each, for machines with less memory: Qwen3.8 27B, Qwen3.6 27B, Cyber-Tiel Coder, Gemma 4 26B and 31B (two builds each) and DiffusionGemma. All take images. <a href="/models/">Models supported</a></li>
+    </ul>
   </section>
 
   <section class="home-visual" aria-labelledby="start-title">
-    <h2 id="start-title">Start in three commands</h2>
+    <h2 id="start-title">Start in four steps</h2>
     <div class="steps">
-      <div class="step">
-        <div class="step-head"><span>1. Download the AMD runtime and the model</span><button class="copy" type="button" data-copy={step1} aria-label="Copy command 1">Copy</button></div>
-        <pre tabindex="0"><code>{step1}</code></pre>
-      </div>
-      <div class="step">
-        <div class="step-head"><span>2. Start the server</span><button class="copy" type="button" data-copy={step2} aria-label="Copy command 2">Copy</button></div>
-        <pre tabindex="0"><code>{step2}</code></pre>
-      </div>
-      <div class="step">
-        <div class="step-head"><span>3. Send a request to the OpenAI-compatible API from a second PowerShell window</span><button class="copy" type="button" data-copy={step3} aria-label="Copy command 3">Copy</button></div>
-        <pre tabindex="0"><code>{step3}</code></pre>
-      </div>
+      <div class="step"><div class="step-head"><span>1. <a href="/docs/install/#prepare-the-machine">Prepare the machine</a>: GPU memory, page file, power mode</span></div></div>
+      <div class="step"><div class="step-head"><span>2. Download the zip and unzip it</span></div></div>
+      <div class="step"><div class="step-head"><span>3. Double-click <code>start.cmd</code></span></div></div>
+      <div class="step"><div class="step-head"><span>4. Approve the download, then press Start</span></div></div>
     </div>
-    <p class="measure-note">The first command asks for your approval before it downloads. <a href="/docs/install/">Install guide <span aria-hidden="true">→</span></a></p>
+    <p class="measure-note"><a href="/docs/install/">Install guide <span aria-hidden="true">→</span></a></p>
   </section>
 </SiteLayout>
-<script>
-  document.querySelectorAll<HTMLButtonElement>('button.copy').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      try { await navigator.clipboard.writeText(btn.dataset.copy ?? ''); btn.textContent = 'Copied'; }
-      catch { btn.textContent = 'Press Ctrl+C'; }
-      setTimeout(() => { btn.textContent = 'Copy'; }, 1800);
-    });
-  });
-</script>
 <style>
   :global(main) { padding-top: 44px; }
   .hero { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: 56px; align-items: start; padding-bottom: 54px; }
   .hero-main { min-width: 0; }
   .display { font-size: clamp(2.5rem, 4.8vw, 4.2rem); line-height: 1.05; font-style: italic; color: var(--accent); letter-spacing: -.025em; margin: 14px 0 12px; max-width: 14em; }
-  .proof { margin: 0 0 22px; font-size: 1.25rem; padding-left: 14px; border-left: 3px solid var(--accent); line-height: 1.35; }
+  .proof { margin: 0 0 26px; font-size: 1.25rem; padding-left: 14px; border-left: 3px solid var(--accent); line-height: 1.35; }
   .proof strong { font-weight: 700; }
   .hero h1 { font-size: clamp(1.15rem, 1.7vw, 1.4rem); font-style: normal; color: var(--ink); letter-spacing: 0; margin: 0 0 10px; line-height: 1.3; }
   .hero .intro { font-size: 1.1rem; line-height: 1.6; max-width: 640px; margin-bottom: 0; }
   .feature-line { margin: 18px 0 0; font-size: 1rem; color: var(--muted); line-height: 1.5; }
   .needs { margin: 10px 0 0; font-size: .95rem; color: var(--muted); line-height: 1.5; max-width: 640px; }
-  .sha { margin: 8px 0 0; font-size: .9rem; color: var(--muted); display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; }
-  .sha code { font: .85rem var(--mono); color: var(--ink); }
-  .copy { font: .8rem var(--serif); color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 4px; padding: 3px 10px; cursor: pointer; }
-  .hero-chart { margin: 0; min-width: 0; }
+  .hero-stats { min-width: 0; padding-top: 6px; }
   .chart-stat { margin: 0; line-height: 1; }
+  .chart-stat.second { margin-top: 26px; }
   .chart-num { color: var(--accent); font-size: clamp(3.4rem, 6vw, 5rem); letter-spacing: -.035em; font-variant-numeric: tabular-nums; }
   .chart-unit { font-size: 1.4rem; color: var(--ink); }
   .chart-claim { margin: 4px 0 12px; font-size: 1.05rem; line-height: 1.4; }
-  .chart { width: 100%; height: auto; display: block; }
-  .chart .grid { stroke: var(--line); stroke-width: 1; }
-  .chart .trace { stroke: var(--accent); stroke-width: 2.4; stroke-linejoin: round; }
-  .chart .dot { fill: var(--accent); }
-  .chart .val { fill: var(--ink); font: 12.5px var(--serif); font-variant-numeric: tabular-nums; }
-  .chart .xl, .chart .yl { fill: var(--muted); font: 12px var(--serif); }
-  .hero-chart figcaption { color: var(--muted); font-size: .9rem; line-height: 1.5; margin-top: 8px; }
   .versus { padding-top: 6px; }
   .table-wrap { overflow-x: auto; }
   .versus table { border-collapse: collapse; width: 100%; max-width: 900px; font-variant-numeric: tabular-nums; }
@@ -144,16 +99,17 @@ const fmt = (n: number, dec: boolean) => dec ? n.toFixed(1) : n.toLocaleString('
   .versus .us { background: var(--tint); }
   .versus thead .us { color: var(--accent); font-weight: 700; }
   .versus td.us { color: var(--accent); }
-  .versus td.best, .versus td.us.best { font-weight: 700; }
+  .versus td.ratio { color: var(--accent); white-space: nowrap; }
+  .versus thead th.group { text-align: center; border-bottom: 1px solid var(--line); color: var(--muted); }
   .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   section + section { margin-top: 40px; }
+  .news ul { max-width: 760px; padding-left: 1.2rem; }
+  .news li { margin-bottom: 8px; }
   .home-visual { margin-top: 56px; }
-  .steps { max-width: 820px; display: grid; gap: 16px; }
+  .steps { max-width: 820px; display: grid; gap: 12px; }
   .step { min-width: 0; border: 1px solid var(--line); border-radius: 6px; background: var(--wash); }
-  .step-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 8px 12px; border-bottom: 1px solid var(--line); font-size: .95rem; }
-  .step-head span { min-width: 0; }
-  .step pre { margin: 0; padding: 14px 16px; overflow-x: auto; max-width: 100%; }
-  .step code { font: .88rem/1.65 var(--mono); color: var(--ink); white-space: pre; }
+  .step-head { padding: 12px 16px; font-size: 1.05rem; }
+  code { font: .92em var(--mono); }
   @media (max-width: 900px) {
     .hero { grid-template-columns: minmax(0, 1fr); gap: 36px; }
   }

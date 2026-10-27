@@ -1,0 +1,71 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+
+const models: string[][] = [
+  ['Qwen3.8 Flash Next (Huihui)', 'Mixture of experts, 4-bit', '116.6 GB', 'Yes', 'Yes'],
+  ['Qwen3.8 Flash Next (original)', 'Mixture of experts, 4-bit', '116.6 GB', 'Yes', 'Yes'],
+  ['Qwen3.8 Flash Next Huihui (lower memory)', 'Mixture of experts, mixed formats. About 66 GiB of GPU memory', '89.9 GB', 'Yes', 'Yes'],
+  ['Qwen3.8 27B', 'Dense, 4-bit', '19.6 GB', 'Yes', 'Yes'],
+  ['Qwen3.6 27B', 'Dense, 4-bit', '18.5 GB', 'Yes', 'No'],
+  ['Cyber-Tiel Coder 35B-A3B', 'Mixture of experts, for code, 4-bit', '23.4 GB', 'Yes', 'No'],
+  ['Gemma 4 26B-A4B (Unsloth QAT)', 'Mixture of experts, 4-bit', '15.7 GB', 'Yes', 'Yes'],
+  ['Gemma 4 31B (Unsloth QAT)', 'Dense, 4-bit', '18.8 GB', 'Yes', 'Yes'],
+  ['Gemma 4 26B-A4B uncensored (Huihui, QAT)', 'Mixture of experts, 4-bit', '18.8 GB', 'Yes', 'Yes'],
+  ['Gemma 4 31B uncensored (Huihui, QAT)', 'Dense, 4-bit', '20.8 GB', 'Yes', 'Yes'],
+  ['DiffusionGemma 26B E38 (abliterated)', 'Diffusion model, 4-bit (NVFP4)', '20.1 GB', 'Yes', 'No'],
+];
+---
+<SiteLayout title="Models supported | Halowin Bubo" description="The models the Halowin Bubo app downloads, their size, and the options that lower memory use.">
+  <article class="prose">
+    <h1 class="page-title">Models supported</h1>
+    <p>Bubo runs Qwen3.8 Flash Next, and it runs smaller models too. Flash Next is a 117 GB download and needs a 128 GB machine. The eight other models in the app are 16 to 23 GB.</p>
+
+    <h2>Lower memory options</h2>
+    <ul>
+      <li><strong>Pick a smaller model.</strong> The app has eight models of 16 to 23 GB. Flash Next is 117 GB.</li>
+      <li><strong>Use the lower-memory build of Flash Next.</strong> At the default context of 200,000 tokens, Bubo estimates about 66 GiB of GPU memory for it instead of about 91 GiB, which is about 25 GiB less. It reads prompts at about 0.88 to 0.92 of the standard build’s speed. It writes code and agent text at about 0.75 to 0.9 of that speed, and prose at about the same speed. These are ranges from one run on one laptop at about 70 W. The app lists it as “Qwen3.8 Flash Next, HaloForge Labs lower-memory quant (GSQ-RCO)”, a download of 89.9 GB.</li>
+      <li><strong>On a 96 GB machine, use the lower-memory build.</strong> Set Variable Graphics Memory (AMD Software: Adrenalin Edition &gt; Performance &gt; Tuning) to the largest value offered (72 GB if available, at least 64 GB), then restart Windows. At 72 GB, Bubo uses the default 200,000-token context for one session. At 64 GB it does too when about 16 GB of system memory is free, and picks a smaller context when less is free. These values are calculated: Bubo has not yet run on a 96 GB machine.</li>
+      <li><strong>Use a shorter context.</strong> The default for Flash Next is 200,000 tokens, and the largest is 262,144. Use <code>--context</code> to change it. The app shows the largest context that fits now.</li>
+      <li><strong>Use a smaller RAM cache.</strong> The default profile uses 8 GiB. In the app, change <strong>RAM cache size</strong> in Server setup, under Memory and caches. On the command line, use <code>--cache-ram-bytes</code>.</li>
+      <li><strong>Leave out what you do not need.</strong> <code>--no-twin</code> frees the dense twin’s storage. <code>--no-vision</code> leaves out the image projector.</li>
+      <li><strong>Check the memory before you start.</strong> The app checks memory when you press Start. For Flash Next it shows an estimate and a recommended context. The command line gives the same: <code>bubo models estimate --model PATH</code>.</li>
+      <li><strong>The memory guard.</strong> Bubo keeps 4,096 MiB of memory free. A request that needs more is refused with HTTP 503 or 507, so the PC keeps running. Under Windows low-memory pressure, Bubo drops cache snapshots first. It stops a running request only as the last step.</li>
+    </ul>
+
+    <h2>In the app</h2>
+    <p>The app downloads these models after you approve the files. Size is the full download, with the image projector and any drafting file.</p>
+    <div class="table-wrap">
+      <table class="data-table">
+        <thead><tr><th class="text" scope="col">Model</th><th class="text" scope="col">What it is</th><th scope="col">Download</th><th scope="col">Images</th><th scope="col">Drafting</th></tr></thead>
+        <tbody>
+          {models.map(r => <tr><th class="text" scope="row">{r[0]}</th><td class="text">{r[1]}</td><td>{r[2]}</td><td>{r[3]}</td><td>{r[4]}</td></tr>)}
+        </tbody>
+      </table>
+    </div>
+    <p>Images on Gemma 4 reserve 2 GiB for the vision part.</p>
+
+    <h2>Other model families in the code</h2>
+    <p>Bubo contains the code of the other gufo model families. These are not tested on Windows, and the app does not download them. They run with upstream gufo settings, if at all.</p>
+    <p>DeepSeek V4 Flash, Qwen3-ASR 1.7B, Qwen3-TTS 1.7B, Qwen-Image-2.1, MiniMax H3.</p>
+
+    <h2>Speed options</h2>
+    <ul>
+      <li><strong>Drafting (MTP).</strong> A small predictor guesses the next tokens and the main model checks them. On for Flash Next, Qwen3.8 27B and Gemma 4 when the package has a drafting file. <code>--no-mtp</code> turns it off.</li>
+      <li><strong>Dense twin.</strong> A 4-bit copy of the weights for faster generation. 1.2 GB. In the Flash Next download.</li>
+      <li><strong>Draft head.</strong> A 4-bit output head for drafting. 0.4 GB. In the Flash Next download.</li>
+      <li><strong>Prompt lookup.</strong> Copies tokens from earlier text when the text repeats. Helps code edits and quoted logs.</li>
+      <li><strong>RAM cache.</strong> Keeps past prompts in memory so the next turn skips them.</li>
+      <li><strong>NPU prefill.</strong> Optional. Off by default: after the prompt-reading speed-ups it adds less than 1 %. Turn it on with <code>--npu-prefill on</code>. It needs AMD XRT runtime 32.0.20102.3931. With any other runtime, Bubo writes a warning, reports the NPU as faulted, and uses the GPU.</li>
+    </ul>
+
+    <h2>Decision API (experimental)</h2>
+    <p>The decision API answers a question with probabilities, not text. You give it a prompt and a fixed list of options. It returns one probability for each option in one pass, and it writes no text. Use it when a program must choose: route a request, answer yes or no, or rate something on a scale.</p>
+    <p>This is experimental, and the interface can change. It follows the vLLM implementation: <a href="https://github.com/vllm-project/vllm/pull/57250">vLLM pull request 57250</a>.</p>
+
+    <h2>Licences</h2>
+    <p>See <a href="/licences/">Licences</a>.</p>
+  </article>
+</SiteLayout>
+<style>
+  code { font: .92em var(--mono); }
+</style>
