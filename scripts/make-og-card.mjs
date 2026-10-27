@@ -1,4 +1,4 @@
-// Renders public/og-card.png (light) and public/og-card-dark.png (dark), 1200x630.
+// Renders public/og-card.png (light) and public/og-card-v011-dark.png (dark), 1200x630.
 // Numbers: Bubo 0.1.1, RB-1 on build d69b7c07 (decode-rb1-c4, table sha256 B5DDBCAB...FB125C).
 import { chromium } from 'playwright';
 import { readFile } from 'node:fs/promises';
@@ -7,7 +7,7 @@ const fonts = await Promise.all(['et-book-roman-line-figures', 'et-book-display-
 const owl = await readFile('public/owl.svg', 'utf8');
 const themes = {
   light: { paper: '#faf8f1', ink: '#222', accent: '#a00000', muted: '#595959', line: '#ddd', file: 'public/og-card.png' },
-  dark: { paper: '#1a1a1a', ink: '#e6e6e6', accent: '#f35555', muted: '#b0b0b0', line: '#333', file: 'public/og-card-dark.png' },
+  dark: { paper: '#1a1a1a', ink: '#e6e6e6', accent: '#f35555', muted: '#b0b0b0', line: '#333', file: 'public/og-card-v011-dark.png' },
 };
 const stats = [
   ['68.5', 'tok/s writing in a long agent session, at about 70 W'],
