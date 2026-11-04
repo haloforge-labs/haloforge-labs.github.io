@@ -1,5 +1,5 @@
-// Renders public/og-card.png (light) and public/og-card-v011-dark.png (dark), 1200x630.
-// Numbers: Bubo 0.1.1, RB-1 on build d69b7c07 (decode-rb1-c4, table sha256 B5DDBCAB...FB125C).
+// Renders public/og-card.png (light) and public/og-card-v012-dark.png (dark), 1200x630.
+// Numbers: Bubo 0.1.2, the same values as the front page (src/data/rb.ts): session 66.2, rename 109.0, 32K fast 1,639.
 import { chromium } from 'playwright';
 import { readFile } from 'node:fs/promises';
 
@@ -7,12 +7,12 @@ const fonts = await Promise.all(['et-book-roman-line-figures', 'et-book-display-
 const owl = await readFile('public/owl.svg', 'utf8');
 const themes = {
   light: { paper: '#faf8f1', ink: '#222', accent: '#a00000', muted: '#595959', line: '#ddd', file: 'public/og-card.png' },
-  dark: { paper: '#1a1a1a', ink: '#e6e6e6', accent: '#f35555', muted: '#b0b0b0', line: '#333', file: 'public/og-card-v011-dark.png' },
+  dark: { paper: '#1a1a1a', ink: '#e6e6e6', accent: '#f35555', muted: '#b0b0b0', line: '#333', file: 'public/og-card-v012-dark.png' },
 };
 const stats = [
-  ['68.5', 'tok/s writing in a long agent session, at about 70 W'],
-  ['107.5', 'tok/s on code edits'],
-  ['1,384', 'tok/s reading a 32K prompt'],
+  ['66.2', 'tok/s writing in a long agent session, at about 70 W'],
+  ['109.0', 'tok/s on code edits'],
+  ['1,639', 'tok/s reading a 32K prompt, in fast mode'],
 ];
 const html = t => `<!doctype html><meta charset="utf-8"><style>
 @font-face{font-family:ET;font-style:normal;src:url('${fonts[0]}')}
