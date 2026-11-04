@@ -1,0 +1,229 @@
+---
+// Memory, KLD and agent time, then benchmark scores. Drawn in the browser from the numbers in the script below.
+---
+<div class="qc-head">
+  <h2 id="lowmem-title">Smaller files that lose very little reasoning <button type="button" class="qc-info" id="qc-info" aria-expanded="false" aria-controls="qc-pop" aria-label="How these numbers were measured">i</button></h2>
+  <div class="qc-pop" id="qc-pop" role="note" hidden><p id="qc-notes"></p></div>
+</div>
+<slot />
+<div class="quant-chart">
+  <p class="lede" id="qc-lede"></p>
+  <div class="chart" id="qc-chart"></div>
+  <p class="lede" id="qc-lede2"></p>
+  <div class="chart" id="qc-chart2"></div>
+</div>
+<style is:global>
+  .quant-chart { --read: #2f6eb5; --write: #9a978c; }
+  :root[data-theme='dark'] .quant-chart { --read: #4f8fd6; --write: #77756d; }
+  .quant-chart .lede { font-style: italic; color: var(--muted); margin: 0 0 .8em; max-width: 58em; }
+  .quant-chart .chart { overflow-x: auto; margin-bottom: 1.4em; }
+  .quant-chart .chart svg { width: 100%; min-width: 960px; height: auto; display: block; }
+  .quant-chart svg text { font-family: var(--serif); fill: var(--ink); }
+  .quant-chart svg .muted { fill: var(--muted); }
+  .qc-head { position: relative; }
+  .qc-info { font: italic 700 .8rem/1 var(--serif); width: 1.35rem; height: 1.35rem; border-radius: 50%; border: 1px solid var(--muted); background: transparent; color: var(--muted); cursor: pointer; vertical-align: middle; padding: 0; margin-left: .25em; }
+  .qc-info:hover, .qc-info[aria-expanded='true'] { color: var(--accent); border-color: var(--accent); }
+  .qc-pop { position: absolute; z-index: 5; left: 0; top: 100%; width: min(40rem, 100%); background: var(--paper); border: 1px solid var(--line); border-radius: 6px; box-shadow: 0 6px 24px rgba(0, 0, 0, .18); padding: 12px 16px; }
+  .qc-pop[hidden] { display: none; }
+  .qc-pop p { margin: 0; color: var(--muted); font-size: .88rem; line-height: 1.45; }
+</style>
+<script is:inline>
+(function () {
+// The (i) button next to the title opens the measurement notes as a popup.
+{
+  const btn = document.getElementById('qc-info'), pop = document.getElementById('qc-pop');
+  const set = open => { pop.hidden = !open; btn.setAttribute('aria-expanded', String(open)); };
+  btn.addEventListener('click', e => { e.stopPropagation(); set(pop.hidden); });
+  document.addEventListener('click', e => { if (!pop.hidden && !pop.contains(e.target)) set(false); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !pop.hidden) { set(false); btn.focus(); } });
+}
+// Measured 2 Nov 2026, final 0.1.2 build (decode-rival5 RGQ4, RIQ3SB, RLOW2, RGIQ2, RCODER). GPU memory: 1 session, 200K context.
+// Score: LiveCodeBench v6 from ISTA's model cards (the one benchmark ISTA reports for every file).
+const FILES = [
+  { q: 'Coder',   src: 'ISTA',   gib: 41821 / 1024, score: 0.434, r32: 1276.1, r32f: null,   spre: 907.3, write: 65.9 },
+  { q: 'IQ3_S',   src: 'ISTA',   gib: 65866 / 1024, score: 0.137, r32: 1201.8, r32f: 1409.9, spre: 812.6, write: 64.9 },
+  { q: 'IQ3_XXS', src: 'ISTA',   gib: 58369 / 1024, score: 0.221, r32: 1206.2, r32f: 1412.3, spre: 813.7, write: 68.6 },
+  { q: 'IQ2_XS',  src: 'ISTA',   gib: 50921 / 1024, score: 0.334, r32: 1166.2, r32f: 1364.4, spre: 797.7, write: 68.3 },
+  { q: 'Q4_K_XL', src: 'Huihui', gib: 95332 / 1024, score: 0.045,  r32: 1404.8, r32f: 1639.4, spre: 888.4, write: 64.0 },
+];
+// The session: 25 turns, a 30K-token start, then 3K new tokens and 1,200 written tokens per turn.
+const S = { start: 30000, turns: 25, newPer: 3000, writePer: 1200 };
+for (const f of FILES) {
+  f.read = S.start / f.r32 + (S.turns - 1) * S.newPer / f.spre;
+  f.readF = f.r32f ? S.start / f.r32f + (S.turns - 1) * S.newPer / f.spre : null;
+  f.writeT = S.turns * S.writePer / f.write;
+  f.total = f.read + f.writeT;
+}
+const ms = s => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, '0')}`;
+const n0 = v => Math.round(v).toLocaleString('en-US');
+const dark = document.documentElement.dataset.theme === 'dark' ||
+  (document.documentElement.dataset.theme !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches);
+
+// Panel 1 colour = which family the file belongs to (reference palette slots 1 to 3): Q4_K_XL blue, ISTA IQ files orange, Coder aqua.
+const FC = dark ? { q4: '#3987e5', ista: '#d95926', coder: '#199e70' } : { q4: '#2a78d6', ista: '#eb6834', coder: '#1baf7a' };
+const col = f => f.q === 'Q4_K_XL' ? FC.q4 : f.q === 'Coder' ? FC.coder : FC.ista;
+
+const NS = 'http://www.w3.org/2000/svg';
+const el = (n, a, p) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); if (p) p.appendChild(e); return e; };
+const W = 1140, PL = 70, PR = 760;
+const gx0 = 32, gx1 = 98;   // GPU-memory scale shared with panel 2
+const X = g => PL + (g - gx0) / (gx1 - gx0) * (PR - PL);
+// ---- Panel 1: small multiples sharing one vertical axis (KLD from BF16). Every panel: right = better. ----
+{
+  const H1 = 330, T = 62, B = 270, LX = 150;           // label column, then 5 panels
+  const svg = el('svg', { viewBox: `0 0 ${W} ${H1}`, role: 'img', 'aria-label': 'Five small panels sharing a KLD axis: GPU memory, long-prompt reading, short-turn reading, writing and agent session time per file' });
+  const Yk = k => T + k / 0.45 * (B - T);
+  el('line', { x1: LX, x2: LX, y1: Yk(0), y2: Yk(0.45), stroke: 'var(--line)' }, svg);
+  for (const s of [0, 0.1, 0.2, 0.3, 0.4]) {
+    el('line', { x1: LX - 4, x2: LX, y1: Yk(s), y2: Yk(s), stroke: 'var(--line)' }, svg);
+    el('text', { x: LX - 7, y: Yk(s) + 4, 'text-anchor': 'end', 'font-size': 11.5, class: 'muted' }, svg).textContent = s === 0 ? '0 = BF16' : s.toFixed(1);
+  }
+  el('text', { x: LX, y: T - 40, 'text-anchor': 'end', 'font-size': 13 }, svg).textContent = 'KLD from BF16';
+  el('text', { x: LX, y: T - 24, 'text-anchor': 'end', 'font-size': 12, class: 'muted' }, svg).textContent = 'lower is better ↓';
+  const PANELS = [
+    { t: 'GPU memory', u: 'GiB', v: f => f.gib, low: true, fmt: v => v.toFixed(0) },
+    { t: 'Reading, long prompt', u: 'tok/s · ○ = Fast', v: f => f.r32, v2: f => f.r32f, fmt: n0 },
+    { t: 'Reading, short turns', u: 'tok/s', v: f => f.spre, fmt: n0 },
+    { t: 'Writing', u: 'tok/s', v: f => f.write, fmt: v => v.toFixed(1) },
+    { t: 'Agent session', u: `${S.turns} turns, min:s`, v: f => f.total, low: true, fmt: ms },
+  ];
+  const pw = 132, gap = 34, px0 = LX + 150;
+  PANELS.forEach((p, i) => {
+    const x0 = px0 + i * (pw + gap), x1 = x0 + pw;
+    const vals = FILES.flatMap(f => [p.v(f), p.v2 ? p.v2(f) : null]).filter(v => v != null);
+    const lo = Math.min(...vals), hi = Math.max(...vals);
+    // right = better: for less-is-better measures the scale runs high → low
+    const Xp = v => p.low ? x0 + (hi - v) / (hi - lo) * pw : x0 + (v - lo) / (hi - lo) * pw;
+    el('text', { x: x0, y: T - 40, 'font-size': 14 }, svg).textContent = p.t;
+    el('text', { x: x0, y: T - 24, 'font-size': 12, class: 'muted' }, svg).textContent = `${p.u} · better →`;
+    // range-frame axis with its two end values
+    const ay = B + 16;
+    el('line', { x1: x0, x2: x1, y1: ay, y2: ay, stroke: 'var(--line)' }, svg);
+    for (const v of [lo, hi]) {
+      el('line', { x1: Xp(v), x2: Xp(v), y1: ay, y2: ay + 4, stroke: 'var(--line)' }, svg);
+      el('text', { x: Xp(v), y: ay + 17, 'text-anchor': 'middle', 'font-size': 11.5, class: 'muted' }, svg).textContent = p.fmt(v);
+    }
+    for (const f of FILES) {
+      const y = Yk(f.score), x = Xp(p.v(f));
+      el('line', { x1: x0, x2: x1, y1: y, y2: y, stroke: col(f), 'stroke-opacity': .55, 'stroke-width': 1, 'stroke-dasharray': '1.5 3.5' }, svg);
+      if (p.v2 && p.v2(f) != null) {
+        const x2 = Xp(p.v2(f));
+        el('line', { x1: x, x2, y1: y, y2: y, stroke: col(f), 'stroke-width': 2 }, svg);
+        el('circle', { cx: x2, cy: y, r: 5, fill: 'var(--paper)', stroke: col(f), 'stroke-width': 2 }, svg);
+      }
+      el('circle', { cx: x, cy: y, r: 5, fill: col(f), stroke: 'var(--paper)', 'stroke-width': 2 }, svg);
+      const lab = p.v2 && p.v2(f) != null ? `${p.fmt(p.v(f))} → ${p.fmt(p.v2(f))}` : p.fmt(p.v(f));
+      const right = (p.v2 && p.v2(f) != null ? Xp(p.v2(f)) : x) < x1 - 50;
+      el('text', { x: right ? Math.max(x, p.v2 && p.v2(f) != null ? Xp(p.v2(f)) : x) + 8 : Math.min(x, p.v2 && p.v2(f) != null ? Xp(p.v2(f)) : x) - 8,
+        y: y - 7, 'text-anchor': right ? 'start' : 'end', 'font-size': 11.5, class: 'muted' }, svg).textContent = lab;
+    }
+  });
+  // file names, once, at the left of the first panel
+  for (const f of FILES) {
+    el('circle', { cx: LX + 12, cy: Yk(f.score), r: 5, fill: col(f) }, svg);
+    const t = el('text', { x: LX + 24, y: Yk(f.score) + 4, 'font-size': 14 }, svg);
+    el('tspan', { 'font-weight': 700 }, t).textContent = f.q;
+    el('tspan', { class: 'muted', 'font-size': 11.5 }, t).textContent = ` ${f.score.toFixed(3)}`;
+  }
+  document.getElementById('qc-chart').appendChild(svg);
+}
+
+const tMin = Math.min(...FILES.map(f => f.total)), tMax = Math.max(...FILES.map(f => f.total));
+const fs = FILES.filter(f => f.readF).map(f => f.read - f.readF);
+document.getElementById('qc-lede').textContent =
+  `Memory, KLD and agent times of the supported Qwen3.8 Flash Next quants. ` +
+  `Q4_K_XL reads fastest but writes slowest, ${FILES.reduce((a, b) => (a.total <= b.total ? a : b)).q} fastest overall. ` +
+  `Hollow circles represent prefill speeds when experimental fast mode is enabled.`;
+// ---- Panel 2: benchmark scores (ISTA model cards) against GPU memory, same x scale as panel 1 ----
+{
+  // The score axis sits at the same x as the KLD axis of panel 1 (x = 150), so the two y axes line up.
+  const AX = 150;
+  const X = g => AX + 26 + (g - gx0) / (gx1 - gx0) * (PR - AX - 26);
+  const C = dark
+    ? { aime: '#3987e5', gpqa: '#d95926', lcb: '#199e70', swe: '#c98500', he: '#b07cc6' }
+    : { aime: '#2a78d6', gpqa: '#eb6834', lcb: '#1baf7a', swe: '#eda100', he: '#8e44ad' };
+  const files = [  // non-Coder ISTA files: same model, different quantization
+    { q: 'IQ2_XS',  gib: FILES[3].gib, kld: 0.334, aime: 96.67, gpqa: 87.37, lcb: 83.43 },
+    { q: 'IQ3_XXS', gib: FILES[2].gib, kld: 0.221, aime: 100.0, gpqa: 91.41, lcb: 86.29 },
+    { q: 'IQ3_S',   gib: FILES[1].gib, kld: 0.137, aime: 100.0, gpqa: 92.93, lcb: 86.86 },
+  ];
+  const coder = { q: 'Coder', gib: FILES[0].gib, kld: 0.434, lcb: 87.43, swe: 79.20 };
+  const bf = { aime: 100.0, gpqa: 91.92, lcb: 87.43, swe: 82.80 };
+  const H2 = 440, T2 = 30, B2 = 360;
+  const s2 = el('svg', { viewBox: `0 0 ${W} ${H2}`, role: 'img', 'aria-label': 'ISTA benchmark scores against GPU memory for IQ2_XS, IQ3_XXS, IQ3_S and the Coder, with full-precision references' });
+  const v0 = 74, v1 = 101.5;
+  const Y2 = v => B2 - (v - v0) / (v1 - v0) * (B2 - T2);
+  for (const s of [75, 80, 85, 90, 95, 100]) {
+    el('line', { x1: AX - 4, x2: AX, y1: Y2(s), y2: Y2(s), stroke: 'var(--line)' }, s2);
+    el('text', { x: AX - 7, y: Y2(s) + 4, 'text-anchor': 'end', 'font-size': 11.5, class: 'muted' }, s2).textContent = s;
+  }
+  el('line', { x1: AX, x2: AX, y1: Y2(75), y2: Y2(100), stroke: 'var(--line)' }, s2);
+  el('text', { x: AX, y: T2 - 14, 'text-anchor': 'end', 'font-size': 13 }, s2).textContent = 'Score';
+  el('text', { x: AX, y: T2 + 2, 'text-anchor': 'end', 'font-size': 12, class: 'muted' }, s2).textContent = 'ISTA model cards ↑';
+  const xR = X(gx1) - 10;           // full-precision references at the right edge
+  el('text', { x: xR, y: T2 - 14, 'text-anchor': 'middle', 'font-size': 12, class: 'muted' }, s2).textContent = 'BF16';
+  const series = [['aime', 'AIME25'], ['gpqa', 'GPQA-Diamond'], ['lcb', 'LiveCodeBench v6']];
+  for (const [k, name] of series) {
+    // LiveCodeBench v6 is the one benchmark ISTA reports for the Coder too, so its line starts at the Coder
+    const on = k === 'lcb' ? [coder, ...files] : files;
+    const pts = on.map(f => [X(f.gib), Y2(f[k])]);
+    el('path', { d: 'M' + pts.map(p => p.join(',')).join('L'), fill: 'none', stroke: C[k], 'stroke-width': 2.2 }, s2);
+    on.forEach((f, i) => {
+      el('circle', { cx: pts[i][0], cy: pts[i][1], r: 4.5, fill: C[k], stroke: 'var(--paper)', 'stroke-width': 2 }, s2);
+      el('text', { x: pts[i][0], y: pts[i][1] - 9, 'text-anchor': 'middle', 'font-size': 11.5, class: 'muted' }, s2).textContent = f[k].toFixed(2);
+    });
+    // dotted run to the BF16 reference so the gap to full precision reads directly
+    const last = pts[pts.length - 1];
+    el('line', { x1: last[0], x2: xR, y1: last[1], y2: Y2(bf[k]), stroke: C[k], 'stroke-width': 1, 'stroke-dasharray': '2 4' }, s2);
+    el('circle', { cx: xR, cy: Y2(bf[k]), r: 4.5, fill: 'var(--paper)', stroke: C[k], 'stroke-width': 2 }, s2);
+    el('text', { x: xR + 10, y: Y2(bf[k]) + 4, 'font-size': 13 }, s2).textContent = `${name} ${bf[k].toFixed(2)}`;
+  }
+  // SWE-bench Verified: reported for the Coder (card) and IQ3_S (ISTA maintainer, discussion #26); not for IQ3_XXS / IQ2_XS
+  const cx = X(coder.gib), sx = X(files[2].gib), sweS = 82.0;
+  el('line', { x1: cx, x2: sx, y1: Y2(coder.swe), y2: Y2(sweS), stroke: C.swe, 'stroke-width': 2.2, 'stroke-dasharray': '6 4' }, s2);
+  el('line', { x1: sx, x2: xR, y1: Y2(sweS), y2: Y2(bf.swe), stroke: C.swe, 'stroke-width': 1, 'stroke-dasharray': '2 4' }, s2);
+  for (const [x, v] of [[cx, coder.swe], [sx, sweS]]) {
+    el('circle', { cx: x, cy: Y2(v), r: 4.5, fill: C.swe, stroke: 'var(--paper)', 'stroke-width': 2 }, s2);
+    el('text', { x, y: Y2(v) + 18, 'text-anchor': 'middle', 'font-size': 11.5, class: 'muted' }, s2).textContent = v.toFixed(2);
+  }
+  const lab = el('text', { x: sx + 22, y: Y2(79.9), 'font-size': 13 }, s2);
+  const lb = el('tspan', { 'font-weight': 700 }, lab); lb.textContent = `Coder loses ${(bf.swe - coder.swe).toFixed(1)} on SWE-bench Verified`;
+  el('tspan', { class: 'muted' }, lab).textContent = `  (IQ3_S loses ${(bf.swe - sweS).toFixed(1)})`;
+  el('circle', { cx: xR, cy: Y2(bf.swe), r: 4.5, fill: 'var(--paper)', stroke: C.swe, 'stroke-width': 2 }, s2);
+  el('text', { x: xR + 10, y: Y2(bf.swe) + 4, 'font-size': 13 }, s2).textContent = `SWE-bench Verified ${bf.swe.toFixed(2)}`;
+  // HumanEval+ (independent run, ISTA Coder discussion #19: 164 problems, T 0, thinking off; Coder before its 10-17 update)
+  const he = [[coder, 93.3], [files[1], 93.9]];
+  const hp = he.map(([f, v]) => [X(f.gib), Y2(v)]);
+  el('line', { x1: hp[0][0], x2: hp[1][0], y1: hp[0][1], y2: hp[1][1], stroke: C.he, 'stroke-width': 2.2 }, s2);
+  he.forEach(([f, v], i) => {
+    el('circle', { cx: hp[i][0], cy: hp[i][1], r: 4.5, fill: C.he, stroke: 'var(--paper)', 'stroke-width': 2 }, s2);
+    el('text', { x: hp[i][0], y: hp[i][1] - 9, 'text-anchor': 'middle', 'font-size': 11.5, class: 'muted' }, s2).textContent = v.toFixed(1);
+  });
+  // series name under the line, between the Coder and IQ2_XS ticks (clear of the GPQA labels at IQ3_XXS)
+  const hx = (X(coder.gib) + X(files[0].gib)) / 2, hy = Y2(93.5) + 17;
+  const hl = el('text', { x: hx, y: hy, 'text-anchor': 'middle', 'font-size': 13 }, s2);
+  el('tspan', { fill: C.he }, hl).textContent = 'HumanEval+';
+  // x axis: one tick per file with its KLD
+  const ax2 = B2 + 18;
+  const all = [...files, coder];
+  el('line', { x1: X(coder.gib), x2: X(files[2].gib), y1: ax2, y2: ax2, stroke: 'var(--line)' }, s2);
+  for (const f of all) {
+    el('line', { x1: X(f.gib), x2: X(f.gib), y1: ax2, y2: ax2 + 4, stroke: 'var(--line)' }, s2);
+    el('text', { x: X(f.gib), y: ax2 + 18, 'text-anchor': 'middle', 'font-size': 12.5 }, s2).textContent = f.q;
+    el('text', { x: X(f.gib), y: ax2 + 32, 'text-anchor': 'middle', 'font-size': 11.5, class: 'muted' }, s2).textContent = `${f.gib.toFixed(0)} GiB`;
+    el('text', { x: X(f.gib), y: ax2 + 46, 'text-anchor': 'middle', 'font-size': 11.5, class: 'muted' }, s2).textContent = `KLD ${f.kld.toFixed(3)}`;
+  }
+  document.getElementById('qc-chart2').appendChild(s2);
+  document.getElementById('qc-lede2').textContent =
+    `Going from IQ3_S to IQ3_XXS (KLD 0.137 → 0.221) costs at most 1.5 points. IQ2_XS (0.334) loses 3–5 points on every benchmark. ` +
+    `The Coder (0.434) keeps full-precision LiveCodeBench but drops ${(bf.swe - coder.swe).toFixed(1)} points on SWE-bench Verified, ISTA's agentic coding benchmark. ` +
+    `On HumanEval+ the Coder and IQ3_XXS are within 0.6 points (93.3 vs 93.9).`;
+}
+document.getElementById('qc-notes').textContent =
+  `Session: ${S.turns} turns, a ${n0(S.start)}-token start, then ${n0(S.newPer)} new tokens and ${n0(S.writePer)} written tokens per turn; ` +
+  `times computed from speeds measured on 2 November 2026 on the final 0.1.2 build (cold 32K read; cached-session read of new tokens; agent-session writing). ` +
+  `Fast mode only shortens the ${n0(S.start)}-token start: ${Math.min(...fs).toFixed(0)}–${Math.max(...fs).toFixed(0)} s here; the Coder has no Fast mode. ` +
+  `KLD: UD-Q4_K_XL from Unsloth; IQ3_S, IQ3_XXS, IQ2_XS from Tylogi (WikiText-2, 512 tokens); Coder from hipfire (held-out code, against FP8). ` +
+  `Benchmarks: ISTA model cards; IQ3_S SWE-bench from ISTA discussion #26; HumanEval+ from ISTA Coder discussion #19.`;
+})();
+</script>

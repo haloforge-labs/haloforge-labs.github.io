@@ -10,7 +10,7 @@ head:
     attrs: { name: "twitter:title", content: "API reference: OpenAI-compatible local LLM server | Halowin Bubo" }
 ---
 
-This page lists every HTTP endpoint that the v0.1.1 server serves for a text model such as Qwen3.8 Flash Next. Each endpoint was checked against a running server.
+This page lists every HTTP endpoint that the v0.1.2 server serves for a text model such as Qwen3.8 Flash Next. Each endpoint was checked against a running server.
 
 ## Address and model name
 
@@ -32,7 +32,8 @@ The examples use the base address `http://127.0.0.1:8080` and the model name `bu
 | POST | `/v1/responses` | OpenAI Responses format. |
 | POST | `/v1/messages` | Anthropic Messages format. |
 | POST | `/completion` | Text completion. llama-server format. |
-| GET | `/props?model=NAME` | Model name and template. llama-server format. |
+| POST | `/apply-template` | Renders a chat request into the prompt text and returns `{"prompt": ...}`. llama-server format. |
+| GET | `/props` | Model name, template and default settings. llama-server format. |
 | GET | `/slots` | State of the session slot. Also `/v1/slots`. |
 | GET | `/metrics` | Prometheus text metrics. Also `/v1/metrics`. |
 
@@ -48,10 +49,10 @@ curl.exe -s http://127.0.0.1:8080/health
 curl.exe -s http://127.0.0.1:8080/ready
 # {"status":"ready","model":"huihui-qwen38-flash-next-ud-q4-k-xl-v1"}
 curl.exe -s http://127.0.0.1:8080/v1/models
-# {"object":"list","data":[{"id":"huihui-qwen38-flash-next-ud-q4-k-xl-v1","object":"model","created":1793047296,"owned_by":"bubo","context_length":2e+05,"max_model_len":2e+05,"meta":{"n_ctx":2e+05},"architecture":{"input_modalities":["text","image"]}},{"id":"bubo","object":"model","created":1793047296,"owned_by":"bubo","context_length":2e+05,"max_model_len":2e+05,"meta":{"n_ctx":2e+05},"architecture":{"input_modalities":["text","image"]}}]}
+# {"object":"list","data":[{"id":"huihui-qwen38-flash-next-ud-q4-k-xl-v1","object":"model","created":1793047296,"owned_by":"bubo","context_length":200000,"max_model_len":200000,"meta":{"n_ctx":200000},"architecture":{"input_modalities":["text","image"]}},{"id":"bubo","object":"model","created":1793047296,"owned_by":"bubo","context_length":200000,"max_model_len":200000,"meta":{"n_ctx":200000},"architecture":{"input_modalities":["text","image"]}}]}
 ```
 
-This is the output of Bubo 0.1.1 with Qwen3.8 Flash Next and the default settings. The two entries are the same model under two names. The server prints the context of 200,000 tokens as `2e+05`, which is a valid JSON number.
+This is the output of Bubo 0.1.2 with Qwen3.8 Flash Next and the default settings. The two entries are the same model under two names.
 
 `/ready` answers 503 `not_ready` while the model loads. After a GPU context loss, `/health`, `/ready` and every POST answer 503 with `"status":"device_lost"`.
 
@@ -169,7 +170,8 @@ Errors on `/v1/messages` and `/v1/messages/count_tokens` use the Anthropic body,
 ## llama-server endpoints
 
 - `POST /completion` takes `prompt` and `n_predict`, and needs no `model`. The response has `content`, `stop`, `tokens_predicted`, `tokens_evaluated`, `timings` and `usage`.
-- `GET /props?model=NAME` needs the `model` query parameter. The response has `model`, `template` and `model_info`.
+- `GET /props` takes an optional `model` query parameter. The response has `model`, `model_alias`, `template`, `model_info` and the default sampling settings.
+- `POST /apply-template` takes the same body as `/v1/chat/completions` and needs no `model`. It returns `{"prompt": "..."}`, the chat rendered as prompt text. `stream` is ignored.
 - `GET /slots` returns an array with one object for the session slot: `id`, `n_ctx`, `is_processing`, `state` and the prompt token counts.
 - `GET /metrics` returns Prometheus text. It includes `llamacpp:prompt_tokens_total`, `llamacpp:tokens_predicted_total`, `llamacpp:prompt_tokens_seconds`, `llamacpp:predicted_tokens_seconds`, the speculative decoding counters, `llamacpp:requests_processing`, `llamacpp:requests_deferred` and `llamacpp:kv_cache_usage_ratio`.
 

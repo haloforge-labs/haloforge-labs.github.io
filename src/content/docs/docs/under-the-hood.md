@@ -34,9 +34,9 @@ MTP drafts several tokens at once. The main model then checks them. Bubo gives t
 
 The draft head is part of the 5.9% decode gain above. It was not measured alone. `exact` mode does not use it. It was built and tested with the Huihui shards.
 
-## The MTP stack: up to 107.5 tok/s on code edits
+## The MTP stack: up to 109.0 tok/s on code edits
 
-On a copy-heavy code edit (a rename, greedy), MTP reaches 107.5 tok/s. On a long agent session of 31K to 37K tokens, decode runs at 68.5 tok/s (sampled, thinking on, Bubo 0.1.1 at about 70 W). See [Benchmarks](/benchmarks/).
+On a copy-heavy code edit (a rename, greedy), MTP reaches 109.0 tok/s. On a long agent session of 31K to 37K tokens, decode runs at 66.2 tok/s (sampled, thinking on, Bubo 0.1.2 at about 70 W). See [Benchmarks](/benchmarks/).
 
 Three parts work together:
 
@@ -58,7 +58,7 @@ Long reasoning can fail in three ways. Bubo has a fix for each:
 
 Bubo also sets a thinking marker bias from the reasoning effort. Low, medium and xhigh effort use different biases.
 
-The test used one model and 15 prompts. The loop breaker finds repeat periods up to 128 tokens in thinking and up to 16 tokens in the answer. Longer repeats in the answer can continue. See [Known issues](/docs/known-issues/).
+The test used one model and 15 prompts. The loop breaker finds repeat periods up to 128 tokens in thinking and in the answer.
 
 ## NPU prefill
 

@@ -12,7 +12,7 @@ head:
 
 **Supported hardware:** Bubo is built and tested for AMD Strix Halo with 128 GB of memory on Windows, mainly laptops. It can work on other machines, with no promise.
 
-**96 GB machines:** use the lower-memory model. Set Variable Graphics Memory (AMD Software: Adrenalin Edition > Performance > Tuning) to the largest value offered (72 GB if available, at least 64 GB), then restart Windows. At 72 GB, Bubo uses the default 200,000-token context for one session. At 64 GB it does too when about 16 GB of system memory is free, and picks a smaller context when less is free. These values are calculated: Bubo has not yet run on a 96 GB machine.
+**96 GB machines:** use a lower-memory model: the lower-memory build of Flash Next, one of the ISTA files IQ3_S, IQ3_XXS and IQ2_XS, or the Flash Next Coder. Set Variable Graphics Memory (AMD Software: Adrenalin Edition > Performance > Tuning) to the largest value offered (72 GB if available, at least 64 GB), then restart Windows. At 72 GB, Bubo uses the default 200,000-token context for one session with the lower-memory build. At 64 GB it does too when about 16 GB of system memory is free, and picks a smaller context when less is free. The ISTA files and the Coder need less GPU memory than the lower-memory build: about 64 GiB for IQ3_S, 57 for IQ3_XXS, 50 for IQ2_XS and 41 for the Coder at 200,000 tokens and one session, measured on a 128 GB machine. To save more, set KV cache to Q8 (Server page in the app, or `--kv-cache-type q8_0`): the context cache becomes 47 % smaller. These values are calculated: Bubo has not been tested on a 96 GB machine.
 
 Use these settings for an AMD Strix Halo laptop. Each section gives the reason for the setting and a read-only check.
 

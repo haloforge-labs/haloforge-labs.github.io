@@ -36,7 +36,9 @@ On a 96 GB computer, the app preselects the lower-memory build of Qwen3.8 Flash 
 
 ## Memory
 
-Setup settings are on the Server page, in **Server setup**. **Context per session** and **Sessions** are always visible. The box **Memory and caches** is collapsed. It has these rows: **Disk cache**, **Disk cache limit**, **Disk cache staging memory**, **RAM cache size**, **Vision file**, **Disable disk cache**, **Disable image input** and **Image-token limit**. Select **Save server setup** to keep a change.
+Setup settings are on the Server page, in **Server setup**. The top row has **Model**, **Context per session** and **Sessions**. Beside **Model** are the link **Add a model you have** and the toggle **Model file**, which shows the full path. Under **Context per session**, the hint “Max 262,144” shows the largest context for this model, and **Use** puts that number in the field. For a plain model file (a .gguf you added), the rows **MTP draft file** (optional, faster writing) and **mmproj file** (optional, image input) follow. Each shows the chosen file name or **None**, with **Browse…** and, once a file is set, **Clear**. The ⓘ button beside a row explains it. A downloaded package brings its own helper files and shows only the **KV cache** row. **KV cache** has the choices **f16** and **Q8 (half the memory)**. The section **Speed and behaviour** has **Prefill mode** (Normal or Fast) and **In-engine abliteration (Qwen3.8 Flash Next)** (Off or On, off by default). The sections **Network** and **Inference** follow, with **More inference settings** under **Inference**. Each setting is one line: the name, the field, a short hint and an ⓘ button for more. At a window width of 700 px or more, the rows run in two columns, and a setting that you did not change shows **Default**. The helper file, **KV cache**, **Prefill mode** and **In-engine abliteration** settings are used after the server restarts. Select **Save server setup** to keep a change.
+
+The memory and cache settings that you change rarely are in **Settings**, tab **Advanced**, section **Memory and caches**: **Disk cache** (off by default), **Disk cache limit** (default 8 GiB), **Disk cache staging memory** (default Automatic), **RAM cache size**, **Allow disk cache** and **Image input** (both On by default), and **Image-token limit**.
 
 The memory check runs before the server starts. A setup that does not fit never starts. For a setup that fits only just, Server setup shows a box headed **Tight**. The server starts only after you tick the box: “Override: allow this tight setup. It may run out of memory, stop the server or freeze your computer.” When you have unsaved changes, the box is disabled and says “Save this setup before allowing the override.” **Check again** is below it.
 
@@ -63,7 +65,7 @@ The Models page shows the other models of the catalogue. See [Supported models](
 
 ## Settings and data
 
-Settings has these options for the app: **Check for updates at start**, **Start this app at login**, **Keep this app in the tray when closing** (off by default) and **Start the server with this app**.
+Settings has these options for the app: **Font** (Serif or Sans serif), **Check for updates at start**, **Start this app at login**, **Keep this app in the tray when closing** (off by default) and **Start the server with this app**.
 
 ## Model download folder
 
@@ -89,7 +91,7 @@ The app saves its data in `%LOCALAPPDATA%\Bubo`:
 
 ## Update check
 
-The app checks for a new version once, when it starts. The check is on by default. It contacts the Bubo release feed on GitHub and sends only the installed version number in its User-Agent. It downloads nothing until you choose to update on the About page. To turn the check off, clear **Check for updates at start** in Settings.
+The app checks for a new version once, when it starts. The check is on by default. It contacts the Bubo release feed on GitHub and sends only the installed version number in its User-Agent. It downloads nothing until you choose to update on the About page. To turn the check off, clear **Check for updates at start** in Settings. The check and the download use the proxy from the environment (`HTTPS_PROXY`) or the manual proxy of the Windows Internet Options. Automatic proxy scripts (PAC) are not supported.
 
 ## Update
 

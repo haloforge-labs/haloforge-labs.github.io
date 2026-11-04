@@ -11,6 +11,11 @@ const parts: string[][] = [
   ['libjpeg-turbo', 'IJG and BSD-3-Clause'],
   ['libwebp, libsharpyuv', 'BSD-3-Clause'],
   ['zlib', 'zlib licence'],
+  ['libsndfile, libsoxr (audio, linked)', 'LGPL-2.1-or-later'],
+  ['mpg123', 'LGPL-2.1'],
+  ['LAME', 'LGPL-2.0'],
+  ['FLAC, libogg, libvorbis, Opus', 'BSD-3-Clause'],
+  ['IBM Plex Sans (app font)', 'SIL Open Font License 1.1'],
   ['App and updater libraries', 'listed in licenses\\gui'],
 ];
 ---
@@ -36,8 +41,9 @@ const parts: string[][] = [
 
     <h2>Models</h2>
     <ul>
-      <li><strong>Qwen3.8 Flash Next</strong> model files, the dense twin and the draft head use the Qwen Community License 1.0. Keep <code>LICENSE</code> and <code>NOTICE</code> with any copy. The notice chain is Qwen, Huihui, Unsloth, HaloForge Labs.</li>
+      <li><strong>Qwen3.8 Flash Next</strong> model files, the dense twin, the draft head and the refusal direction file use the Qwen Community License 1.0. Keep <code>LICENSE</code> and <code>NOTICE</code> with any copy. The notice chain is Qwen, Huihui, Unsloth, HaloForge Labs.</li>
       <li>The expert tensors of the <strong>lower-memory build</strong> come from Qwen3.8-Flash-Next-GSQ-RCO-GGUF by ISTA-DASLab (Institute of Science and Technology Austria), made with GSQ and RCO (arXiv:2604.18556, arXiv:2605.00649). The build is a derivative of Qwen3.8 Flash Next and uses the Qwen Community License 1.0. The notice chain is Qwen, Huihui, ISTA-DASLab, Unsloth, HaloForge Labs.</li>
+      <li>The <strong>Qwen3.8 Flash Next Coder</strong> is the Coder GSQ-RCO quantization of Qwen3.8 Flash Next by ISTA-DASLab (arXiv:2604.18556, arXiv:2605.00649). The files stay in the ISTA-DASLab repository, and the app downloads them from there. Its card says the weights inherit the licence of the base model, so the Qwen Community License 1.0 applies. The notice chain is Qwen, ISTA-DASLab, HaloForge Labs. The MTP file is the Qwen3.8 Flash Next MTP file by Alibaba Qwen, GGUF by Unsloth.</li>
       <li><strong>Other models</strong> in the app keep their authors’ licences. The app shows each licence before the download.</li>
       <li>The Huihui model is abliterated and can produce sensitive content. You are responsible for your use.</li>
     </ul>

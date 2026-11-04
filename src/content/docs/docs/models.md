@@ -16,4 +16,4 @@ Bubo is tuned for Qwen3.8 Flash Next. It has 125B parameters with 6B active, plu
 
 Bubo also contains the code of the other model families of [gufo](https://github.com/gufo-org/gufo): DeepSeek V4 Flash, Qwen3.6 35B-A3B, Qwen3-ASR, Qwen3-TTS, Qwen-Image and MiniMax H3. These are not tested on Windows, and the Bubo app does not download them. They run with upstream gufo settings, if at all.
 
-Base version: gufo v0.10.0 plus upstream main at commit 97b8645f.
+Base version: gufo 0.26.0.
